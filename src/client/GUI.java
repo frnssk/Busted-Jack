@@ -25,16 +25,22 @@ public class GUI extends JPanel {
 	private JButton btnGameStop = new JButton("Stop");
 	private JButton btnGameHit = new JButton("Kort");
 	private JButton btnChrat = new JButton("Fuska!");
+	
+	//Textfields 
+	private JTextField tfUserName = new JTextField();
+	private JTextField tfPassword = new JTextField();
+	private JTextField tfRepeatPassword = new JTextField();
+	private JTextField tfEmail = new JTextField();
 
 	public GUI(UserController controller) {
 		this.controller = controller;
 //		this.controller.setUI(this);
 		setLayout(new BorderLayout());
 //		addListners();
-		add(logInScreen(), BorderLayout.CENTER);
+		add(createUser(), BorderLayout.CENTER);
 	}
 
-	private void updateUI(JPanel pane) {
+	public void updateUI(JPanel pane) {
 		removeAll();
 		repaint();
 		revalidate();
@@ -63,6 +69,64 @@ public class GUI extends JPanel {
 		cont.gridy = 1;
 		pane.add(btnCreateUser, cont);
 
+		return pane;
+	}
+	
+	public JPanel createUser() {
+		JLabel username = new JLabel("Användarnamn");
+		JLabel password = new JLabel("Lösenord");
+		JLabel repeatPassword = new JLabel("Upprepa lösenord");
+		JLabel email = new JLabel("Email");
+		GridBagConstraints cont = new GridBagConstraints();
+		JPanel pane = new JPanel(new GridBagLayout());
+//		username.setPreferredSize(new Dimension(200,20));
+//		password.setPreferredSize(new Dimension(200,20));
+//		repPassword.setPreferredSize(new Dimension(200,20));
+		tfUserName.setPreferredSize(new Dimension(200,20));
+		tfPassword.setPreferredSize(new Dimension(200,20));
+		tfEmail.setPreferredSize(new Dimension(200,20));
+		tfRepeatPassword.setPreferredSize(new Dimension(200,20));
+		
+		cont.anchor = GridBagConstraints.CENTER;
+		cont.insets = new Insets(10,10,10,10);
+		
+		cont.gridx = 0;
+		cont.gridy = 0;
+		pane.add(username, cont);
+		
+		cont.gridx = 1;
+		cont.gridy = 0;
+//		cont.gridwidth = 3;
+		pane.add(tfUserName);
+		
+		cont.gridx = 0;
+		cont.gridy = 1;
+		pane.add(email, cont);
+		
+		cont.gridx = 1;
+		cont.gridy = 1;
+		pane.add(tfEmail, cont);
+		
+		cont.gridx = 0;
+		cont.gridy = 2;
+		pane.add(password, cont);
+		
+		cont.gridx = 1;
+		cont.gridy = 2;
+		pane.add(tfPassword, cont);
+		
+		cont.gridx = 0;
+		cont.gridy = 3;
+		pane.add(repeatPassword, cont);
+		
+		cont.gridx = 1;
+		cont.gridy = 3; 
+		pane.add(tfRepeatPassword, cont);
+		
+		cont.gridx = 1;
+		cont.gridy = 4;
+		pane.add(btnConfirmUser, cont);
+		
 		return pane;
 	}
 
