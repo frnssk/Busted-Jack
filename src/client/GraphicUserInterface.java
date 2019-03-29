@@ -61,8 +61,8 @@ public class GraphicUserInterface extends JPanel {
 		this.controller = controller;
 		//		this.controller.setUI(this);
 		setLayout(new BorderLayout());
-		//		addListners();
-		add(exitScreen(), BorderLayout.CENTER);
+		addListeners();
+		add(startScreen(), BorderLayout.CENTER);
 	}
 
 	public void updateUI(JPanel pane) {
@@ -393,7 +393,7 @@ public class GraphicUserInterface extends JPanel {
 		return pane;
 	}
 
-	public void addListener() {
+	public void addListeners() {
 		ActionL listner = new ActionL();
 		btnLogIn.addActionListener(listner);
 		btnCreateUser.addActionListener(listner);
@@ -408,11 +408,70 @@ public class GraphicUserInterface extends JPanel {
 		btnRandomTable.addActionListener(listner);
 		btnConfirmTable.addActionListener(listner);
 		btnMenu.addActionListener(listner);
+		btnGameX2.addActionListener(listner);
+		btnGameStop.addActionListener(listner);
+		btnGameHit.addActionListener(listner);
+		btnGameCheat.addActionListener(listner);
+		btnGameExit.addActionListener(listner);
 	}
 
 	private class ActionL implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == btnLogIn) {
+				updateUI(logInScreen());
+			}
+			if(e.getSource() == btnCreateUser) {
+				updateUI(createUserScreen());
+			}
+			if(e.getSource() == btnConfirmUser) {
+				updateUI(mainMenuScreen());
+			}
+			if(e.getSource() == btnConfirmLogIn) {
+				updateUI(mainMenuScreen());
+			}
+			if(e.getSource() == btnGoToTable) {
+				updateUI(joinScreen());
+			}
+			if(e.getSource() == btnCreateTable) {
+				updateUI(createTableScreen());
+			}
+			if(e.getSource() == btnQuit) {
+				updateUI(startScreen());
+			}
+			if(e.getSource() == btnAchievements) {
+				//code to come
+			}
+			if(e.getSource() == btnRank) {
+				//code to come
+			}
+			if(e.getSource() == btnEnterTable) {
+				updateUI(gameScreen());
+			}
+			if(e.getSource() == btnRandomTable) {
+				updateUI(gameScreen());
+			}
+			if(e.getSource() == btnConfirmTable) {
+				updateUI(gameScreen());
+			}
+			if(e.getSource() == btnMenu) {
+				updateUI(mainMenuScreen());
+			}
+			if(e.getSource() == btnGameX2) {
+				//code to come
+			}
+			if(e.getSource() == btnGameStop) {
+				//code to come
+			}
+			if(e.getSource() == btnGameHit) {
+				//code to come
+			}
+			if(e.getSource() == btnGameCheat) {
+				//code to come
+			}
+			if(e.getSource() == btnGameExit) {
+				updateUI(mainMenuScreen());
+			}
 
 		}
 	}
