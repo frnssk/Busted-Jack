@@ -25,6 +25,7 @@ public class GraphicUserInterface extends JPanel {
 	private JRadioButton radioBtnTime = new JRadioButton();
 	private JRadioButton radioBtnRounds = new JRadioButton();
 	private JRadioButton radioBtnPrivate = new JRadioButton();
+	private JRadioButton radioBtnShowPassword = new JRadioButton();
 
 	private String[] arrayTime = { "5","10","15","20" };
 	private String[] arrayRounds = { "5","10","15","20" };
@@ -45,17 +46,19 @@ public class GraphicUserInterface extends JPanel {
 
 	//Textfields 
 	private JTextField tfUsernameCreate = new JTextField();
-	private JTextField tfPasswordCreate = new JTextField();
-	private JTextField tfRepeatPasswordCreate = new JTextField();
+	private JPasswordField pfPasswordCreate = new JPasswordField();
+	private JPasswordField pfRepeatPasswordCreate = new JPasswordField();
 	private JTextField tfEmailCreate = new JTextField();
 	private JTextField tfUsernameLogIn = new JTextField();
-	private JTextField tfPasswordLogIn = new JTextField();
+	private JPasswordField pfPasswordLogIn = new JPasswordField();
 	private JTextField tfRoomCode = new JTextField();
 
 	private JTextArea taExitScreenPlayers = new JTextArea();
 	private JTextArea taExitScreenPlayerRanks = new JTextArea();
 	private JTextArea taExitScreenAchievements = new JTextArea();
 	private JTextArea taExitScreenNewRank = new JTextArea();
+	
+	private String strUsername; //During development to show user name in menu
 
 	public GraphicUserInterface(UserController controller) {
 		this.controller = controller;
@@ -108,9 +111,9 @@ public class GraphicUserInterface extends JPanel {
 		//		password.setPreferredSize(new Dimension(200,20));
 		//		repPassword.setPreferredSize(new Dimension(200,20));
 		tfUsernameCreate.setPreferredSize(new Dimension(200,20));
-		tfPasswordCreate.setPreferredSize(new Dimension(200,20));
+		pfPasswordCreate.setPreferredSize(new Dimension(200,20));
 		tfEmailCreate.setPreferredSize(new Dimension(200,20));
-		tfRepeatPasswordCreate.setPreferredSize(new Dimension(200,20));
+		pfRepeatPasswordCreate.setPreferredSize(new Dimension(200,20));
 
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
@@ -134,14 +137,14 @@ public class GraphicUserInterface extends JPanel {
 		pane.add(lblPassword, cont);
 
 		cont.gridx = 1;
-		pane.add(tfPasswordCreate, cont);
+		pane.add(pfPasswordCreate, cont);
 
 		cont.gridx = 0;
 		cont.gridy = 3;
 		pane.add(lblRepeatPassword, cont);
 
 		cont.gridx = 1; 
-		pane.add(tfRepeatPasswordCreate, cont);
+		pane.add(pfRepeatPasswordCreate, cont);
 
 		cont.gridx = 1;
 		cont.gridy = 4;
@@ -156,7 +159,7 @@ public class GraphicUserInterface extends JPanel {
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
 		tfUsernameLogIn.setPreferredSize(new Dimension(200,20));
-		tfPasswordLogIn.setPreferredSize(new Dimension(200,20));
+		pfPasswordLogIn.setPreferredSize(new Dimension(200,20));
 
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
@@ -173,7 +176,7 @@ public class GraphicUserInterface extends JPanel {
 		pane.add(lblPassword,cont);
 
 		cont.gridx = 1;
-		pane.add(tfPasswordLogIn,cont);
+		pane.add(pfPasswordLogIn,cont);
 
 		cont.gridx = 1;
 		cont.gridy = 2;
@@ -185,6 +188,7 @@ public class GraphicUserInterface extends JPanel {
 	public JPanel mainMenuScreen() {
 		JLabel lblPlay = new JLabel("Spela");
 		JLabel lblProfile = new JLabel("Profil");
+		JLabel lblUsername = new JLabel("Välkommen " + strUsername + "!"); 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
 		cont.anchor = GridBagConstraints.CENTER;
@@ -192,27 +196,31 @@ public class GraphicUserInterface extends JPanel {
 
 		cont.gridx = 0;
 		cont.gridy = 0;
+		pane.add(lblUsername, cont);
+		
+		cont.gridx = 0;
+		cont.gridy = 1;
 		pane.add(lblPlay,cont);
 
 		cont.gridx = 1;
 		pane.add(lblProfile,cont);
 
 		cont.gridx = 0;
-		cont.gridy = 1;
+		cont.gridy = 2;
 		pane.add(btnGoToTable,cont);
 
 		cont.gridx = 1;
 		pane.add(btnAchievements,cont);
 
 		cont.gridx = 0;
-		cont.gridy = 2;
+		cont.gridy = 3;
 		pane.add(btnCreateTable,cont);
 
 		cont.gridx = 1;
 		pane.add(btnRank,cont);
 
 		cont.gridx = 0;
-		cont.gridy = 3;
+		cont.gridy = 4;
 		pane.add(btnQuit,cont);
 
 		return pane;
@@ -425,9 +433,11 @@ public class GraphicUserInterface extends JPanel {
 				updateUI(createUserScreen());
 			}
 			if(e.getSource() == btnConfirmUser) {
+				strUsername = tfUsernameCreate.getText(); //During development to show user name in menu
 				updateUI(mainMenuScreen());
 			}
 			if(e.getSource() == btnConfirmLogIn) {
+				strUsername = tfUsernameLogIn.getText(); //During development to show user name in menu
 				updateUI(mainMenuScreen());
 			}
 			if(e.getSource() == btnGoToTable) {
