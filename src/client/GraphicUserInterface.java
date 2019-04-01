@@ -8,19 +8,19 @@ import javax.swing.*;
 
 public class GraphicUserInterface extends JPanel {
 	private UserController controller; 
-	private JButton btnLogIn = new JButton("Logga in"); //Log in display
-	private JButton btnCreateUser = new JButton("Skapa ny anvädnare"); //Log in display
-	private JButton btnConfirmUser = new JButton("Skapa användare"); //Creates user after entering name and password 
-	private JButton btnConfirmLogIn = new JButton("Logga in"); //Check user name and password and logs in  
-	private JButton btnGoToTable = new JButton("Gå till bord"); //From main menu
-	private JButton btnCreateTable = new JButton("Skapa bord"); //From main menu
-	private JButton btnQuit = new JButton("Avsluta"); //Sends form main menu back to log in screen 
+	private JButton btnLogIn = new JButton("Login"); //Log in display
+	private JButton btnCreateUser = new JButton("Create new user"); //Log in display
+	private JButton btnConfirmUser = new JButton("Create user"); //Creates user after entering name and password 
+	private JButton btnConfirmLogIn = new JButton("Login"); //Check user name and password and logs in  
+	private JButton btnGoToTable = new JButton("Go to table"); //From main menu
+	private JButton btnCreateTable = new JButton("Create table"); //From main menu
+	private JButton btnQuit = new JButton("End game"); //Sends form main menu back to log in screen 
 	private JButton btnAchievements = new JButton("Achievements"); //From main menu
 	private JButton btnRank = new JButton("Rank"); //From main menu, shows current rank
-	private JButton btnEnterTable = new JButton("Gå till bord"); //Confirm after entering table code 
-	private JButton btnRandomTable = new JButton("Slumpa bord"); //Send user to random table 
-	private JButton btnConfirmTable = new JButton("Skapa bord"); //After making settings for creating a table 
-	private JButton btnMenu = new JButton("Meny"); //back to menu after a game 
+	private JButton btnEnterTable = new JButton("Go to table"); //Confirm after entering table code 
+	private JButton btnRandomTable = new JButton("Random table"); //Send user to random table 
+	private JButton btnConfirmTable = new JButton("Create table"); //After making settings for creating a table 
+	private JButton btnMenu = new JButton("MainMenu"); //back to menu after a game 
 
 	private JRadioButton radioBtnTime = new JRadioButton();
 	private JRadioButton radioBtnRounds = new JRadioButton();
@@ -38,10 +38,10 @@ public class GraphicUserInterface extends JPanel {
 
 
 	//buttons visible in game 
-	private JButton btnGameX2 = new JButton("X2");
-	private JButton btnGameStop = new JButton("Stop");
-	private JButton btnGameHit = new JButton("Kort");
-	private JButton btnGameCheat = new JButton("Fuska!");
+	private JButton btnGameDouble = new JButton("Double");
+	private JButton btnGameStop = new JButton("Stay");
+	private JButton btnGameHit = new JButton("Hit");
+	private JButton btnGameCheat = new JButton("Cheat!");
 	private JButton btnGameExit = new JButton("Exit game");
 
 	//Textfields 
@@ -101,9 +101,9 @@ public class GraphicUserInterface extends JPanel {
 	}
 
 	public JPanel createUserScreen() {
-		JLabel lblUsername = new JLabel("Användarnamn");
-		JLabel lblPassword = new JLabel("Lösenord");
-		JLabel lblRepeatPassword = new JLabel("Upprepa lösenord");
+		JLabel lblUsername = new JLabel("Username");
+		JLabel lblPassword = new JLabel("Password");
+		JLabel lblRepeatPassword = new JLabel("Repeat password");
 		JLabel lblEmail = new JLabel("Email");
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
@@ -154,8 +154,8 @@ public class GraphicUserInterface extends JPanel {
 	}
 
 	public JPanel logInScreen() {
-		JLabel lblUsername = new JLabel("Användarnamn");
-		JLabel lblPassword = new JLabel("Lösenord");
+		JLabel lblUsername = new JLabel("Username");
+		JLabel lblPassword = new JLabel("Password");
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
 		tfUsernameLogIn.setPreferredSize(new Dimension(200,20));
@@ -186,9 +186,9 @@ public class GraphicUserInterface extends JPanel {
 	}
 
 	public JPanel mainMenuScreen() {
-		JLabel lblPlay = new JLabel("Spela");
-		JLabel lblProfile = new JLabel("Profil");
-		JLabel lblUsername = new JLabel("Välkommen " + strUsername + "!"); 
+		JLabel lblPlay = new JLabel("Play");
+		JLabel lblProfile = new JLabel("Profile");
+		JLabel lblUsername = new JLabel("Welcome " + strUsername + "!"); 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
 		cont.anchor = GridBagConstraints.CENTER;
@@ -256,7 +256,7 @@ public class GraphicUserInterface extends JPanel {
 		JLabel lblRounds = new JLabel("Rounds");
 		JLabel lblBalance = new JLabel("Balance");
 		JLabel lblMinBet = new JLabel("Minimum Bet");
-		JLabel lblPrivateMatch = new JLabel("Privte Match");
+		JLabel lblPrivateMatch = new JLabel("Private Match");
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
 		comboBoxTime.setPreferredSize(new Dimension(60,20));
@@ -323,7 +323,7 @@ public class GraphicUserInterface extends JPanel {
 
 		cont.gridx = 0;
 		cont.gridy = 0;
-		pane.add(btnGameX2, cont);
+		pane.add(btnGameDouble, cont);
 
 		cont.gridy = 1;
 		pane.add(btnGameStop, cont);
@@ -416,7 +416,7 @@ public class GraphicUserInterface extends JPanel {
 		btnRandomTable.addActionListener(listner);
 		btnConfirmTable.addActionListener(listner);
 		btnMenu.addActionListener(listner);
-		btnGameX2.addActionListener(listner);
+		btnGameDouble.addActionListener(listner);
 		btnGameStop.addActionListener(listner);
 		btnGameHit.addActionListener(listner);
 		btnGameCheat.addActionListener(listner);
@@ -467,7 +467,7 @@ public class GraphicUserInterface extends JPanel {
 			if(e.getSource() == btnMenu) {
 				updateUI(mainMenuScreen());
 			}
-			if(e.getSource() == btnGameX2) {
+			if(e.getSource() == btnGameDouble) {
 				//code to come
 			}
 			if(e.getSource() == btnGameStop) {
