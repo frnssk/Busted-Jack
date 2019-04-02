@@ -14,13 +14,13 @@ public class GraphicUserInterface extends JPanel {
 	private JButton btnConfirmLogIn = new JButton("Login"); //Check user name and password and logs in  
 	private JButton btnGoToTable = new JButton("Go to table"); //From main menu
 	private JButton btnCreateTable = new JButton("Create table"); //From main menu
-	private JButton btnQuit = new JButton("End game"); //Sends form main menu back to log in screen 
+	private JButton btnQuit = new JButton("Quit"); //Sends form main menu back to log in screen 
 	private JButton btnAchievements = new JButton("Achievements"); //From main menu
 	private JButton btnRank = new JButton("Rank"); //From main menu, shows current rank
 	private JButton btnEnterTable = new JButton("Go to table"); //Confirm after entering table code 
 	private JButton btnRandomTable = new JButton("Random table"); //Send user to random table 
 	private JButton btnConfirmTable = new JButton("Create table"); //After making settings for creating a table 
-	private JButton btnMenu = new JButton("MainMenu"); //back to menu after a game 
+	private JButton btnMenu = new JButton("Main Menu"); //back to menu after a game 
 
 	private JRadioButton radioBtnTime = new JRadioButton();
 	private JRadioButton radioBtnRounds = new JRadioButton();
@@ -31,10 +31,10 @@ public class GraphicUserInterface extends JPanel {
 	private String[] arrayRounds = { "5","10","15","20" };
 	private String[] arrayBalance = { "100","200","300","400","500" };
 	private String[] arrayMinBet = { "10","50","100","150" };
-	private JComboBox comboBoxTime = new JComboBox(arrayTime);
-	private JComboBox comboBoxRounds = new JComboBox(arrayRounds);
-	private JComboBox comboBoxBalance = new JComboBox(arrayBalance);
-	private JComboBox comboBoxMinBet = new JComboBox(arrayMinBet);
+	private JComboBox<String> comboBoxTime = new JComboBox<String>(arrayTime);
+	private JComboBox<String> comboBoxRounds = new JComboBox<String>(arrayRounds);
+	private JComboBox<String> comboBoxBalance = new JComboBox<String>(arrayBalance);
+	private JComboBox<String> comboBoxMinBet = new JComboBox<String>(arrayMinBet);
 
 
 	//buttons visible in game 
@@ -259,10 +259,10 @@ public class GraphicUserInterface extends JPanel {
 		JLabel lblPrivateMatch = new JLabel("Private Match");
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
-		comboBoxTime.setPreferredSize(new Dimension(60,20));
-		comboBoxRounds.setPreferredSize(new Dimension(60,20));
-		comboBoxBalance.setPreferredSize(new Dimension(60,20));
-		comboBoxMinBet.setPreferredSize(new Dimension(60,20));
+		comboBoxTime.setPreferredSize(new Dimension(70,20));
+		comboBoxRounds.setPreferredSize(new Dimension(70,20));
+		comboBoxBalance.setPreferredSize(new Dimension(80,20));
+		comboBoxMinBet.setPreferredSize(new Dimension(80,20));
 
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
