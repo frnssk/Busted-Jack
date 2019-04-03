@@ -6,27 +6,28 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
-import resources.User;
+import resources.*;
 
 /*
  * @author RasmusOberg
  */
 public class Server {
-	private static final int DEFAULT_PORT = 15000;
-	private static final int DEFAULT_NUMBER_OF_PLAYERS = 2;
-	private static final int DEFAULT_STARTING_MONEY = 5000;
-	private static final int DEAFAULT_MINIMUM_BET = 500;
-	private static final int DEFAULT_NUMBER_OF_DECKS = 6;
-	private static final int DEFAULT_MINIMUM_CARDS_BEFORE_RESHUFFLE = 78;
-	private int serverPort;
-	private int playersPerTable;
-	private int startingMoney;
-	private int minimumBet;
-	private int numberOfDecks;
-	private int minimumCardsBeforeReshuffle;
+//	private static final int DEFAULT_PORT = 15000;
+//	private static final int DEFAULT_NUMBER_OF_PLAYERS = 2;
+//	private static final int DEFAULT_STARTING_MONEY = 5000;
+//	private static final int DEAFAULT_MINIMUM_BET = 500;
+//	private static final int DEFAULT_NUMBER_OF_DECKS = 6;
+//	private static final int DEFAULT_MINIMUM_CARDS_BEFORE_RESHUFFLE = 78;
+//	private int serverPort;
+//	private int playersPerTable;
+//	private int startingMoney;
+//	private int minimumBet;
+//	private int numberOfDecks;
+//	private int minimumCardsBeforeReshuffle;
 	
 	private LinkedList<User> registeredUsers = new LinkedList<>(); //LinkedList to hold all registered users
 	private UserHandler clients;
+	private ArrayList<Table> activeTables = new ArrayList<>();
 
 	/*
 	 * Constructor to instantiate the server
@@ -102,9 +103,24 @@ public class Server {
 		}
 
 		public void run() {
+			Object obj;
 			try {
 				output = new ObjectOutputStream(socket.getOutputStream());
 				input = new ObjectInputStream(socket.getInputStream());
+				
+				try {
+					obj = input.readObject();
+					if(obj instanceof Table) {
+						Table table = (Table)obj;
+						int roomID = table.getRoomID();
+						if(roomID == null) {
+							roomID.setID();
+						}
+					}
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				
 				
 				output.writeObject(registeredUsers);
 				output.flush();
