@@ -33,6 +33,7 @@ public class Server {
 	 * Constructor to instantiate the server
 	 */
 	public Server(int port) {
+		clients = new UserHandler();
 		new ClientReceiver(port).start();
 	}
 
@@ -55,9 +56,11 @@ public class Server {
 				System.out.println("Lyssnar på port nr " + serverSocket.getLocalPort()); //Assistance
 				while(true) {
 					try {
+						System.out.println("1");
 						socket = serverSocket.accept();
-						new ClientHandler(socket).start();
-//						new UserHandler(socket).start();
+						System.out.println("2");
+						new ClientHandler(socket);
+						System.out.println("3");
 					}catch(IOException ioException) {
 						ioException.printStackTrace();
 						if(socket!=null) {
@@ -87,6 +90,7 @@ public class Server {
 		private UserHandler userHandler;
 
 		public ClientHandler(Socket socket) throws IOException {
+			System.out.println("4");
 			this.socket = socket;
 			start();
 			System.out.println("Server startad");
@@ -118,7 +122,7 @@ public class Server {
 //							roomID.setID();
 //						}
 					}
-				} catch (ClassNotFoundException e) {
+				} catch (ClassNotFoundException | IOException e) {
 					e.printStackTrace();
 				}
 				
