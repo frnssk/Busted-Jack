@@ -30,7 +30,7 @@ public class Server {
 	private UserHandler clients;
 	private ArrayList<Table> activeTables = new ArrayList<>();
 	private int roomIdCounter;
-	private ServerUI serverUI = new ServerUI(this);
+	private ServerUI serverUI;
 	private LinkedList<Callback> listeners = new LinkedList<>();
 
 	/*
