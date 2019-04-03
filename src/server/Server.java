@@ -113,9 +113,10 @@ public class Server {
 					if(obj instanceof Table) {
 						Table table = (Table)obj;
 						int roomID = table.getRoomID();
-						if(roomID == null) {
-							roomID.setID();
-						}
+						System.out.println("HEUREKA");
+//						if(roomID = null) {
+//							roomID.setID();
+//						}
 					}
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();

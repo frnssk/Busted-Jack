@@ -51,7 +51,12 @@ public class UserClient {
 	}
 	
 	public void sendTable(Table table) {
-		
+		try {
+			output.writeObject(table);
+			output.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private class Connection extends Thread {
