@@ -19,5 +19,9 @@ public class ServerUI extends JPanel {
 		
 		pane.add(spLiveLog, BorderLayout.CENTER);
 	}
+	
+	public void logActivity(String string) {
+		taLiveUpdate.append(string);
+	}
 
 }
