@@ -1,5 +1,6 @@
 package server;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -108,13 +109,12 @@ public class Server {
 		}
 
 		public void run() {
-			Object obj;
 			try {
 				output = new ObjectOutputStream(socket.getOutputStream());
 				input = new ObjectInputStream(socket.getInputStream());
 				
 				try {
-					obj = input.readObject();
+					Object obj = input.readObject();
 					if(obj instanceof Table) {
 						Table table = (Table)obj;
 						int roomID = table.getRoomID();
