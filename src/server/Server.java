@@ -28,6 +28,7 @@ public class Server {
 	private LinkedList<User> registeredUsers = new LinkedList<>(); //LinkedList to hold all registered users
 	private UserHandler clients;
 	private ArrayList<Table> activeTables = new ArrayList<>();
+	private int roomIdCounter;
 
 	/*
 	 * Constructor to instantiate the server
@@ -127,10 +128,10 @@ public class Server {
 				}
 				
 				
-				output.writeObject(registeredUsers);
-				output.flush();
+//				output.writeObject(registeredUsers);
+//				output.flush();
 				
-				userHandler.newClientConnect(user, this); //Adds this ClientHandler to the UserHandlerList of online users
+//				userHandler.newClientConnect(user, this); //Adds this ClientHandler to the UserHandlerList of online users
 				
 				
 			}catch(IOException ioException) {
