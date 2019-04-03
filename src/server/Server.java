@@ -7,6 +7,9 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+
+import javax.security.auth.callback.Callback;
+
 import resources.*;
 
 /*
@@ -31,6 +34,7 @@ public class Server {
 	private ArrayList<Table> activeTables = new ArrayList<>();
 	private int roomIdCounter;
 	private ServerUI serverUI = new ServerUI(this);
+	private LinkedList<Callback> listeners = new LinkedList<>();
 
 	/*
 	 * Constructor to instantiate the server
@@ -38,6 +42,10 @@ public class Server {
 	public Server(int port) {
 		clients = new UserHandler();
 		new ClientReceiver(port).start();
+	}
+	
+	public void addServerListener(Callback callback) {
+		listeners.add(callback);
 	}
 
 	/*
@@ -59,11 +67,11 @@ public class Server {
 				serverUI.logActivity("Lyssnar på port nr " + serverSocket.getLocalPort()); //Assistance
 				while(true) {
 					try {
-						System.out.println("1");
+						serverUI.logActivity("1");
 						socket = serverSocket.accept();
-						System.out.println("2");
+						serverUI.logActivity("2");
 						new ClientHandler(socket);
-						System.out.println("3");
+						serverUI.logActivity("3");
 					}catch(IOException ioException) {
 						ioException.printStackTrace();
 						if(socket!=null) {

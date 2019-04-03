@@ -20,7 +20,7 @@ public class ServerUI extends JPanel implements Callback {
 		spLiveLog.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		pane.add(spLiveLog, BorderLayout.CENTER);
-		server.addServerListner(this);
+		server.addServerListener(this);
 	}
 	
 	public void logActivity(String string) {
