@@ -31,10 +31,10 @@ public class UserInterface extends JPanel {
 	private JRadioButton radioBtnPrivate = new JRadioButton();
 	
 	//TextFields for creating a new table
-	private JTextField tfTime = new JTextField();
-	private JTextField tfRounds = new JTextField();
-	private JTextField tfBalance = new JTextField();
-	private JTextField tfMinBet = new JTextField();
+	private JTextField tfTime = new JTextField("0");
+	private JTextField tfRounds = new JTextField("0");
+	private JTextField tfBalance = new JTextField("0");
+	private JTextField tfMinBet = new JTextField("0");
 
 	private JTextField tfUsernameCreate = new JTextField();
 	private JPasswordField pfPasswordCreate = new JPasswordField();
