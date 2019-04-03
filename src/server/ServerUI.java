@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 
 import javax.swing.*;
 
-public class ServerUI extends JPanel {
+import resources.Callback;
+
+public class ServerUI extends JPanel implements Callback {
 	private Server server;
 	private JTextArea taLiveUpdate = new JTextArea();
 	private JScrollPane spLiveLog = new JScrollPane(taLiveUpdate);
@@ -18,6 +20,7 @@ public class ServerUI extends JPanel {
 		spLiveLog.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		pane.add(spLiveLog, BorderLayout.CENTER);
+		server.addServerListner(this);
 	}
 	
 	public void logActivity(String string) {
