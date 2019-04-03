@@ -15,6 +15,7 @@ public class UserController {
 	}
 	
 	public void sendNewTable(Table table) {
+		System.out.println("2");
 		client.sendTable(table);
 	}
 	

@@ -49,12 +49,14 @@ public class UserClient {
 	}
 	
 	public void sendTable(Table table) {
+		System.out.println("3");
 		try {
 			output.writeObject(table);
 			output.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("4");
 	}
 	
 	private class Connection extends Thread {
