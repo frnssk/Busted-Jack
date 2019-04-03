@@ -106,9 +106,7 @@ public class UserInterface extends JPanel {
 		JLabel lblEmail = new JLabel("Email");
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
-		//		username.setPreferredSize(new Dimension(200,20));
-		//		password.setPreferredSize(new Dimension(200,20));
-		//		repPassword.setPreferredSize(new Dimension(200,20));
+
 		tfUsernameCreate.setPreferredSize(new Dimension(200,20));
 		pfPasswordCreate.setPreferredSize(new Dimension(200,20));
 		tfEmailCreate.setPreferredSize(new Dimension(200,20));
