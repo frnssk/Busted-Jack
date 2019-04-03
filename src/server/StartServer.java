@@ -9,7 +9,7 @@ public class StartServer {
 		Server server = new Server(1200);
 		ServerUI ui = new ServerUI(server);
 		JFrame frame = new JFrame();
-		frame.setPreferredSize(new Dimension(1000,600));
+		frame.setPreferredSize(new Dimension(600,600));
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.pack();
