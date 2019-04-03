@@ -15,9 +15,9 @@ public class Table {
 	
 	private ArrayList<Player> playerList = new ArrayList<>(); //Holds all the players for the game
 	
-	public Table(int numberOfPlayers, int numberOfMinutes, int numberOfRounds, int startingMoney, int minimumBet) {
+	public Table(int numberOfMinutes, int numberOfRounds, int startingMoney, int minimumBet) {
 //		playerList.add(creator);
-		this.numberOfPlayers = numberOfPlayers;
+//		this.numberOfPlayers = numberOfPlayers;
 		this.numberOfMinutes = numberOfMinutes;
 		this.numberOfRounds = numberOfRounds;
 		this.startingMoney = startingMoney;

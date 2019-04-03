@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 
-
+import resources.Table;
 import resources.User;
 
 public class UserClient {
@@ -47,6 +47,10 @@ public class UserClient {
 				connection.start();
 			}
 		}
+		
+	}
+	
+	public void sendTable(Table table) {
 		
 	}
 	

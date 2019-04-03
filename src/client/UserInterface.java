@@ -3,10 +3,13 @@ package client;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.*;
 
-public class GraphicUserInterface extends JPanel {
+import resources.Table;
+
+public class UserInterface extends JPanel {
 	private UserController controller; 
 	
 	private JButton btnLogIn = new JButton("Login"); //Log in display
@@ -56,9 +59,9 @@ public class GraphicUserInterface extends JPanel {
 	private JButton btnGameExit = new JButton("Exit game");
 
 	
-	public GraphicUserInterface(UserController controller) {
+	public UserInterface(UserController controller) {
 		this.controller = controller;
-		//		this.controller.setUI(this);
+		this.controller.setUI(this);
 		setLayout(new BorderLayout());
 		addListeners();
 		add(startScreen(), BorderLayout.CENTER);
@@ -458,6 +461,7 @@ public class GraphicUserInterface extends JPanel {
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnConfirmTable) {
+				controller.sendNewTable(new Table(Integer.parseInt(tfTime.getText()), Integer.parseInt(tfRounds.getText()), Integer.parseInt(tfBalance.getText()), Integer.parseInt(tfMinBet.getText())));
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnMenu) {
@@ -482,9 +486,10 @@ public class GraphicUserInterface extends JPanel {
 		}
 	}
 
-	public static void main(String[] args) {
-		UserController controller = new UserController();
-		GraphicUserInterface gui = new GraphicUserInterface(controller);
+	public static void main(String[] args) throws IOException {
+		UserClient client = new UserClient("localhost", 1234);
+		UserController controller = new UserController(client);
+		UserInterface gui = new UserInterface(controller);
 		JFrame frame = new JFrame();
 		frame.setPreferredSize(new Dimension(1000,600));
 		frame.setResizable(false);
