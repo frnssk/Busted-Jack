@@ -11,6 +11,7 @@ public class Table {
 	private Shoe regularShoe = new Shoe(6);
 	private CheatShoe cheatShoe = new CheatShoe(6);
 	private DealerHand dealer;
+	private int roomID;
 	
 	private ArrayList<Player> playerList = new ArrayList<>(); //Holds all the players for the game
 	
@@ -29,6 +30,10 @@ public class Table {
 	
 	public void run() {
 		
+	}
+	
+	public int getRoomID() {
+		return roomID;
 	}
 	
 	
