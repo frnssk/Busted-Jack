@@ -8,6 +8,7 @@ import javax.swing.*;
 
 public class GraphicUserInterface extends JPanel {
 	private UserController controller; 
+	
 	private JButton btnLogIn = new JButton("Login"); //Log in display
 	private JButton btnCreateUser = new JButton("Create new user"); //Log in display
 	private JButton btnConfirmUser = new JButton("Create user"); //Creates user after entering name and password 
@@ -25,26 +26,13 @@ public class GraphicUserInterface extends JPanel {
 	private JRadioButton radioBtnTime = new JRadioButton();
 	private JRadioButton radioBtnRounds = new JRadioButton();
 	private JRadioButton radioBtnPrivate = new JRadioButton();
-	private JRadioButton radioBtnShowPassword = new JRadioButton();
+	
+	//TextFields for creating a new table
+	private JTextField tfTime = new JTextField();
+	private JTextField tfRounds = new JTextField();
+	private JTextField tfBalance = new JTextField();
+	private JTextField tfMinBet = new JTextField();
 
-	private String[] arrayTime = { "5","10","15","20" };
-	private String[] arrayRounds = { "5","10","15","20" };
-	private String[] arrayBalance = { "100","200","300","400","500" };
-	private String[] arrayMinBet = { "10","50","100","150" };
-	private JComboBox<String> comboBoxTime = new JComboBox<String>(arrayTime);
-	private JComboBox<String> comboBoxRounds = new JComboBox<String>(arrayRounds);
-	private JComboBox<String> comboBoxBalance = new JComboBox<String>(arrayBalance);
-	private JComboBox<String> comboBoxMinBet = new JComboBox<String>(arrayMinBet);
-
-
-	//buttons visible in game 
-	private JButton btnGameDouble = new JButton("Double");
-	private JButton btnGameStop = new JButton("Stay");
-	private JButton btnGameHit = new JButton("Hit");
-	private JButton btnGameCheat = new JButton("Cheat!");
-	private JButton btnGameExit = new JButton("Exit game");
-
-	//Textfields 
 	private JTextField tfUsernameCreate = new JTextField();
 	private JPasswordField pfPasswordCreate = new JPasswordField();
 	private JPasswordField pfRepeatPasswordCreate = new JPasswordField();
@@ -60,6 +48,14 @@ public class GraphicUserInterface extends JPanel {
 	
 	private String strUsername; //During development to show user name in menu
 
+	//buttons visible in game 
+	private JButton btnGameDouble = new JButton("Double");
+	private JButton btnGameStop = new JButton("Stay");
+	private JButton btnGameHit = new JButton("Hit");
+	private JButton btnGameCheat = new JButton("Cheat!");
+	private JButton btnGameExit = new JButton("Exit game");
+
+	
 	public GraphicUserInterface(UserController controller) {
 		this.controller = controller;
 		//		this.controller.setUI(this);
@@ -259,10 +255,10 @@ public class GraphicUserInterface extends JPanel {
 		JLabel lblPrivateMatch = new JLabel("Private Match");
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
-		comboBoxTime.setPreferredSize(new Dimension(70,20));
-		comboBoxRounds.setPreferredSize(new Dimension(70,20));
-		comboBoxBalance.setPreferredSize(new Dimension(80,20));
-		comboBoxMinBet.setPreferredSize(new Dimension(80,20));
+		tfTime.setPreferredSize(new Dimension(80,20));
+		tfRounds.setPreferredSize(new Dimension(80,20));
+		tfBalance.setPreferredSize(new Dimension(80,20));
+		tfMinBet.setPreferredSize(new Dimension(80,20));
 
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
@@ -275,7 +271,7 @@ public class GraphicUserInterface extends JPanel {
 		pane.add(lblTime, cont);
 
 		cont.gridx = 2;
-		pane.add(comboBoxTime, cont);
+		pane.add(tfTime, cont);
 
 		cont.gridx = 3;
 		pane.add(lblPrivateMatch, cont);
@@ -291,21 +287,21 @@ public class GraphicUserInterface extends JPanel {
 		pane.add(lblRounds, cont);
 
 		cont.gridx = 2;
-		pane.add(comboBoxRounds, cont);
+		pane.add(tfRounds, cont);
 
 		cont.gridx = 1;
 		cont.gridy = 2;
 		pane.add(lblBalance, cont);
 
 		cont.gridx = 2;
-		pane.add(comboBoxBalance, cont);
+		pane.add(tfBalance, cont);
 
 		cont.gridx = 1;
 		cont.gridy = 3;
 		pane.add(lblMinBet, cont);
 
 		cont.gridx = 2;
-		pane.add(comboBoxMinBet, cont);
+		pane.add(tfMinBet, cont);
 
 		cont.gridx = 4;
 		pane.add(btnConfirmTable, cont);
