@@ -30,6 +30,7 @@ public class Server {
 	private UserHandler clients;
 	private ArrayList<Table> activeTables = new ArrayList<>();
 	private int roomIdCounter;
+	private ServerUI serverUI = new ServerUI(this);
 
 	/*
 	 * Constructor to instantiate the server
@@ -55,7 +56,7 @@ public class Server {
 			Socket socket = null;
 
 			try(ServerSocket serverSocket = new ServerSocket(port)){
-				System.out.println("Lyssnar på port nr " + serverSocket.getLocalPort()); //Assistance
+				serverUI.logActivity("Lyssnar på port nr " + serverSocket.getLocalPort()); //Assistance
 				while(true) {
 					try {
 						System.out.println("1");
@@ -100,8 +101,7 @@ public class Server {
 
 		public void updateActiveUsers(LinkedList<User> activeUsers) {
 			try {
-				int a = 1;
-				output.writeObject(a);
+				output.writeObject(activeUsers);
 				output.flush();
 			}catch(IOException ioException) {
 				ioException.printStackTrace();
@@ -127,9 +127,6 @@ public class Server {
 					e.printStackTrace();
 				}
 				
-				
-//				output.writeObject(registeredUsers);
-//				output.flush();
 				
 //				userHandler.newClientConnect(user, this); //Adds this ClientHandler to the UserHandlerList of online users
 				
