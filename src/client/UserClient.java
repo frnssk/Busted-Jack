@@ -18,25 +18,36 @@ public class UserClient {
 	private boolean receiving = false;
 	private Connection connection;
 	private LinkedList<User> allRegisteredUsers;
-	
+
 	public UserClient(String ip, int port) throws IOException{
 		this.ip = ip;
 		this.port = port;
-		
-	}
-	
-	public void setUserController(UserController userController) {
-		this.userController = userController;
-	}
-	
-	private void connect(User user) throws IOException {
-		if(!receiving) {
-			this.user = user;
-			
-			try {
+		try {
 			socket = new Socket(ip, port);
 			output = new ObjectOutputStream(socket.getOutputStream());
 			input = new ObjectInputStream(socket.getInputStream());
+		}catch(IOException ioException) {
+			ioException.printStackTrace();
+		}
+		if(connection == null) {
+			connection = new Connection();
+			connection.start();
+		}
+
+	}
+
+	public void setUserController(UserController userController) {
+		this.userController = userController;
+	}
+
+	private void connect(User user) throws IOException {
+		if(!receiving) {
+			this.user = user;
+
+			try {
+				socket = new Socket(ip, port);
+				output = new ObjectOutputStream(socket.getOutputStream());
+				input = new ObjectInputStream(socket.getInputStream());
 			}catch(IOException ioException) {
 				ioException.printStackTrace();
 			}
@@ -45,24 +56,26 @@ public class UserClient {
 				connection.start();
 			}
 		}
-		
+
 	}
-	
+
 	public void sendTable(Table table) {
+		System.out.println("5");
 		try {
 			output.writeObject(table);
 			output.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("4");
 	}
-	
+
 	private class Connection extends Thread {
 		public void run() {
 			try {
 				Object obj = input.readObject();
 				System.out.println(obj.toString());
-			
+
 			}catch(IOException | ClassNotFoundException exception) {
 				exception.printStackTrace();
 			}

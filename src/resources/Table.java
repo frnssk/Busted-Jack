@@ -1,8 +1,11 @@
 package resources;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Table {
+public class Table implements Serializable {
+
+	private static final long serialVersionUID = 8653911597750749092L;
 	private int numberOfPlayers;
 	private int numberOfMinutes;
 	private int numberOfRounds;

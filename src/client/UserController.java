@@ -5,6 +5,7 @@ import resources.Table;
 public class UserController {
 	private UserClient client;
 	private UserInterface ui;
+	private Table table;
 	
 	public UserController(UserClient client) {
 		this.client = client;
@@ -15,7 +16,9 @@ public class UserController {
 	}
 	
 	public void sendNewTable(Table table) {
-		client.sendTable(table);
+		this.table = table;
+		System.out.println("4");
+		client.sendTable(this.table);
 	}
 	
 	
