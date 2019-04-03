@@ -1,5 +1,6 @@
 package resources;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -8,7 +9,9 @@ import java.util.*;
  *
  */
 
-public class CheatDeck {
+public class CheatDeck implements Serializable {
+	
+	private static final long serialVersionUID = 5746633204212909460L;
 	private ArrayList<Card> cheatDeck = new ArrayList<>();
 	private int i = 0;
 	/*

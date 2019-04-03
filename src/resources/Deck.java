@@ -1,5 +1,6 @@
 package resources;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -8,7 +9,9 @@ import java.util.*;
  *
  */
 
-public class Deck {
+public class Deck implements Serializable {
+
+	private static final long serialVersionUID = 6801396353820734819L;
 	private ArrayList<Card> deck = new ArrayList<>();
 	
 	public Deck() {

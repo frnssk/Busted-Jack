@@ -1,5 +1,6 @@
 package resources;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -7,7 +8,9 @@ import java.util.*;
  * @author rasmusoberg
  *
  */
-public class CheatShoe {
+public class CheatShoe implements Serializable {
+
+	private static final long serialVersionUID = -1587383457835082451L;
 	private Stack<Card> cheatShoe = new Stack<>();
 	private Stack<Card> usedCards = new Stack<>();
 	

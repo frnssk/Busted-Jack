@@ -1,8 +1,12 @@
 package resources;
 
+import java.io.Serializable;
+
 import javax.swing.*;
 
-public class Card {
+public class Card implements Serializable {
+
+	private static final long serialVersionUID = 4817008418676203400L;
 	private final Rank RANK;
 	private final Suit SUIT;
 	private ImageIcon face;

@@ -1,5 +1,6 @@
 package resources;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Stack;
 
@@ -9,7 +10,9 @@ import java.util.Stack;
  *
  */
 
-public class Shoe {
+public class Shoe implements Serializable {
+
+	private static final long serialVersionUID = 300924650586658215L;
 	private Stack<Card> shoe = new Stack<>();
 	private Stack<Card> usedCards = new Stack<>();
 	
