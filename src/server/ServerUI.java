@@ -3,7 +3,6 @@ package server;
 import java.awt.BorderLayout;
 
 import javax.swing.*;
-
 import resources.Callback;
 
 public class ServerUI extends JPanel implements Callback {
