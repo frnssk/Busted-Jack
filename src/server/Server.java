@@ -1,9 +1,14 @@
 package server;
 
+import java.io.BufferedWriter;
 import java.io.EOFException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -13,24 +18,11 @@ import resources.*;
  * @author RasmusOberg
  */
 public class Server {
-//	private static final int DEFAULT_PORT = 15000;
-//	private static final int DEFAULT_NUMBER_OF_PLAYERS = 2;
-//	private static final int DEFAULT_STARTING_MONEY = 5000;
-//	private static final int DEAFAULT_MINIMUM_BET = 500;
-//	private static final int DEFAULT_NUMBER_OF_DECKS = 6;
-//	private static final int DEFAULT_MINIMUM_CARDS_BEFORE_RESHUFFLE = 78;
-//	private int serverPort;
-//	private int playersPerTable;
-//	private int startingMoney;
-//	private int minimumBet;
-//	private int numberOfDecks;
-//	private int minimumCardsBeforeReshuffle;
-	
+
 	private LinkedList<User> registeredUsers = new LinkedList<>(); //LinkedList to hold all registered users
 	private UserHandler clients;
 	private ArrayList<Table> activeTables = new ArrayList<>();
 	private int roomIdCounter;
-	private ServerUI serverUI;
 	private LinkedList<Callback> listeners = new LinkedList<>();
 
 	/*
@@ -39,11 +31,8 @@ public class Server {
 	public Server(int port) {
 		clients = new UserHandler();
 		new ClientReceiver(port).start();
-	}
-	
-	public void addServerListener(Callback callback) {
-		listeners.add(callback);
-	}
+		}
+
 
 	/*
 	 * Inner class which listens after new connections / clients trying to connect
@@ -61,14 +50,12 @@ public class Server {
 			Socket socket = null;
 
 			try(ServerSocket serverSocket = new ServerSocket(port)){
-				serverUI.logActivity("Lyssnar på port nr " + serverSocket.getLocalPort()); //Assistance
+				TextWindow.println(("Server started, listening for clients on port nr " + serverSocket.getLocalPort())); //Assistance
 				while(true) {
 					try {
-						serverUI.logActivity("1");
 						socket = serverSocket.accept();
-						serverUI.logActivity("2");
+						System.out.println("Client connected");
 						new ClientHandler(socket);
-						serverUI.logActivity("3");
 					}catch(IOException ioException) {
 						ioException.printStackTrace();
 						if(socket!=null) {
@@ -98,10 +85,9 @@ public class Server {
 		private UserHandler userHandler;
 
 		public ClientHandler(Socket socket) throws IOException {
-			System.out.println("4");
 			this.socket = socket;
 			start();
-			System.out.println("Server startad");
+			TextWindow.println("ClientHandler started");
 		}
 
 		public void updateActiveUsers(LinkedList<User> activeUsers) {
@@ -117,13 +103,13 @@ public class Server {
 			try {
 				output = new ObjectOutputStream(socket.getOutputStream());
 				input = new ObjectInputStream(socket.getInputStream());
-				
+
 				try {
 					Object obj = input.readObject();
 					if(obj instanceof Table) {
 						Table table = (Table)obj;
 						int roomID = table.getRoomID();
-						System.out.println("HEUREKA");
+						TextWindow.println("HEUREKA");
 //						if(roomID = null) {
 //							roomID.setID();
 //						}
@@ -131,11 +117,11 @@ public class Server {
 				} catch (ClassNotFoundException | IOException e) {
 					e.printStackTrace();
 				}
-				
-				
-//				userHandler.newClientConnect(user, this); //Adds this ClientHandler to the UserHandlerList of online users
-				
-				
+
+//				userHandler.newClientConnect(user, this); 
+				//Adds this ClientHandler to the UserHandlerList of online users
+
+
 			}catch(IOException ioException) {
 				ioException.printStackTrace();
 			}
@@ -194,4 +180,7 @@ public class Server {
 		}
 
 	}
+
 }
+
+
