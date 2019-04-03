@@ -10,7 +10,7 @@ import java.util.*;
 
 public class CheatDeck {
 	private ArrayList<Card> cheatDeck = new ArrayList<>();
-
+	private int i = 0;
 	/*
 	 * Adds all the cards with values above 8, or aces
 	 */
@@ -40,7 +40,5 @@ public class CheatDeck {
 	public int size() {
 		return cheatDeck.size();
 	}
-
-
 
 }

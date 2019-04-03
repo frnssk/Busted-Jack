@@ -93,7 +93,8 @@ public class Server {
 
 		public void updateActiveUsers(LinkedList<User> activeUsers) {
 			try {
-				output.writeObject(activeUsers);
+				int a = 1;
+				output.writeObject(a);
 				output.flush();
 			}catch(IOException ioException) {
 				ioException.printStackTrace();
