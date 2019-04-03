@@ -461,8 +461,11 @@ public class UserInterface extends JPanel {
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnConfirmTable) {
-				controller.sendNewTable(new Table(Integer.parseInt(tfTime.getText()), Integer.parseInt(tfRounds.getText()), Integer.parseInt(tfBalance.getText()), Integer.parseInt(tfMinBet.getText())));
 				System.out.println("1");
+				Table table = new Table(Integer.parseInt(tfTime.getText()), Integer.parseInt(tfRounds.getText()), Integer.parseInt(tfBalance.getText()), Integer.parseInt(tfMinBet.getText()));
+				System.out.println("2");
+				controller.sendNewTable(table);
+				System.out.println("3");
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnMenu) {
