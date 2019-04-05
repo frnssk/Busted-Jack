@@ -18,6 +18,10 @@ public class User implements Serializable {
 		this.title = null;
 	}
 	
+	public void setPassword(char[] password) {
+		this.password = password;
+	}
+	
 	public void setRating(int rating) {
 		this.rating = rating;
 	}

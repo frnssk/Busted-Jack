@@ -19,7 +19,7 @@ import resources.*;
  */
 public class Server {
 
-	private LinkedList<User> registeredUsers = new LinkedList<>(); //LinkedList to hold all registered users
+	private LinkedList<String> registeredUsers = new LinkedList<>(); //LinkedList to hold all registered users
 	private UserHandler clients;
 	private ArrayList<Table> activeTables = new ArrayList<>();
 	private int roomIdCounter;
@@ -83,6 +83,7 @@ public class Server {
 		private User user;
 		private Object object;
 		private UserHandler userHandler;
+		String name;
 
 		public ClientHandler(Socket socket) throws IOException {
 			this.socket = socket;
@@ -97,6 +98,13 @@ public class Server {
 			}catch(IOException ioException) {
 				ioException.printStackTrace();
 			}
+		}
+		
+		public boolean isPasswordOkay(char[] password) {
+			if(password.length < 6 && password.length > 12) {
+				return false;
+			}
+			return true;
 		}
 
 		public void run() {
@@ -114,6 +122,28 @@ public class Server {
 							//						if(roomID = null) {
 							//							roomID.setID();
 							//						}
+						}
+						if(obj instanceof String) {
+							name = (String)obj;
+							boolean exist = false;
+							if(registeredUsers.contains(name)) {
+								output.writeBoolean(exist);
+								TextWindow.println(name + " finns redan.");
+							}else {
+								output.writeBoolean(true);
+								TextWindow.println(name + " är ledigt.");
+							}
+						}
+						if(obj instanceof char[]) {
+							char[] password = (char[])obj;
+							if(isPasswordOkay(password)) {
+								TextWindow.println(name + " har angett ett godkänt lösenord.");
+								User temporary = new User(name);
+								TextWindow.println("User-objekt skapat för " + name);
+								temporary.setPassword(password);
+								registeredUsers.add(temporary.getUsername());
+								TextWindow.println(name + " tilllagd i RegisteredUsers.");
+							}
 						}
 					} catch (ClassNotFoundException | IOException e) {
 						e.printStackTrace();
