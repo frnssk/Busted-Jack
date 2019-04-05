@@ -75,13 +75,8 @@ public class UserInterface extends JPanel {
 		add(pane);
 	}
 
-<<<<<<< HEAD
 	public void setUsernameAvailability(int available) {
-		this.usernameAvailability = available;
-=======
-	public void setUsernameAvailability(boolean bool) {
-		this.usernameAvailability = bool;
->>>>>>> b0f36c2265b52903b5185ab07c3779f8ed5da791
+		usernameAvailability = available;
 	}
 
 	public JPanel startScreen() {
@@ -479,6 +474,7 @@ public class UserInterface extends JPanel {
 			if(e.getSource() == btnConfirmUser) {
 				strUsername = tfUsernameCreate.getText(); //During development to show user name in menu
 				controller.checkNameAvailability(strUsername);
+
 				try {
 					Thread.sleep(3000);
 				} catch (InterruptedException e1) {
