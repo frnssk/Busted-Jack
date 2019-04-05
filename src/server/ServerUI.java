@@ -21,7 +21,7 @@ public class ServerUI extends JPanel implements Callback {
 		pane.add(taLiveUpdate, BorderLayout.CENTER);
 		
 //		pane.add(spLiveLog, BorderLayout.CENTER);
-		server.addServerListener(this);
+//		server.addServerListener(this);
 	}
 	
 	public void logActivity(String string) {

@@ -1,11 +1,14 @@
 package client;
 
-import resources.Table;
+import java.io.IOException;
+
+import resources.*;
 
 public class UserController {
 	private UserClient client;
 	private UserInterface ui;
-	private Table table;
+	private User user;
+//	private Table table;
 	
 	public UserController(UserClient client) {
 		this.client = client;
@@ -16,11 +19,18 @@ public class UserController {
 	}
 	
 	public void sendNewTable(Table table) {
-		this.table = table;
+//		this.table = table;
 		System.out.println("4");
-		client.sendTable(this.table);
+		client.sendTable(table);
 	}
 	
+	public void connect(User user) {
+		try {
+			client.connect(user);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 
 }

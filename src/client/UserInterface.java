@@ -1,16 +1,16 @@
 package client;
 
 import java.awt.*;
+import resources.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
 import javax.swing.*;
-
 import resources.Table;
 
 public class UserInterface extends JPanel {
 	private UserController controller; 
+	private User user;
 	
 	private JButton btnLogIn = new JButton("Login"); //Log in display
 	private JButton btnCreateUser = new JButton("Create new user"); //Log in display
@@ -95,6 +95,8 @@ public class UserInterface extends JPanel {
 		cont.gridx = 2;
 		cont.gridy = 1;
 		pane.add(btnCreateUser, cont);
+		
+		pane.setBackground(new Color(0,153,0));
 
 		return pane;
 	}
@@ -147,6 +149,8 @@ public class UserInterface extends JPanel {
 		cont.gridy = 4;
 		pane.add(btnConfirmUser, cont);
 
+		pane.setBackground(new Color(0,153,0));
+		
 		return pane;
 	}
 
@@ -179,6 +183,8 @@ public class UserInterface extends JPanel {
 		cont.gridy = 2;
 		pane.add(btnConfirmLogIn,cont);
 
+		pane.setBackground(new Color(0,153,0));
+		
 		return pane;
 	}
 
@@ -220,6 +226,8 @@ public class UserInterface extends JPanel {
 		cont.gridy = 4;
 		pane.add(btnQuit,cont);
 
+		pane.setBackground(new Color(0,153,0));
+		
 		return pane;
 	}
 
@@ -244,6 +252,8 @@ public class UserInterface extends JPanel {
 
 		cont.gridy = 3;
 		pane.add(btnRandomTable, cont);
+		
+		pane.setBackground(new Color(0,153,0));
 
 		return pane;
 	}
@@ -306,6 +316,8 @@ public class UserInterface extends JPanel {
 
 		cont.gridx = 4;
 		pane.add(btnConfirmTable, cont);
+		
+		pane.setBackground(new Color(0,153,0));
 
 		return pane;
 	}
@@ -338,6 +350,8 @@ public class UserInterface extends JPanel {
 		cont.gridy = 0;
 		cont.gridheight = 4;
 		pane.add(lblGameScreen, cont);
+		
+		pane.setBackground(new Color(0,153,0));
 
 		return pane;
 	}
@@ -395,6 +409,8 @@ public class UserInterface extends JPanel {
 		cont.gridy = 4;
 		pane.add(btnMenu, cont);
 
+		pane.setBackground(new Color(0,153,0));
+		
 		return pane;
 	}
 
@@ -427,6 +443,7 @@ public class UserInterface extends JPanel {
 				updateUI(logInScreen());
 			}
 			if(e.getSource() == btnCreateUser) {
+				user = new User(tfUsernameCreate.getText());
 				updateUI(createUserScreen());
 			}
 			if(e.getSource() == btnConfirmUser) {

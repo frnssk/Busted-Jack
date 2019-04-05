@@ -23,7 +23,7 @@ public class Server {
 	private UserHandler clients;
 	private ArrayList<Table> activeTables = new ArrayList<>();
 	private int roomIdCounter;
-	private LinkedList<Callback> listeners = new LinkedList<>();
+	//	private LinkedList<Callback> listeners = new LinkedList<>();
 
 	/*
 	 * Constructor to instantiate the server
@@ -31,7 +31,7 @@ public class Server {
 	public Server(int port) {
 		clients = new UserHandler();
 		new ClientReceiver(port).start();
-		}
+	}
 
 
 	/*
@@ -54,7 +54,7 @@ public class Server {
 				while(true) {
 					try {
 						socket = serverSocket.accept();
-						System.out.println("Client connected");
+						TextWindow.println("Client connected");
 						new ClientHandler(socket);
 					}catch(IOException ioException) {
 						ioException.printStackTrace();
@@ -104,21 +104,22 @@ public class Server {
 				output = new ObjectOutputStream(socket.getOutputStream());
 				input = new ObjectInputStream(socket.getInputStream());
 
-				try {
-					Object obj = input.readObject();
-					if(obj instanceof Table) {
-						Table table = (Table)obj;
-						int roomID = table.getRoomID();
-						TextWindow.println("HEUREKA");
-//						if(roomID = null) {
-//							roomID.setID();
-//						}
+				while(true) {
+					try {
+						Object obj = input.readObject();
+						if(obj instanceof Table) {
+							Table table = (Table)obj;
+							int roomID = table.getRoomID();
+							TextWindow.println("HEUREKA");
+							//						if(roomID = null) {
+							//							roomID.setID();
+							//						}
+						}
+					} catch (ClassNotFoundException | IOException e) {
+						e.printStackTrace();
 					}
-				} catch (ClassNotFoundException | IOException e) {
-					e.printStackTrace();
 				}
-
-//				userHandler.newClientConnect(user, this); 
+				//				userHandler.newClientConnect(user, this); 
 				//Adds this ClientHandler to the UserHandlerList of online users
 
 
@@ -146,14 +147,14 @@ public class Server {
 		//adds new user to activeUsers-HashMap
 		public synchronized void addNewActiveUser(User user, ClientHandler clientHandler) {
 			activeUsers.put(user, clientHandler);
-			System.out.println(user.getUsername() + " aktiv");
+			TextWindow.println(user.getUsername() + " aktiv");
 			updateActiveUsers();
 		}
 
 		//register new user to registeredUsers-LinkedList
 		public synchronized void registerNewUser(User user) {
 			registeredUsers.add(user);
-			System.out.println(user.getUsername() + " registrerad");
+			TextWindow.println(user.getUsername() + " registrerad");
 			updateActiveUsers();
 		}
 
@@ -167,10 +168,10 @@ public class Server {
 			return activeUsers.containsKey(user);
 		}
 
-		public synchronized LinkedList<User> getActiveUsers(){
-			LinkedList<User> currentActiveUsers = new LinkedList<>(activeUsers.keySet());
-			return currentActiveUsers;
-		}
+		//		public synchronized LinkedList<User> getActiveUsers(){
+		//			LinkedList<User> currentActiveUsers = new LinkedList<>(activeUsers.keySet());
+		//			return currentActiveUsers;
+		//		}
 
 		public void updateActiveUsers() {
 			LinkedList<User> currentActiveUsers = new LinkedList<>();

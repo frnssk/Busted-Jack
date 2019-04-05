@@ -35,12 +35,16 @@ public class UserClient {
 		}
 
 	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	public void setUserController(UserController userController) {
 		this.userController = userController;
 	}
 
-	private void connect(User user) throws IOException {
+	public void connect(User user) throws IOException {
 		if(!receiving) {
 			this.user = user;
 
@@ -55,6 +59,8 @@ public class UserClient {
 				connection = new Connection();
 				connection.start();
 			}
+		}else{
+			setUser(user);
 		}
 
 	}
