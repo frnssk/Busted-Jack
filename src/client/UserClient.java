@@ -64,6 +64,16 @@ public class UserClient {
 		}
 
 	}
+	
+	public void checkNameAvailability(String username) {
+		System.out.println("Sending name to server"); //For testing
+		try {
+			output.writeObject(username);
+			output.flush();
+		} catch(IOException  e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void sendTable(Table table) {
 		System.out.println("5");
@@ -80,7 +90,12 @@ public class UserClient {
 		public void run() {
 			try {
 				Object obj = input.readObject();
-				System.out.println(obj.toString());
+				
+				//For checking user name availability
+				if(obj instanceof Boolean) {
+					userController.setUsernameAvailability((Boolean) obj);
+				}
+
 
 			}catch(IOException | ClassNotFoundException exception) {
 				exception.printStackTrace();

@@ -8,7 +8,6 @@ public class UserController {
 	private UserClient client;
 	private UserInterface ui;
 	private User user;
-//	private Table table;
 	
 	public UserController(UserClient client) {
 		this.client = client;
@@ -19,9 +18,16 @@ public class UserController {
 	}
 	
 	public void sendNewTable(Table table) {
-//		this.table = table;
 		System.out.println("4");
 		client.sendTable(table);
+	}
+	
+	public void checkNameAvailability(String username) {
+		client.checkNameAvailability(username);
+	}
+	
+	public void setUsernameAvailability(boolean bool) {
+		ui.setUsernameAvailability(bool);
 	}
 	
 	public void connect(User user) {
