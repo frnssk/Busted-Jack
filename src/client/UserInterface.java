@@ -474,6 +474,20 @@ public class UserInterface extends JPanel {
 			if(e.getSource() == btnConfirmUser) {
 				strUsername = tfUsernameCreate.getText(); //During development to show user name in menu
 				controller.checkNameAvailability(strUsername);
+<<<<<<< HEAD
+<<<<<<< HEAD
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+=======
+				
+>>>>>>> c279896efdb5f0e592f4b7889a95aba742373413
+=======
+				
+>>>>>>> c279896efdb5f0e592f4b7889a95aba742373413
 				if(usernameAvailability == true) {
 					updateUI(mainMenuScreen());
 				} else {

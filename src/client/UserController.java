@@ -26,7 +26,7 @@ public class UserController {
 		client.checkNameAvailability(username);
 	}
 	
-	public void setUsernameAvailability(boolean bool) {
+	public void setUsernameAvailability(Boolean bool) {
 		ui.setUsernameAvailability(bool);
 	}
 	
