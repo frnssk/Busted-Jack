@@ -88,7 +88,7 @@ public class UserClient {
 
 	private class Connection extends Thread {
 		public void run() {
-<<<<<<< HEAD
+
 			while(true) {
 				try {
 					Object obj = input.readObject();
@@ -101,17 +101,6 @@ public class UserClient {
 						userController.setUsernameAvailability(available);
 						System.out.println("server responded");
 					}
-=======
-			try {
-				Object obj = input.readObject();
-				
-				//For checking user name availability
-				if(obj instanceof Boolean) {
-					userController.setUsernameAvailability((Boolean)obj);
-				}
->>>>>>> c279896efdb5f0e592f4b7889a95aba742373413
-
-
 				}catch(IOException | ClassNotFoundException exception) {
 					exception.printStackTrace();
 				}
