@@ -125,14 +125,16 @@ public class Server {
 						}
 						if(obj instanceof String) {
 							name = (String)obj;
-//							int a = 0;
-							boolean exist = false;
+							int a = 0;
+//							boolean exist = false;
 							if(registeredUsers.contains(name)) {
-								output.writeObject(exist);
+								a = 1;
+								output.writeObject(a);
 								TextWindow.println(name + " finns redan.");
 							}else {
-								exist = true;
-								output.writeObject(exist);
+//								exist = true;
+								a = 2;
+								output.writeObject(a);
 								TextWindow.println(name + " är ledigt.");
 							}
 						}

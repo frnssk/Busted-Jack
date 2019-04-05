@@ -26,8 +26,8 @@ public class UserController {
 		client.checkNameAvailability(username);
 	}
 	
-	public void setUsernameAvailability(Boolean bool) {
-		ui.setUsernameAvailability(bool);
+	public void setUsernameAvailability(int available) {
+		ui.setUsernameAvailability(available);
 	}
 	
 	public void connect(User user) {

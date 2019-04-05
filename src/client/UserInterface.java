@@ -11,7 +11,7 @@ import resources.Table;
 public class UserInterface extends JPanel {
 	private UserController controller; 
 	private User user;
-	private boolean usernameAvailability = false;
+	private int usernameAvailability = 0;
 
 	private JButton btnLogIn = new JButton("Login"); //Log in display
 	private JButton btnCreateUser = new JButton("Create new user"); //Log in display
@@ -75,8 +75,8 @@ public class UserInterface extends JPanel {
 		add(pane);
 	}
 
-	public void setUsernameAvailability(boolean bool) {
-		usernameAvailability = bool;
+	public void setUsernameAvailability(int available) {
+		this.usernameAvailability = available;
 	}
 
 	public JPanel startScreen() {
@@ -481,10 +481,14 @@ public class UserInterface extends JPanel {
 					e1.printStackTrace();
 				}
 
-				if(usernameAvailability == true) {
+				if(usernameAvailability == 2) {
+					System.out.println(usernameAvailability);
 					updateUI(mainMenuScreen());
-				} else {
+				} else if(usernameAvailability == 1) {
+					System.out.println(usernameAvailability);
 					errorMessage();
+				} else {
+					System.out.println(usernameAvailability + " = Rasmus server suger");
 				}
 			}
 			if(e.getSource() == btnConfirmLogIn) {

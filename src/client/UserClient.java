@@ -94,9 +94,10 @@ public class UserClient {
 					Object obj = input.readObject();
 
 					//For checking user name availability
-					if(obj instanceof Boolean) {
+					if(obj instanceof Integer) {
 						System.out.println("1");
-						boolean available = (Boolean) obj;
+						int available = (Integer) obj;
+						System.out.println(available);
 						System.out.println("2");
 						userController.setUsernameAvailability(available);
 						System.out.println("server responded");
