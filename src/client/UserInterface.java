@@ -434,7 +434,7 @@ public class UserInterface extends JPanel {
 		frame.setVisible(true);
 		frame.pack();
 		frame.add(pane);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 	}
 	
@@ -454,7 +454,7 @@ public class UserInterface extends JPanel {
 		frame.setVisible(true);
 		frame.pack();
 		frame.add(pane);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 	}
 

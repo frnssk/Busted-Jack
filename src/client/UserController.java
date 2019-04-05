@@ -38,8 +38,7 @@ public class UserController {
 		if(available == 2) {
 			nameOk = true;
 			client.checkPassword(ui.getPassword());
-			
-//			ui.updateUI(ui.mainMenuScreen());
+
 		} else if(available == 1) {
 			ui.errorMessageUsername();
 		}
