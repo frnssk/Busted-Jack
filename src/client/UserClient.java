@@ -75,6 +75,17 @@ public class UserClient {
 		}
 	}
 
+	public void checkPassword(char[] password) {
+		System.out.println("Sending password to server"); //For testing
+		try {
+			output.writeObject(password);
+			output.flush();
+		} catch(IOException  e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	public void sendTable(Table table) {
 		System.out.println("5");
 		try {
@@ -95,13 +106,19 @@ public class UserClient {
 
 					//For checking user name availability
 					if(obj instanceof Integer) {
-						System.out.println("1");
 						int available = (Integer) obj;
-						System.out.println(available);
-						System.out.println("2");
-						userController.setUsernameAvailability(available);
-						System.out.println("server responded");
+						if(available == 1 || available == 2) {
+							System.out.println("Username: ok");
+							userController.setUsernameAvailability(available);
+						}
+						
+						if(available == 3 && available == 4) {
+							System.out.println("Password: ok");
+							userController.setPassword(available);
+						}
 					}
+
+
 				}catch(IOException | ClassNotFoundException exception) {
 					exception.printStackTrace();
 				}

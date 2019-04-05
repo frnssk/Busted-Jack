@@ -11,7 +11,6 @@ import resources.Table;
 public class UserInterface extends JPanel {
 	private UserController controller; 
 	private User user;
-	private int usernameAvailability = 0;
 
 	private JButton btnLogIn = new JButton("Login"); //Log in display
 	private JButton btnCreateUser = new JButton("Create new user"); //Log in display
@@ -74,9 +73,9 @@ public class UserInterface extends JPanel {
 		revalidate();
 		add(pane);
 	}
-
-	public void setUsernameAvailability(int available) {
-		usernameAvailability = available;
+	
+	public char[] getPassword() {
+		return pfPasswordCreate.getPassword();
 	}
 
 	public JPanel startScreen() {
@@ -419,8 +418,28 @@ public class UserInterface extends JPanel {
 		return pane;
 	}
 
-	public void errorMessage() {
+	public void errorMessageUsername() {
 		JLabel errorMessage = new JLabel("Username already taken. Try again.");
+
+		GridBagConstraints cont = new GridBagConstraints();
+		JPanel pane = new JPanel(new GridBagLayout());
+		cont.anchor = GridBagConstraints.FIRST_LINE_START;
+		cont.insets = new Insets(10,10,10,10);
+
+		pane.add(errorMessage, cont);
+
+		JFrame frame = new JFrame();
+		frame.setPreferredSize(new Dimension(400,200));
+		frame.setResizable(false);
+		frame.setVisible(true);
+		frame.pack();
+		frame.add(pane);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	}
+	
+	public void errorMessagePassword() {
+		JLabel errorMessage = new JLabel("Invalid password. Have to be between 6-12 characters");
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
@@ -474,18 +493,6 @@ public class UserInterface extends JPanel {
 			if(e.getSource() == btnConfirmUser) {
 				strUsername = tfUsernameCreate.getText();
 				controller.checkNameAvailability(strUsername);
-
-				do {
-					if(usernameAvailability == 2) {
-						System.out.println(usernameAvailability);
-						updateUI(mainMenuScreen());
-					} else if(usernameAvailability == 1) {
-						System.out.println(usernameAvailability);
-						errorMessage();
-					}
-				}while(usernameAvailability == 0);
-
-
 			}
 			if(e.getSource() == btnConfirmLogIn) {
 				strUsername = tfUsernameLogIn.getText(); //During development to show user name in menu

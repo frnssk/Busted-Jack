@@ -8,6 +8,7 @@ public class UserController {
 	private UserClient client;
 	private UserInterface ui;
 	private User user;
+	private boolean nameOk = false;
 	
 	public UserController(UserClient client) {
 		this.client = client;
@@ -25,12 +26,31 @@ public class UserController {
 	
 	public void checkNameAvailability(String username) {
 		client.checkNameAvailability(username);
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	
 	public void setUsernameAvailability(int available) {
-		System.out.println("bajs?");
-		ui.setUsernameAvailability(available);
-		System.out.println("BAJS!");
+		if(available == 2) {
+			nameOk = true;
+			client.checkPassword(ui.getPassword());
+			
+//			ui.updateUI(ui.mainMenuScreen());
+		} else if(available == 1) {
+			ui.errorMessageUsername();
+		}
+	}
+	
+	public void setPassword(int passwordOk) {
+		if(passwordOk == 3) {
+			ui.updateUI(ui.mainMenuScreen());
+		}else if(passwordOk == 4) {
+			ui.errorMessagePassword();
+		}
 	}
 	
 	public void connect(User user) {
