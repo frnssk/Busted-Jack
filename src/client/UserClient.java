@@ -93,7 +93,7 @@ public class UserClient {
 				
 				//For checking user name availability
 				if(obj instanceof Boolean) {
-					userController.setUsernameAvailability((Boolean) obj);
+					userController.setUsernameAvailability((Boolean)obj);
 				}
 
 

@@ -125,12 +125,14 @@ public class Server {
 						}
 						if(obj instanceof String) {
 							name = (String)obj;
+//							int a = 0;
 							boolean exist = false;
 							if(registeredUsers.contains(name)) {
-								output.writeBoolean(exist);
+								output.writeObject(exist);
 								TextWindow.println(name + " finns redan.");
 							}else {
-								output.writeBoolean(true);
+								exist = true;
+								output.writeObject(exist);
 								TextWindow.println(name + " är ledigt.");
 							}
 						}
@@ -183,7 +185,7 @@ public class Server {
 
 		//register new user to registeredUsers-LinkedList
 		public synchronized void registerNewUser(User user) {
-			registeredUsers.add(user);
+//			registeredUsers.add(user);
 			TextWindow.println(user.getUsername() + " registrerad");
 			updateActiveUsers();
 		}
