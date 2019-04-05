@@ -11,6 +11,7 @@ public class UserController {
 	
 	public UserController(UserClient client) {
 		this.client = client;
+		client.setUserController(this);
 	}
 	
 	public void setUI(UserInterface ui) {
@@ -27,7 +28,9 @@ public class UserController {
 	}
 	
 	public void setUsernameAvailability(int available) {
+		System.out.println("bajs?");
 		ui.setUsernameAvailability(available);
+		System.out.println("BAJS!");
 	}
 	
 	public void connect(User user) {

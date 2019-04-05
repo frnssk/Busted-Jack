@@ -472,24 +472,20 @@ public class UserInterface extends JPanel {
 				updateUI(createUserScreen());
 			}
 			if(e.getSource() == btnConfirmUser) {
-				strUsername = tfUsernameCreate.getText(); //During development to show user name in menu
+				strUsername = tfUsernameCreate.getText();
 				controller.checkNameAvailability(strUsername);
 
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
+				do {
+					if(usernameAvailability == 2) {
+						System.out.println(usernameAvailability);
+						updateUI(mainMenuScreen());
+					} else if(usernameAvailability == 1) {
+						System.out.println(usernameAvailability);
+						errorMessage();
+					}
+				}while(usernameAvailability == 0);
 
-				if(usernameAvailability == 2) {
-					System.out.println(usernameAvailability);
-					updateUI(mainMenuScreen());
-				} else if(usernameAvailability == 1) {
-					System.out.println(usernameAvailability);
-					errorMessage();
-				} else {
-					System.out.println(usernameAvailability + " = Rasmus server suger");
-				}
+
 			}
 			if(e.getSource() == btnConfirmLogIn) {
 				strUsername = tfUsernameLogIn.getText(); //During development to show user name in menu
