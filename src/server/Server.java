@@ -126,15 +126,16 @@ public class Server {
 						if(obj instanceof String) {
 							name = (String)obj;
 							int a = 0;
-//							boolean exist = false;
 							if(registeredUsers.contains(name)) {
 								a = 1;
 								output.writeObject(a);
+								output.flush();
 								TextWindow.println(name + " finns redan.");
 							}else {
-//								exist = true;
 								a = 2;
 								output.writeObject(a);
+								output.flush();
+//								registeredUsers.add(name);
 								TextWindow.println(name + " är ledigt.");
 							}
 						}
@@ -147,6 +148,15 @@ public class Server {
 								temporary.setPassword(password);
 								registeredUsers.add(temporary.getUsername());
 								TextWindow.println(name + " tilllagd i RegisteredUsers.");
+								int a = 3;
+								output.writeObject(a);
+								output.flush();
+								TextWindow.println("Hit kommer vi");
+							}else{
+								TextWindow.println(name + " har angett ett icke godkänt lösenord.");
+								int a = 4;
+								output.writeObject(a);
+								output.flush();
 							}
 						}
 					} catch (ClassNotFoundException | IOException e) {
