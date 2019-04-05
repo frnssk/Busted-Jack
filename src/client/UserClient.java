@@ -112,7 +112,7 @@ public class UserClient {
 							userController.setUsernameAvailability(available);
 						}
 						
-						if(available == 3 && available == 4) {
+						if(available == 3 || available == 4) {
 							System.out.println("Password: ok");
 							userController.setPassword(available);
 						}

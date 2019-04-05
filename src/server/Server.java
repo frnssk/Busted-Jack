@@ -99,12 +99,13 @@ public class Server {
 				ioException.printStackTrace();
 			}
 		}
-		
+
 		public boolean isPasswordOkay(char[] password) {
-			if(password.length < 6 && password.length > 12) {
+			if(password.length <= 6 && password.length >= 12) {
 				return false;
+			}else{
+				return true;
 			}
-			return true;
 		}
 
 		public void run() {
@@ -135,7 +136,7 @@ public class Server {
 								a = 2;
 								output.writeObject(a);
 								output.flush();
-//								registeredUsers.add(name);
+								//								registeredUsers.add(name);
 								TextWindow.println(name + " är ledigt.");
 							}
 						}
@@ -167,7 +168,7 @@ public class Server {
 				//Adds this ClientHandler to the UserHandlerList of online users
 
 
-			}catch(IOException ioException) {
+			}catch(Exception ioException) {
 				ioException.printStackTrace();
 			}
 		}
@@ -197,7 +198,7 @@ public class Server {
 
 		//register new user to registeredUsers-LinkedList
 		public synchronized void registerNewUser(User user) {
-//			registeredUsers.add(user);
+			//			registeredUsers.add(user);
 			TextWindow.println(user.getUsername() + " registrerad");
 			updateActiveUsers();
 		}
