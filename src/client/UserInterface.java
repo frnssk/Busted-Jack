@@ -11,7 +11,8 @@ import resources.Table;
 public class UserInterface extends JPanel {
 	private UserController controller; 
 	private User user;
-	
+	private boolean usernameAvailability = false;
+
 	private JButton btnLogIn = new JButton("Login"); //Log in display
 	private JButton btnCreateUser = new JButton("Create new user"); //Log in display
 	private JButton btnConfirmUser = new JButton("Create user"); //Creates user after entering name and password 
@@ -29,7 +30,7 @@ public class UserInterface extends JPanel {
 	private JRadioButton radioBtnTime = new JRadioButton();
 	private JRadioButton radioBtnRounds = new JRadioButton();
 	private JRadioButton radioBtnPrivate = new JRadioButton();
-	
+
 	//TextFields for creating a new table
 	private JTextField tfTime = new JTextField("0");
 	private JTextField tfRounds = new JTextField("0");
@@ -48,7 +49,7 @@ public class UserInterface extends JPanel {
 	private JTextArea taExitScreenPlayerRanks = new JTextArea();
 	private JTextArea taExitScreenAchievements = new JTextArea();
 	private JTextArea taExitScreenNewRank = new JTextArea();
-	
+
 	private String strUsername; //During development to show user name in menu
 
 	//buttons visible in game 
@@ -58,7 +59,7 @@ public class UserInterface extends JPanel {
 	private JButton btnGameCheat = new JButton("Cheat!");
 	private JButton btnGameExit = new JButton("Exit game");
 
-	
+
 	public UserInterface(UserController controller) {
 		this.controller = controller;
 		this.controller.setUI(this);
@@ -72,6 +73,10 @@ public class UserInterface extends JPanel {
 		repaint();
 		revalidate();
 		add(pane);
+	}
+
+	public void setUsernameAvailability(boolean bool) {
+		usernameAvailability = bool;
 	}
 
 	public JPanel startScreen() {
@@ -95,7 +100,7 @@ public class UserInterface extends JPanel {
 		cont.gridx = 2;
 		cont.gridy = 1;
 		pane.add(btnCreateUser, cont);
-		
+
 		pane.setBackground(new Color(0,153,0));
 
 		return pane;
@@ -150,7 +155,7 @@ public class UserInterface extends JPanel {
 		pane.add(btnConfirmUser, cont);
 
 		pane.setBackground(new Color(0,153,0));
-		
+
 		return pane;
 	}
 
@@ -184,7 +189,7 @@ public class UserInterface extends JPanel {
 		pane.add(btnConfirmLogIn,cont);
 
 		pane.setBackground(new Color(0,153,0));
-		
+
 		return pane;
 	}
 
@@ -200,7 +205,7 @@ public class UserInterface extends JPanel {
 		cont.gridx = 0;
 		cont.gridy = 0;
 		pane.add(lblUsername, cont);
-		
+
 		cont.gridx = 0;
 		cont.gridy = 1;
 		pane.add(lblPlay,cont);
@@ -227,7 +232,7 @@ public class UserInterface extends JPanel {
 		pane.add(btnQuit,cont);
 
 		pane.setBackground(new Color(0,153,0));
-		
+
 		return pane;
 	}
 
@@ -252,7 +257,7 @@ public class UserInterface extends JPanel {
 
 		cont.gridy = 3;
 		pane.add(btnRandomTable, cont);
-		
+
 		pane.setBackground(new Color(0,153,0));
 
 		return pane;
@@ -316,7 +321,7 @@ public class UserInterface extends JPanel {
 
 		cont.gridx = 4;
 		pane.add(btnConfirmTable, cont);
-		
+
 		pane.setBackground(new Color(0,153,0));
 
 		return pane;
@@ -350,7 +355,7 @@ public class UserInterface extends JPanel {
 		cont.gridy = 0;
 		cont.gridheight = 4;
 		pane.add(lblGameScreen, cont);
-		
+
 		pane.setBackground(new Color(0,153,0));
 
 		return pane;
@@ -410,8 +415,28 @@ public class UserInterface extends JPanel {
 		pane.add(btnMenu, cont);
 
 		pane.setBackground(new Color(0,153,0));
-		
+
 		return pane;
+	}
+
+	public void errorMessage() {
+		JLabel errorMessage = new JLabel("Username already taken. Try again.");
+
+		GridBagConstraints cont = new GridBagConstraints();
+		JPanel pane = new JPanel(new GridBagLayout());
+		cont.anchor = GridBagConstraints.FIRST_LINE_START;
+		cont.insets = new Insets(10,10,10,10);
+
+		pane.add(errorMessage, cont);
+
+		JFrame frame = new JFrame();
+		frame.setPreferredSize(new Dimension(400,200));
+		frame.setResizable(false);
+		frame.setVisible(true);
+		frame.pack();
+		frame.add(pane);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 	}
 
 	public void addListeners() {
@@ -448,7 +473,12 @@ public class UserInterface extends JPanel {
 			}
 			if(e.getSource() == btnConfirmUser) {
 				strUsername = tfUsernameCreate.getText(); //During development to show user name in menu
-				updateUI(mainMenuScreen());
+				controller.checkNameAvailability(strUsername);
+				if(usernameAvailability == true) {
+					updateUI(mainMenuScreen());
+				} else {
+					errorMessage();
+				}
 			}
 			if(e.getSource() == btnConfirmLogIn) {
 				strUsername = tfUsernameLogIn.getText(); //During development to show user name in menu
@@ -505,5 +535,5 @@ public class UserInterface extends JPanel {
 		}
 	}
 
-	
+
 }
