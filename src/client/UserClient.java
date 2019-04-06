@@ -7,6 +7,11 @@ import java.util.LinkedList;
 import resources.Table;
 import resources.User;
 
+/**
+ *  Class responsible for all connection to the server, from the user side.  
+ *  Contains one inner class for handling incoming data from the server 
+ *  @author Isak Eklund
+ */
 public class UserClient {
 	private Socket socket;
 	private UserController userController;
@@ -19,6 +24,13 @@ public class UserClient {
 	private Connection connection;
 	private LinkedList<User> allRegisteredUsers;
 
+	
+	/**
+	 * Constructs the UserCLient object and connects to server on give IP and port
+	 * @param ip - What IP address to connect to
+	 * @param port - what port on the given IP address to connect to
+	 * @throws IOException
+	 */
 	public UserClient(String ip, int port) throws IOException{
 		this.ip = ip;
 		this.port = port;
@@ -44,6 +56,11 @@ public class UserClient {
 		this.userController = userController;
 	}
 
+	/**
+	 * Connects to the server and sends a User object
+	 * @param user - Tells the server what user is connecting 
+	 * @throws IOException
+	 */
 	public void connect(User user) throws IOException {
 		if(!receiving) {
 			this.user = user;
@@ -65,6 +82,10 @@ public class UserClient {
 
 	}
 
+	/**
+	 * Sends a user name to the server and make sure that user name is available 
+	 * @param username - String with the entered user name
+	 */
 	public void checkNameAvailability(String username) {
 		System.out.println("Sending name to server"); //For testing
 		try {
@@ -75,6 +96,10 @@ public class UserClient {
 		}
 	}
 
+	/**
+	 * Sends the given password to the server to make sure it fulfills the requirement for a password
+	 * @param password - a char array with the entered password
+	 */
 	public void checkPassword(char[] password) {
 		System.out.println("Sending password to server"); //For testing
 		try {
@@ -87,16 +112,20 @@ public class UserClient {
 
 
 	public void sendTable(Table table) {
-		System.out.println("5");
 		try {
 			output.writeObject(table);
 			output.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("4");
 	}
 
+	/**
+	 * Inner class that let the client listen for incoming data from the server
+	 * Runs on a separate thread 
+	 * @author Isak Eklund
+	 *
+	 */
 	private class Connection extends Thread {
 		public void run() {
 

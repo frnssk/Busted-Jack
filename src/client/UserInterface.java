@@ -8,57 +8,75 @@ import java.io.IOException;
 import javax.swing.*;
 import resources.Table;
 
+
+/**
+ * Holds the Graphic User Interface
+ * Minimal logic should be done here. Main purpose is to change and update the UI 
+ * @author Isak Eklund
+ *
+ */
 public class UserInterface extends JPanel {
 	private UserController controller; 
-	private User user;
 
-	private JButton btnLogIn = new JButton("Login"); //Log in display
-	private JButton btnCreateUser = new JButton("Create new user"); //Log in display
-	private JButton btnConfirmUser = new JButton("Create user"); //Creates user after entering name and password 
-	private JButton btnConfirmLogIn = new JButton("Login"); //Check user name and password and logs in  
-	private JButton btnGoToTable = new JButton("Go to table"); //From main menu
-	private JButton btnCreateTable = new JButton("Create table"); //From main menu
-	private JButton btnQuit = new JButton("Quit"); //Sends form main menu back to log in screen 
-	private JButton btnAchievements = new JButton("Achievements"); //From main menu
-	private JButton btnRank = new JButton("Rank"); //From main menu, shows current rank
-	private JButton btnEnterTable = new JButton("Go to table"); //Confirm after entering table code 
-	private JButton btnRandomTable = new JButton("Random table"); //Send user to random table 
-	private JButton btnConfirmTable = new JButton("Create table"); //After making settings for creating a table 
-	private JButton btnMenu = new JButton("Main Menu"); //back to menu after a game 
+	private JButton btnLogIn; //Log in display
+	private JButton btnCreateUser; //Log in display
+	
+	private JButton btnConfirmUser; //Creates user after entering name and password 
+	
+	private JButton btnConfirmLogIn; //Check user name and password and logs in  
+	
+	private JButton btnGoToTable;//From main menu
+	private JButton btnCreateTable;//From main menu
+	private JButton btnQuit;//Sends form main menu back to log in screen 
+	private JButton btnAchievements;//From main menu
+	private JButton btnRank;//From main menu, shows current rank
+	
+	private JButton btnEnterTable; //Confirm after entering table code 
+	private JButton btnRandomTable; //Send user to random table 
+	
+	private JButton btnConfirmTable; //After making settings for creating a table 
+	
+	private JButton btnMenu; //back to menu after a game 
 
-	private JRadioButton radioBtnTime = new JRadioButton();
-	private JRadioButton radioBtnRounds = new JRadioButton();
-	private JRadioButton radioBtnPrivate = new JRadioButton();
+	private JButton btnGameDouble;
+	private JButton btnGameStop;
+	private JButton btnGameHit;
+	private JButton btnGameCheat;
+	private JButton btnGameExit;
 
-	//TextFields for creating a new table
-	private JTextField tfTime = new JTextField("0");
-	private JTextField tfRounds = new JTextField("0");
-	private JTextField tfBalance = new JTextField("0");
-	private JTextField tfMinBet = new JTextField("0");
+	private JRadioButton radioBtnTime;
+	private JRadioButton radioBtnRounds;
+	private JRadioButton radioBtnPrivate;
 
-	private JTextField tfUsernameCreate = new JTextField();
-	private JPasswordField pfPasswordCreate = new JPasswordField();
-	private JPasswordField pfRepeatPasswordCreate = new JPasswordField();
-	private JTextField tfEmailCreate = new JTextField();
-	private JTextField tfUsernameLogIn = new JTextField();
-	private JPasswordField pfPasswordLogIn = new JPasswordField();
-	private JTextField tfRoomCode = new JTextField();
+	private JTextField tfTime;
+	private JTextField tfRounds;
+	private JTextField tfBalance;
+	private JTextField tfMinBet;
 
-	private JTextArea taExitScreenPlayers = new JTextArea();
-	private JTextArea taExitScreenPlayerRanks = new JTextArea();
-	private JTextArea taExitScreenAchievements = new JTextArea();
-	private JTextArea taExitScreenNewRank = new JTextArea();
+	private JTextField tfUsernameCreate;
+	private JPasswordField pfPasswordCreate;
+	private JPasswordField pfRepeatPasswordCreate;
+	private JTextField tfEmailCreate;
+	
+	private JTextField tfUsernameLogIn;
+	private JPasswordField pfPasswordLogIn;
+	
+	private JTextField tfRoomCode;
+
+	private JTextArea taExitScreenPlayers;
+	private JTextArea taExitScreenPlayerRanks;
+	private JTextArea taExitScreenAchievements;
+	private JTextArea taExitScreenNewRank;
 
 	private String strUsername; //During development to show user name in menu
 
-	//buttons visible in game 
-	private JButton btnGameDouble = new JButton("Double");
-	private JButton btnGameStop = new JButton("Stay");
-	private JButton btnGameHit = new JButton("Hit");
-	private JButton btnGameCheat = new JButton("Cheat!");
-	private JButton btnGameExit = new JButton("Exit game");
 
 
+	/**
+	 * Constructor for the user interface.
+	 * Connects it to a controller and add the listeners for buttons
+	 * @param controller - the controller in the application
+	 */
 	public UserInterface(UserController controller) {
 		this.controller = controller;
 		this.controller.setUI(this);
@@ -67,13 +85,17 @@ public class UserInterface extends JPanel {
 		add(startScreen(), BorderLayout.CENTER);
 	}
 
+	/**
+	 * Used to update the UI
+	 * @param pane - new Panel with updated UI
+	 */
 	public void updateUI(JPanel pane) {
 		removeAll();
 		repaint();
 		revalidate();
 		add(pane);
 	}
-	
+
 	public char[] getPassword() {
 		return pfPasswordCreate.getPassword();
 	}
@@ -81,8 +103,13 @@ public class UserInterface extends JPanel {
 	public JPanel startScreen() {
 		JLabel logo = new JLabel(new ImageIcon(new ImageIcon("images/bustedjack.jpg").getImage().getScaledInstance(240, 180, Image.SCALE_DEFAULT)));
 		logo.setPreferredSize(new Dimension(240, 180));
+
+		btnLogIn = new JButton("Login");
+		btnCreateUser = new JButton("Create new user");
+
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
+
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
 
@@ -110,13 +137,20 @@ public class UserInterface extends JPanel {
 		JLabel lblPassword = new JLabel("Password");
 		JLabel lblRepeatPassword = new JLabel("Repeat password");
 		JLabel lblEmail = new JLabel("Email");
-		GridBagConstraints cont = new GridBagConstraints();
-		JPanel pane = new JPanel(new GridBagLayout());
 
+		btnConfirmUser = new JButton("Create user");
+		
+		tfUsernameCreate = new JTextField();
+		pfPasswordCreate = new JPasswordField();
+		pfRepeatPasswordCreate = new JPasswordField();
+		tfEmailCreate = new JTextField();
 		tfUsernameCreate.setPreferredSize(new Dimension(200,20));
 		pfPasswordCreate.setPreferredSize(new Dimension(200,20));
 		tfEmailCreate.setPreferredSize(new Dimension(200,20));
 		pfRepeatPasswordCreate.setPreferredSize(new Dimension(200,20));
+
+		GridBagConstraints cont = new GridBagConstraints();
+		JPanel pane = new JPanel(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
@@ -161,10 +195,16 @@ public class UserInterface extends JPanel {
 	public JPanel logInScreen() {
 		JLabel lblUsername = new JLabel("Username");
 		JLabel lblPassword = new JLabel("Password");
-		GridBagConstraints cont = new GridBagConstraints();
-		JPanel pane = new JPanel(new GridBagLayout());
+
+		btnConfirmLogIn = new JButton("Login");
+
+		tfUsernameLogIn = new JTextField();
+		pfPasswordLogIn = new JPasswordField();
 		tfUsernameLogIn.setPreferredSize(new Dimension(200,20));
 		pfPasswordLogIn.setPreferredSize(new Dimension(200,20));
+
+		GridBagConstraints cont = new GridBagConstraints();
+		JPanel pane = new JPanel(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
@@ -196,8 +236,16 @@ public class UserInterface extends JPanel {
 		JLabel lblPlay = new JLabel("Play");
 		JLabel lblProfile = new JLabel("Profile");
 		JLabel lblUsername = new JLabel("Welcome " + strUsername + "!"); 
+
+		btnGoToTable = new JButton("Go to table"); 
+		btnCreateTable = new JButton("Create table");
+		btnQuit = new JButton("Quit");
+		btnAchievements = new JButton("Achievements");
+		btnRank = new JButton("Rank");
+
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
+
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
 
@@ -236,10 +284,16 @@ public class UserInterface extends JPanel {
 	}
 
 	public JPanel joinScreen() {
-		JLabel lblRoomCode = new JLabel("Room Code");		
+		JLabel lblRoomCode = new JLabel("Room Code");	
+
+		btnEnterTable = new JButton("Go to table");
+		btnRandomTable = new JButton("Random table");
+
+		tfRoomCode = new JTextField();
+		tfRoomCode.setPreferredSize(new Dimension(200,20));
+
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
-		tfRoomCode.setPreferredSize(new Dimension(200,20));
 
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
@@ -262,18 +316,30 @@ public class UserInterface extends JPanel {
 		return pane;
 	}
 
-	public JPanel createTableScreen() {
+	public JPanel createTableScreen() {		
 		JLabel lblTime = new JLabel("Time");
 		JLabel lblRounds = new JLabel("Rounds");
 		JLabel lblBalance = new JLabel("Balance");
 		JLabel lblMinBet = new JLabel("Minimum Bet");
 		JLabel lblPrivateMatch = new JLabel("Private Match");
-		GridBagConstraints cont = new GridBagConstraints();
-		JPanel pane = new JPanel(new GridBagLayout());
+
+		tfTime = new JTextField("0");
+		tfRounds = new JTextField("0");
+		tfBalance = new JTextField("0");
+		tfMinBet = new JTextField("0");
 		tfTime.setPreferredSize(new Dimension(80,20));
 		tfRounds.setPreferredSize(new Dimension(80,20));
 		tfBalance.setPreferredSize(new Dimension(80,20));
 		tfMinBet.setPreferredSize(new Dimension(80,20));
+		
+		radioBtnTime = new JRadioButton();
+		radioBtnRounds = new JRadioButton();
+		radioBtnPrivate = new JRadioButton();
+		
+		btnConfirmTable = new JButton("Create table"); 
+
+		GridBagConstraints cont = new GridBagConstraints();
+		JPanel pane = new JPanel(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
@@ -329,8 +395,15 @@ public class UserInterface extends JPanel {
 	public JPanel gameScreen() {
 		JLabel lblGameScreen = new JLabel(new ImageIcon(new ImageIcon("images/bustedjack.jpg").getImage().getScaledInstance(800, 500, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
 
+		btnGameDouble = new JButton("Double");
+		btnGameStop = new JButton("Stay");
+		btnGameHit = new JButton("Hit");
+		btnGameCheat = new JButton("Cheat!");
+		btnGameExit = new JButton("Exit game");
+
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
+
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
 
@@ -366,6 +439,12 @@ public class UserInterface extends JPanel {
 		JLabel lblAchievements = new JLabel("Achievements");
 		JLabel lblNewRank = new JLabel("Rank");
 
+		btnMenu = new JButton("Main Menu");
+
+		taExitScreenPlayers = new JTextArea();
+		taExitScreenPlayerRanks = new JTextArea();
+		taExitScreenAchievements = new JTextArea();
+		taExitScreenNewRank = new JTextArea();
 		taExitScreenPlayers.setPreferredSize(new Dimension(160, 470));
 		taExitScreenPlayerRanks.setPreferredSize(new Dimension(160, 470));
 		taExitScreenAchievements.setPreferredSize(new Dimension(180, 160));
@@ -423,6 +502,7 @@ public class UserInterface extends JPanel {
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
+
 		cont.anchor = GridBagConstraints.FIRST_LINE_START;
 		cont.insets = new Insets(10,10,10,10);
 
@@ -437,12 +517,13 @@ public class UserInterface extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 	}
-	
+
 	public void errorMessagePassword() {
 		JLabel errorMessage = new JLabel("Invalid password. Have to be between 6-12 characters");
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
+
 		cont.anchor = GridBagConstraints.FIRST_LINE_START;
 		cont.insets = new Insets(10,10,10,10);
 
@@ -487,7 +568,6 @@ public class UserInterface extends JPanel {
 				updateUI(logInScreen());
 			}
 			if(e.getSource() == btnCreateUser) {
-				user = new User(tfUsernameCreate.getText());
 				updateUI(createUserScreen());
 			}
 			if(e.getSource() == btnConfirmUser) {
@@ -520,11 +600,8 @@ public class UserInterface extends JPanel {
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnConfirmTable) {
-				System.out.println("1");
 				Table table = new Table(Integer.parseInt(tfTime.getText()), Integer.parseInt(tfRounds.getText()), Integer.parseInt(tfBalance.getText()), Integer.parseInt(tfMinBet.getText()));
-				System.out.println("2");
 				controller.sendNewTable(table);
-				System.out.println("3");
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnMenu) {

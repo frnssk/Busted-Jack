@@ -4,6 +4,12 @@ import java.io.IOException;
 
 import resources.*;
 
+/**
+ * The main logic in the user application 
+ * Hold the logic and connects the UI to the client 
+ * @author Isak Eklund
+ *
+ */
 public class UserController {
 	private UserClient client;
 	private UserInterface ui;
@@ -20,20 +26,28 @@ public class UserController {
 	}
 	
 	public void sendNewTable(Table table) {
-		System.out.println("4");
 		client.sendTable(table);
 	}
 	
+	/**
+	 * Send the entered user name form the UI to the client to check availability 
+	 * Sleeps for 0.5 seconds while waiting for response from the server 
+	 * @param username -  a String with the entered user name
+	 */
 	public void checkNameAvailability(String username) {
 		client.checkNameAvailability(username);
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
 	
+	/**
+	 * If user name comes back ok, checks if the user name fulfills the requirements.
+	 * Shows error message if name is taken 
+	 * @param available - an int that is checked and changes are made based on its outcome 
+	 */
 	public void setUsernameAvailability(int available) {
 		if(available == 2) {
 			nameOk = true;
@@ -44,6 +58,11 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * Checks if the password fulfills requirements.
+	 * If it does the user is sent to the main menu. If not they get an error message 
+	 * @param passwordOk - an int that is checked and changes are made based on its outcome 
+	 */
 	public void setPassword(int passwordOk) {
 		if(passwordOk == 3) {
 			ui.updateUI(ui.mainMenuScreen());
