@@ -99,6 +99,18 @@ public class UserInterface extends JPanel {
 		return pfPasswordCreate.getPassword();
 	}
 
+	public void setRank(int rank) {
+		this.currentRank = rank;
+	}
+	
+	public void setTitle(String title) {
+		this.currentTitle = title;
+	}
+	
+	public void setNextTitle(String nextTitle) {
+		this.nextTitle = nextTitle;
+	}
+	
 	public JPanel startScreen() {
 		JLabel logo = new JLabel(new ImageIcon(new ImageIcon("images/bustedjack.jpg").getImage().getScaledInstance(240, 180, Image.SCALE_DEFAULT)));
 		logo.setPreferredSize(new Dimension(240, 180));
@@ -505,8 +517,6 @@ public class UserInterface extends JPanel {
 
 		return pane;
 	}
-
-
 
 	public void errorMessageUsername() {
 		JLabel errorMessage = new JLabel("Username already taken. Try again.");

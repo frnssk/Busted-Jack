@@ -15,6 +15,8 @@ public class UserController {
 	private UserInterface ui;
 	private User user;
 	private boolean nameOk = false;
+	private String[] titles = {"Godfather", "Boss", "Gentleman", 
+								"Grinder", "Gambler", "Peasant"}; 
 	
 	public UserController(UserClient client) {
 		this.client = client;
@@ -23,6 +25,29 @@ public class UserController {
 	
 	public void setUI(UserInterface ui) {
 		this.ui = ui;
+	}
+	
+	public void setRankAndTitle(int rank) {
+		ui.setRank(rank);
+		
+		if(rank >= 1500) {
+			ui.setTitle(titles[1]);
+		} else if (rank >= 800) {
+			ui.setTitle(titles[2]);
+			ui.setNextTitle(titles[1]);
+		} else if (rank >= 400) {
+			ui.setTitle(titles[3]);
+			ui.setNextTitle(titles[2]);
+		} else if(rank >= 200) {
+			ui.setTitle(titles[4]);
+			ui.setNextTitle(titles[3]);
+		} else if(rank >= 100) {
+			ui.setTitle(titles[5]);
+			ui.setNextTitle(titles[4]);
+		} else if (rank < 100) {
+			ui.setTitle(titles[6]);
+			ui.setNextTitle(titles[5]);
+		}
 	}
 	
 	public void sendNewTable(int time, int rounds, int balance, int minBet) {
