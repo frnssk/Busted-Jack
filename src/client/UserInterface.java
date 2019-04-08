@@ -540,25 +540,25 @@ public class UserInterface extends JPanel {
 	}
 
 	public void addListeners() {
-		ActionL listner = new ActionL();
-		btnLogIn.addActionListener(listner);
-		btnCreateUser.addActionListener(listner);
-		btnConfirmUser.addActionListener(listner);
-		btnConfirmLogIn.addActionListener(listner);
-		btnGoToTable.addActionListener(listner);
-		btnCreateTable.addActionListener(listner);
-		btnQuit.addActionListener(listner);
-		btnAchievements.addActionListener(listner);
-		btnRank.addActionListener(listner);
-		btnEnterTable.addActionListener(listner);
-		btnRandomTable.addActionListener(listner);
-		btnConfirmTable.addActionListener(listner);
-		btnMenu.addActionListener(listner);
-		btnGameDouble.addActionListener(listner);
-		btnGameStop.addActionListener(listner);
-		btnGameHit.addActionListener(listner);
-		btnGameCheat.addActionListener(listner);
-		btnGameExit.addActionListener(listner);
+		ActionL listener = new ActionL();
+		btnLogIn.addActionListener(listener);
+		btnCreateUser.addActionListener(listener);
+		btnConfirmUser.addActionListener(listener);
+		btnConfirmLogIn.addActionListener(listener);
+		btnGoToTable.addActionListener(listener);
+		btnCreateTable.addActionListener(listener);
+		btnQuit.addActionListener(listener);
+		btnAchievements.addActionListener(listener);
+		btnRank.addActionListener(listener);
+		btnEnterTable.addActionListener(listener);
+		btnRandomTable.addActionListener(listener);
+		btnConfirmTable.addActionListener(listener);
+		btnMenu.addActionListener(listener);
+		btnGameDouble.addActionListener(listener);
+		btnGameStop.addActionListener(listener);
+		btnGameHit.addActionListener(listener);
+		btnGameCheat.addActionListener(listener);
+		btnGameExit.addActionListener(listener);
 	}
 
 	private class ActionL implements ActionListener{
