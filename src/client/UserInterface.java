@@ -35,12 +35,12 @@ public class UserInterface extends JPanel {
 	private JButton btnGameStop = new JButton("Stay");
 	private JButton btnGameHit = new JButton("Hit");
 	private JButton btnGameCheat = new JButton("Cheat!");
-	private JButton btnGameExit = new JButton("Exit game");
-	
+	//	private JButton btnGameExit = new JButton("Exit game");
+
 	private JRadioButton radioBtnTime;
 	private JRadioButton radioBtnRounds;
 	private JRadioButton radioBtnPrivate;
-	
+
 	private JTextField tfTime;
 	private JTextField tfRounds;
 	private JTextField tfBalance;
@@ -50,10 +50,10 @@ public class UserInterface extends JPanel {
 	private JPasswordField pfPasswordCreate;
 	private JPasswordField pfRepeatPasswordCreate;
 	private JTextField tfEmailCreate;
-	
+
 	private JTextField tfUsernameLogIn;
 	private JPasswordField pfPasswordLogIn;
-	
+
 	private JTextField tfRoomCode;
 
 	private JTextArea taExitScreenPlayers;
@@ -61,7 +61,12 @@ public class UserInterface extends JPanel {
 	private JTextArea taExitScreenAchievements;
 	private JTextArea taExitScreenNewRank;
 
+	private int currentRank = 0;
+	private String currentTitle = "";
+	private String nextTitle = "";
+
 	private String strUsername; //During development to show user name in menu
+	private Color green = new Color(65,136,14);
 
 
 
@@ -86,6 +91,7 @@ public class UserInterface extends JPanel {
 		removeAll();
 		repaint();
 		revalidate();
+		pane.setBackground(green);
 		add(pane);
 	}
 
@@ -117,7 +123,7 @@ public class UserInterface extends JPanel {
 		cont.gridy = 1;
 		pane.add(btnCreateUser, cont);
 
-		pane.setBackground(new Color(0,153,0));
+		pane.setBackground(green);
 
 		return pane;
 	}
@@ -127,7 +133,7 @@ public class UserInterface extends JPanel {
 		JLabel lblPassword = new JLabel("Password");
 		JLabel lblRepeatPassword = new JLabel("Repeat password");
 		JLabel lblEmail = new JLabel("Email");
-		
+
 		tfUsernameCreate = new JTextField();
 		pfPasswordCreate = new JPasswordField();
 		pfRepeatPasswordCreate = new JPasswordField();
@@ -175,8 +181,6 @@ public class UserInterface extends JPanel {
 		cont.gridy = 4;
 		pane.add(btnConfirmUser, cont);
 
-		pane.setBackground(new Color(0,153,0));
-
 		return pane;
 	}
 
@@ -212,8 +216,6 @@ public class UserInterface extends JPanel {
 		cont.gridx = 1;
 		cont.gridy = 2;
 		pane.add(btnConfirmLogIn,cont);
-
-		pane.setBackground(new Color(0,153,0));
 
 		return pane;
 	}
@@ -258,7 +260,57 @@ public class UserInterface extends JPanel {
 		cont.gridy = 4;
 		pane.add(btnQuit,cont);
 
-		pane.setBackground(new Color(0,153,0));
+		return pane;
+	}
+
+	public JPanel rankScreen() {
+		JLabel lblCurrentRank = new JLabel("Your Rank: " + currentRank);
+		JLabel lblCurrentTitle = new JLabel("Your Title: " + currentTitle);
+		JLabel lblNextTitle = new JLabel("Next Title: " + nextTitle);
+
+		GridBagConstraints cont = new GridBagConstraints();
+		JPanel pane = new JPanel(new GridBagLayout());
+
+		cont.anchor = GridBagConstraints.CENTER;
+		cont.insets = new Insets(10,10,10,10);
+
+		cont.gridx = 0;
+		cont.gridy = 0;
+		pane.add(lblCurrentRank, cont);
+
+		cont.gridx = 1;
+		pane.add(lblCurrentTitle, cont);
+
+		cont.gridy = 1;
+		pane.add(lblNextTitle, cont);
+
+		cont.gridy = 2;
+		pane.add(btnMenu, cont);
+
+		return pane;
+	}
+
+	public JPanel achievementsScreen() {
+		JLabel lblAchievements = new JLabel("Achievements:");
+		JLabel[] lblArray = {new JLabel("Win one game"), new JLabel("Cheat in a game"), new JLabel("Get Busted"), 
+				new JLabel("Bust a friend"), new JLabel("Win 10 games"), new JLabel("Win 100 games"), 
+				new JLabel("Win without cheating"), new JLabel("Win with a CheatHeat above 30%"), 
+				new JLabel("Win with a CheatHeat above 50%"), new JLabel("Win with a CheatHeat above 70%"),
+				new JLabel("Win with a CheatHeat above 90%")};
+		GridBagConstraints cont = new GridBagConstraints();
+		JPanel pane = new JPanel(new GridBagLayout());
+
+		cont.anchor = GridBagConstraints.CENTER;
+		cont.insets = new Insets(10,10,10,10);
+
+		cont.gridx = 0;
+		cont.gridy = 0;
+		pane.add(lblAchievements, cont);
+
+		for(int i = 1; i < lblArray.length; i++ ){
+			cont.gridy = i;
+			pane.add(lblArray[i], cont);
+		}
 
 		return pane;
 	}
@@ -288,8 +340,6 @@ public class UserInterface extends JPanel {
 		cont.gridy = 3;
 		pane.add(btnRandomTable, cont);
 
-		pane.setBackground(new Color(0,153,0));
-
 		return pane;
 	}
 
@@ -308,12 +358,12 @@ public class UserInterface extends JPanel {
 		tfRounds.setPreferredSize(new Dimension(80,20));
 		tfBalance.setPreferredSize(new Dimension(80,20));
 		tfMinBet.setPreferredSize(new Dimension(80,20));
-		
+
 		radioBtnTime = new JRadioButton();
 		radioBtnRounds = new JRadioButton();
 		radioBtnPrivate = new JRadioButton();
-		
-		
+
+
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
@@ -364,8 +414,6 @@ public class UserInterface extends JPanel {
 		cont.gridx = 4;
 		pane.add(btnConfirmTable, cont);
 
-		pane.setBackground(new Color(0,153,0));
-
 		return pane;
 	}
 
@@ -391,15 +439,9 @@ public class UserInterface extends JPanel {
 		cont.gridy = 3;
 		pane.add(btnGameCheat, cont);
 
-		cont.gridx = 1;
-		cont.gridy = 4;
-		pane.add(btnGameExit, cont);
-
 		cont.gridy = 0;
 		cont.gridheight = 4;
 		pane.add(lblGameScreen, cont);
-
-		pane.setBackground(new Color(0,153,0));
 
 		return pane;
 	}
@@ -461,10 +503,10 @@ public class UserInterface extends JPanel {
 		cont.gridy = 4;
 		pane.add(btnMenu, cont);
 
-		pane.setBackground(new Color(0,153,0));
-
 		return pane;
 	}
+
+
 
 	public void errorMessageUsername() {
 		JLabel errorMessage = new JLabel("Username already taken. Try again.");
@@ -527,7 +569,6 @@ public class UserInterface extends JPanel {
 		btnGameStop.addActionListener(listener);
 		btnGameHit.addActionListener(listener);
 		btnGameCheat.addActionListener(listener);
-		btnGameExit.addActionListener(listener);
 	}
 
 	private class ActionL implements ActionListener{
@@ -557,10 +598,10 @@ public class UserInterface extends JPanel {
 				updateUI(startScreen());
 			}
 			if(e.getSource() == btnAchievements) {
-				//code to come
+				updateUI(achievementsScreen());
 			}
 			if(e.getSource() == btnRank) {
-				//code to come
+				updateUI(rankScreen());
 			}
 			if(e.getSource() == btnEnterTable) {
 				updateUI(gameScreen());
@@ -590,9 +631,6 @@ public class UserInterface extends JPanel {
 			}
 			if(e.getSource() == btnGameCheat) {
 				//code to come
-			}
-			if(e.getSource() == btnGameExit) {
-				updateUI(mainMenuScreen());
 			}
 
 		}
