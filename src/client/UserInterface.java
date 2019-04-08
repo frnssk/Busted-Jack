@@ -18,36 +18,29 @@ import resources.Table;
 public class UserInterface extends JPanel {
 	private UserController controller; 
 
-	private JButton btnLogIn; //Log in display
-	private JButton btnCreateUser; //Log in display
+	private JButton btnLogIn = new JButton("Login"); //Log in display
+	private JButton btnCreateUser = new JButton("Create new user"); //Log in display
+	private JButton btnConfirmUser = new JButton("Create user"); //Creates user after entering name and password 
+	private JButton btnConfirmLogIn = new JButton("Login"); //Check user name and password and logs in  
+	private JButton btnGoToTable = new JButton("Go to table");//From main menu
+	private JButton btnCreateTable = new JButton("Create table");//From main menu
+	private JButton btnQuit = new JButton("Quit");//Sends form main menu back to log in screen 
+	private JButton btnAchievements = new JButton("Achievements");;//From main menu
+	private JButton btnRank = new JButton("Rank");//From main menu, shows current rank
+	private JButton btnEnterTable = new JButton("Go to table"); //Confirm after entering table code 
+	private JButton btnRandomTable = new JButton("Random table"); //Send user to random table 
+	private JButton btnConfirmTable = new JButton("Create table"); //After making settings for creating a table 
+	private JButton btnMenu = new JButton("Main Menu"); //back to menu after a game 
+	private JButton btnGameDouble = new JButton("Double");
+	private JButton btnGameStop = new JButton("Stay");
+	private JButton btnGameHit = new JButton("Hit");
+	private JButton btnGameCheat = new JButton("Cheat!");
+	private JButton btnGameExit = new JButton("Exit game");
 	
-	private JButton btnConfirmUser; //Creates user after entering name and password 
-	
-	private JButton btnConfirmLogIn; //Check user name and password and logs in  
-	
-	private JButton btnGoToTable;//From main menu
-	private JButton btnCreateTable;//From main menu
-	private JButton btnQuit;//Sends form main menu back to log in screen 
-	private JButton btnAchievements;//From main menu
-	private JButton btnRank;//From main menu, shows current rank
-	
-	private JButton btnEnterTable; //Confirm after entering table code 
-	private JButton btnRandomTable; //Send user to random table 
-	
-	private JButton btnConfirmTable; //After making settings for creating a table 
-	
-	private JButton btnMenu; //back to menu after a game 
-
-	private JButton btnGameDouble;
-	private JButton btnGameStop;
-	private JButton btnGameHit;
-	private JButton btnGameCheat;
-	private JButton btnGameExit;
-
 	private JRadioButton radioBtnTime;
 	private JRadioButton radioBtnRounds;
 	private JRadioButton radioBtnPrivate;
-
+	
 	private JTextField tfTime;
 	private JTextField tfRounds;
 	private JTextField tfBalance;
@@ -104,9 +97,6 @@ public class UserInterface extends JPanel {
 		JLabel logo = new JLabel(new ImageIcon(new ImageIcon("images/bustedjack.jpg").getImage().getScaledInstance(240, 180, Image.SCALE_DEFAULT)));
 		logo.setPreferredSize(new Dimension(240, 180));
 
-		btnLogIn = new JButton("Login");
-		btnCreateUser = new JButton("Create new user");
-
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
 
@@ -137,8 +127,6 @@ public class UserInterface extends JPanel {
 		JLabel lblPassword = new JLabel("Password");
 		JLabel lblRepeatPassword = new JLabel("Repeat password");
 		JLabel lblEmail = new JLabel("Email");
-
-		btnConfirmUser = new JButton("Create user");
 		
 		tfUsernameCreate = new JTextField();
 		pfPasswordCreate = new JPasswordField();
@@ -196,8 +184,6 @@ public class UserInterface extends JPanel {
 		JLabel lblUsername = new JLabel("Username");
 		JLabel lblPassword = new JLabel("Password");
 
-		btnConfirmLogIn = new JButton("Login");
-
 		tfUsernameLogIn = new JTextField();
 		pfPasswordLogIn = new JPasswordField();
 		tfUsernameLogIn.setPreferredSize(new Dimension(200,20));
@@ -236,12 +222,6 @@ public class UserInterface extends JPanel {
 		JLabel lblPlay = new JLabel("Play");
 		JLabel lblProfile = new JLabel("Profile");
 		JLabel lblUsername = new JLabel("Welcome " + strUsername + "!"); 
-
-		btnGoToTable = new JButton("Go to table"); 
-		btnCreateTable = new JButton("Create table");
-		btnQuit = new JButton("Quit");
-		btnAchievements = new JButton("Achievements");
-		btnRank = new JButton("Rank");
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
@@ -285,9 +265,6 @@ public class UserInterface extends JPanel {
 
 	public JPanel joinScreen() {
 		JLabel lblRoomCode = new JLabel("Room Code");	
-
-		btnEnterTable = new JButton("Go to table");
-		btnRandomTable = new JButton("Random table");
 
 		tfRoomCode = new JTextField();
 		tfRoomCode.setPreferredSize(new Dimension(200,20));
@@ -336,7 +313,7 @@ public class UserInterface extends JPanel {
 		radioBtnRounds = new JRadioButton();
 		radioBtnPrivate = new JRadioButton();
 		
-		btnConfirmTable = new JButton("Create table"); 
+		
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
@@ -395,12 +372,6 @@ public class UserInterface extends JPanel {
 	public JPanel gameScreen() {
 		JLabel lblGameScreen = new JLabel(new ImageIcon(new ImageIcon("images/bustedjack.jpg").getImage().getScaledInstance(800, 500, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
 
-		btnGameDouble = new JButton("Double");
-		btnGameStop = new JButton("Stay");
-		btnGameHit = new JButton("Hit");
-		btnGameCheat = new JButton("Cheat!");
-		btnGameExit = new JButton("Exit game");
-
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
 
@@ -438,8 +409,6 @@ public class UserInterface extends JPanel {
 		JLabel lblPlayerRanks = new JLabel("Rank");
 		JLabel lblAchievements = new JLabel("Achievements");
 		JLabel lblNewRank = new JLabel("Rank");
-
-		btnMenu = new JButton("Main Menu");
 
 		taExitScreenPlayers = new JTextArea();
 		taExitScreenPlayerRanks = new JTextArea();
