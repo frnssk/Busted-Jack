@@ -25,7 +25,8 @@ public class UserController {
 		this.ui = ui;
 	}
 	
-	public void sendNewTable(Table table) {
+	public void sendNewTable(int time, int rounds, int balance, int minBet) {
+		Table table = new Table(time, rounds, balance, minBet);
 		client.sendTable(table);
 	}
 	
