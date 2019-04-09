@@ -101,7 +101,7 @@ public class Server {
 		}
 
 		public boolean isPasswordOkay(char[] password) {
-			if(password.length <= 6 && password.length >= 12) {
+			if(password.length <= 6 || password.length >= 12) {
 				return false;
 			}else{
 				return true;
