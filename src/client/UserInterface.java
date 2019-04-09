@@ -304,9 +304,9 @@ public class UserInterface extends JPanel {
 
 	public JPanel achievementsScreen() {
 		JLabel lblAchievements = new JLabel("Achievements:");
-		JLabel[] lblArray = {new JLabel("Win one game"), new JLabel("Cheat in a game"), new JLabel("Get Busted"), 
-				new JLabel("Bust a friend"), new JLabel("Win 10 games"), new JLabel("Win 100 games"), 
-				new JLabel("Win without cheating"), new JLabel("Win with a CheatHeat above 30%"), 
+		JLabel[] lblArray = {new JLabel("Play one game"), new JLabel("Win one game"), new JLabel("Cheat in a game"), 
+				new JLabel("Get Busted"), new JLabel("Bust a friend"), new JLabel("Win 10 games"), 
+				new JLabel("Win 100 games"), new JLabel("Win without cheating"), new JLabel("Win with a CheatHeat above 30%"), 
 				new JLabel("Win with a CheatHeat above 50%"), new JLabel("Win with a CheatHeat above 70%"),
 				new JLabel("Win with a CheatHeat above 90%")};
 		GridBagConstraints cont = new GridBagConstraints();
