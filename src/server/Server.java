@@ -109,13 +109,20 @@ public class Server {
 		}
 
 		public void run() {
-			try {
-				output = new ObjectOutputStream(socket.getOutputStream());
-				input = new ObjectInputStream(socket.getInputStream());
+			try(ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
+					ObjectInputStream input = new ObjectInputStream(socket.getInputStream())){
+				//				output = new ObjectOutputStream(socket.getOutputStream());
+				//				input = new ObjectInputStream(socket.getInputStream());
 
+//				Object obj = null;
 				while(true) {
 					try {
+//						try {
 						Object obj = input.readObject();
+						if((Integer)obj == -1) {
+							break;
+						}
+//						}catch(EOFException e) {}
 						if(obj instanceof Table) {
 							Table table = (Table)obj;
 							int roomID = table.getRoomID();
@@ -160,10 +167,14 @@ public class Server {
 								output.flush();
 							}
 						}
-					} catch (ClassNotFoundException | IOException e) {
+
+					} catch (ClassNotFoundException | EOFException e) {
 						e.printStackTrace();
+						TextWindow.println("Client disconnected.");
+						break;
 					}
 				}
+
 				//				userHandler.newClientConnect(user, this); 
 				//Adds this ClientHandler to the UserHandlerList of online users
 

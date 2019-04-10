@@ -91,6 +91,7 @@ public class UserClient {
 		try {
 			output.writeObject(username);
 			output.flush();
+			username = null;
 		} catch(IOException  e) {
 			e.printStackTrace();
 		}
@@ -105,7 +106,8 @@ public class UserClient {
 		try {
 			output.writeObject(password);
 			output.flush();
-		} catch(IOException  e) {
+			password = null;
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -115,6 +117,7 @@ public class UserClient {
 		try {
 			output.writeObject(table);
 			output.flush();
+			table = null;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -128,7 +131,6 @@ public class UserClient {
 	 */
 	private class Connection extends Thread {
 		public void run() {
-
 			while(true) {
 				try {
 					Object obj = input.readObject();
@@ -136,17 +138,18 @@ public class UserClient {
 					//For checking user name availability
 					if(obj instanceof Integer) {
 						int available = (Integer) obj;
-						if(available == 1 || available == 2) {
-							System.out.println("Username: ok");
+						if(available == 1) {
+							System.out.println("Username: ej ledigt");
+						}else if(available == 2) {
+							System.out.println("Username ledigt");
 							userController.setUsernameAvailability(available);
-						}
-						
-						if(available == 3 || available == 4) {
+						}else if(available == 3) {
 							System.out.println("Password: ok");
 							userController.setPassword(available);
+						}else if(available == 4) {
+							System.out.println("Lösenord ej godkänt.");
 						}
 					}
-
 
 				}catch(IOException | ClassNotFoundException exception) {
 					exception.printStackTrace();
