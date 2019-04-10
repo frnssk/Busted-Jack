@@ -21,6 +21,7 @@ public class UserInterface extends JPanel {
 	private JButton btnCreateUser = new JButton("Create new user"); //Log in display
 	private JButton btnConfirmUser = new JButton("Create user"); //Creates user after entering name and password 
 	private JButton btnConfirmLogIn = new JButton("Login"); //Check user name and password and logs in  
+	private JButton btnBackToStart = new JButton("Back"); //From login screen back to start screen
 	private JButton btnGoToTable = new JButton("Go to table");//From main menu
 	private JButton btnCreateTable = new JButton("Create table");//From main menu
 	private JButton btnLogOut = new JButton("Log out");//Sends form main menu back to log in screen 
@@ -191,6 +192,9 @@ public class UserInterface extends JPanel {
 		cont.gridx = 1;
 		cont.gridy = 4;
 		pane.add(btnConfirmUser, cont);
+		
+		cont.gridy = 5;
+		pane.add(btnBackToStart, cont);
 
 		return pane;
 	}
@@ -227,6 +231,9 @@ public class UserInterface extends JPanel {
 		cont.gridx = 1;
 		cont.gridy = 2;
 		pane.add(btnConfirmLogIn,cont);
+		
+		cont.gridy = 3;
+		pane.add(btnBackToStart, cont);
 
 		return pane;
 	}
@@ -562,6 +569,7 @@ public class UserInterface extends JPanel {
 	public void addListeners() {
 		ActionL listener = new ActionL();
 		btnLogIn.addActionListener(listener);
+		btnBackToStart.addActionListener(listener);
 		btnCreateUser.addActionListener(listener);
 		btnConfirmUser.addActionListener(listener);
 		btnConfirmLogIn.addActionListener(listener);
@@ -585,6 +593,9 @@ public class UserInterface extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == btnLogIn) {
 				updateUI(logInScreen());
+			}
+			if(e.getSource() == btnBackToStart) {
+				updateUI(startScreen());
 			}
 			if(e.getSource() == btnCreateUser) {
 				updateUI(createUserScreen());
