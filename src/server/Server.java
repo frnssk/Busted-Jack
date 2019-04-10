@@ -125,10 +125,14 @@ public class Server {
 						obj = input.readObject();
 						String choice = "";
 						if(obj instanceof RegisterRequest) {
-							if(checkUsernameAvailability(((RegisterRequest) obj).getUsername())) {
+							if(!checkUsernameAvailability(((RegisterRequest) obj).getUsername())) {
+								TextWindow.println(name + " är ledigt.");
 								if(isPasswordOkay(((RegisterRequest) obj).getPassword())) {
+									TextWindow.println(name + " har angett ett godkänt lösenord.");
+//									TextWindow.println("User-objekt skapat för " + name);
 									choice = "USER_TRUE";
 								}else { 
+									TextWindow.println(name + " har angett ett icke godkänt lösenord.");
 									choice = "PASSSWORD_FALSE";
 								}
 
