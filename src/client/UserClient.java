@@ -123,11 +123,21 @@ public class UserClient {
 	}
 	
 	public void sendLoginRequest(LoginRequest request) {
-		//connect and send to server
+		try {
+			output.writeObject(request);
+			output.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void sendRegisterRequest(RegisterRequest request) {
-		//connect and send to server
+		try {
+			output.writeObject(request);
+			output.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -143,18 +153,16 @@ public class UserClient {
 					Object obj = input.readObject();
 
 					//For checking user name availability
-					if(obj instanceof Integer) {
-						int available = (Integer) obj;
-						if(available == 1) {
+					if(obj instanceof String) {
+						String available = (String) obj;
+						if(available.equals("USERNAME_FALSE")) {
 							System.out.println("Username: ej ledigt");
-						}else if(available == 2) {
-							System.out.println("Username ledigt");
+						}else if(available.equals("PASSWORD_FALSE")) {
+							System.out.println("Felaktigt lösenord");
 //							userController.setUsernameAvailability(available);
-						}else if(available == 3) {
-							System.out.println("Password: ok");
-							userController.setPassword(available);
-						}else if(available == 4) {
-							System.out.println("Lösenord ej godkänt.");
+						}else if(available.equals("USER_TRUE")) {
+							System.out.println("Usernamne och lösenord OK");
+//							userController.setPassword(available);
 						}
 					}
 
