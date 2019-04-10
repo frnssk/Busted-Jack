@@ -428,6 +428,60 @@ public class UserInterface extends JPanel {
 
 		return pane;
 	}
+	public JPanel lobbyScreen(int rounds, int time, int minBet, int balance) {
+		JLabel lblLobby = new JLabel(new ImageIcon(new ImageIcon("images/bustedjack.jpg").getImage().getScaledInstance(800, 500, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
+		JLabel lblRoomSize = new JLabel(lobbyPlayers + "/5");
+		JLabel lblGameSettings = new JLabel("Game Settings");
+		JLabel lblRounds = new JLabel ("Rounds: " + rounds);
+		JLabel lblTime = new JLabel ("Time: " + time);
+		JLabel lblBalance = new JLabel ("Balance: " + balance);
+		JLabel lblMinBet = new JLabel ("Minimum bet: " + minBet);
+		
+		taActiveLobbyPlayers = new JTextArea();
+		taActiveLobbyPlayers.setPreferredSize(new Dimension(200,200));
+		GridBagConstraints cont = new GridBagConstraints();
+		JPanel pane = new JPanel(new GridBagLayout());
+
+		cont.anchor = GridBagConstraints.CENTER;
+		cont.insets = new Insets(10,10,10,10);
+
+		cont.gridx = 0;
+		cont.gridy = 0;
+		pane.add(btnStartGame, cont);
+		
+		cont.gridy = 1;
+		pane.add(btnMenu, cont);
+		
+		cont.gridx = 1;
+		cont.gridy = 0;
+		pane.add(lblRoomSize, cont);
+		
+		cont.gridx = 2;
+		cont.gridy = 0;
+		pane.add(lblGameSettings, cont);
+		
+		cont.gridy = 1;
+		pane.add(lblRounds, cont);
+		
+		cont.gridy = 2;
+		pane.add(lblTime, cont);
+		
+		cont.gridy = 3;
+		pane.add(lblBalance, cont);
+		
+		cont.gridy = 4;
+		pane.add(lblMinBet, cont);
+
+		cont.gridx = 1;
+		cont.gridy = 1;
+		cont.gridheight = 5;
+		pane.add(taActiveLobbyPlayers, cont);
+				
+		cont.gridy = 0;
+		cont.gridheight = 4;
+		pane.add(lblLobby, cont);
+		return pane;
+	}
 
 	public JPanel gameScreen() {
 		JLabel lblGameScreen = new JLabel(new ImageIcon(new ImageIcon("images/bustedjack.jpg").getImage().getScaledInstance(800, 500, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
