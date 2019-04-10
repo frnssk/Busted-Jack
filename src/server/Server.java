@@ -112,7 +112,12 @@ public class Server {
 		}
 		
 		public boolean passwordMatchUser(String username, char[] password) {
-			return (password.equals(userPasswords.get(username)));
+			char[] array = userPasswords.get(username);
+			TextWindow.println("1");
+			boolean pass = Arrays.equals(array, password);
+			TextWindow.println("2");
+			return pass;
+//			return (password.equals(userPasswords.get(username)));
 		}
 
 		public boolean checkUsernameAvailability(String name) {
@@ -177,6 +182,8 @@ public class Server {
 									TextWindow.println(loginRequest.getUsername() + " är inloggad.");
 									output.writeObject(choice);
 									output.flush();
+								}else {
+									TextWindow.println("FUCK");
 								}
 							}
 						}
