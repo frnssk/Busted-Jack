@@ -4,8 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.LinkedList;
 
-import resources.Table;
-import resources.User;
+import resources.*;
 
 /**
  *  Class responsible for all connection to the server, from the user side.  
@@ -122,6 +121,14 @@ public class UserClient {
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendLoginRequest(LoginRequest request) {
+		//connect and send to server
+	}
+	
+	public void sendRegisterRequest(RegisterRequest request) {
+		//connect and send to server
+	}
 
 	/**
 	 * Inner class that let the client listen for incoming data from the server
@@ -142,7 +149,7 @@ public class UserClient {
 							System.out.println("Username: ej ledigt");
 						}else if(available == 2) {
 							System.out.println("Username ledigt");
-							userController.setUsernameAvailability(available);
+//							userController.setUsernameAvailability(available);
 						}else if(available == 3) {
 							System.out.println("Password: ok");
 							userController.setPassword(available);
