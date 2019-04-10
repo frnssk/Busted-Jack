@@ -593,12 +593,11 @@ public class UserInterface extends JPanel {
 			if(e.getSource() == btnConfirmUser) {
 				controller.createRegisterRequest(tfUsernameCreate.getText(), pfPasswordCreate.getPassword());
 				System.out.println("test");
-//				strUsername = tfUsernameCreate.getText();
-//				controller.checkNameAvailability(strUsername);
+				strUsername = tfUsernameCreate.getText();
 			}
 			if(e.getSource() == btnConfirmLogIn) {
 				controller.createLoginRequest(tfUsernameLogIn.getText(), pfPasswordLogIn.getPassword());
-//				strUsername = tfUsernameLogIn.getText(); //During development to show user name in menu
+				strUsername = tfUsernameLogIn.getText(); //During development to show user name in menu
 //				updateUI(mainMenuScreen());
 			}
 			if(e.getSource() == btnGoToTable) {
