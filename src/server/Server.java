@@ -81,7 +81,7 @@ public class Server {
 		private ObjectOutputStream output;
 		private ObjectInputStream input;
 		private User user;
-		private Object object;
+		private Object obj;
 		private UserHandler userHandler;
 		String name;
 
@@ -99,6 +99,11 @@ public class Server {
 				ioException.printStackTrace();
 			}
 		}
+		
+		public boolean checkUsernameAvailability(String name) {
+			return (registeredUsers.contains(name));
+		}
+		
 
 		public boolean isPasswordOkay(char[] password) {
 			if(password.length <= 6 || password.length >= 12) {
@@ -114,125 +119,135 @@ public class Server {
 				//				output = new ObjectOutputStream(socket.getOutputStream());
 				//				input = new ObjectInputStream(socket.getInputStream());
 
-//				Object obj = null;
+				//				Object obj = null;
 				while(true) {
 					try {
-						Object obj = input.readObject();
-						if(obj instanceof Table) {
-							Table table = (Table)obj;
-							int roomID = table.getRoomID();
-							TextWindow.println("HEUREKA");
-							//						if(roomID = null) {
-							//							roomID.setID();
-							//						}
-						}
-						if(obj instanceof String) {
-							name = (String)obj;
-							int a = 0;
-							if(registeredUsers.contains(name)) {
-								a = 1;
-								output.writeObject(a);
-								output.flush();
-								TextWindow.println(name + " finns redan.");
+						obj = input.readObject();
+						String choice = "";
+						if(obj instanceof RegisterRequest) {
+							if(checkUsernameAvailability(((RegisterRequest) obj).getUsername())) {
+								if(isPasswordOkay(((RegisterRequest) obj).getPassword())) {
+									choice = "USER_TRUE";
+								}else { 
+									choice = "PASSSWORD_FALSE";
+								}
+
 							}else {
-								a = 2;
-								output.writeObject(a);
-								output.flush();
-								//								registeredUsers.add(name);
-								TextWindow.println(name + " är ledigt.");
+								choice = "USERNAME_FALSE";
 							}
-						}
-						if(obj instanceof char[]) {
-							char[] password = (char[])obj;
-							if(isPasswordOkay(password)) {
-								TextWindow.println(name + " har angett ett godkänt lösenord.");
-								User temporary = new User(name);
-								TextWindow.println("User-objekt skapat för " + name);
-								temporary.setPassword(password);
-								registeredUsers.add(temporary.getUsername());
-								TextWindow.println(name + " tilllagd i RegisteredUsers.");
-								int a = 3;
-								output.writeObject(a);
-								output.flush();
-								TextWindow.println("Hit kommer vi");
-							}else{
-								TextWindow.println(name + " har angett ett icke godkänt lösenord.");
-								int a = 4;
-								output.writeObject(a);
-								output.flush();
-							}
+							output.writeObject(choice);
+							output.flush();
 						}
 
-					} catch (ClassNotFoundException | IOException e) {
-//						e.printStackTrace();
-						TextWindow.println("Client disconnected.");
-//						break;
+
+
+//							if(obj instanceof String) {
+//								name = (String)obj;
+//								int a = 0;
+//								if(registeredUsers.contains(name)) {
+//									a = 1;
+//									output.writeObject(a);
+//									output.flush();
+//									TextWindow.println(name + " finns redan.");
+//								}else {
+//									a = 2;
+//									output.writeObject(a);
+//									output.flush();
+//									//								registeredUsers.add(name);
+//									TextWindow.println(name + " är ledigt.");
+//								}
+//							}
+							if(obj instanceof char[]) {
+								char[] password = (char[])obj;
+								if(isPasswordOkay(password)) {
+									TextWindow.println(name + " har angett ett godkänt lösenord.");
+									User temporary = new User(name);
+									TextWindow.println("User-objekt skapat för " + name);
+									temporary.setPassword(password);
+									registeredUsers.add(temporary.getUsername());
+									TextWindow.println(name + " tilllagd i RegisteredUsers.");
+									int a = 3;
+									output.writeObject(a);
+									output.flush();
+									TextWindow.println("Hit kommer vi");
+								}else{
+									TextWindow.println(name + " har angett ett icke godkänt lösenord.");
+									int a = 4;
+									output.writeObject(a);
+									output.flush();
+								}
+							}
+
+						} catch (ClassNotFoundException | IOException e) {
+							e.printStackTrace();
+							TextWindow.println("Client disconnected.");
+							break;
+						}
 					}
+
+					//				userHandler.newClientConnect(user, this); 
+					//Adds this ClientHandler to the UserHandlerList of online users
+
+
+				}catch(Exception ioException) {
+					ioException.printStackTrace();
 				}
-
-				//				userHandler.newClientConnect(user, this); 
-				//Adds this ClientHandler to the UserHandlerList of online users
-
-
-			}catch(Exception ioException) {
-				ioException.printStackTrace();
 			}
+
+		}
+
+		/*
+		 * @author RasmusOberg
+		 */
+		private class UserHandler {
+			private HashMap<User, ClientHandler> activeUsers = new HashMap<>();
+
+			//connects a new client
+			public synchronized void newClientConnect(User user, ClientHandler clientHandler) {
+				if(userIsRegistered(user) == false) {
+					registerNewUser(user);
+				}
+				addNewActiveUser(user, clientHandler);
+			}
+
+			//adds new user to activeUsers-HashMap
+			public synchronized void addNewActiveUser(User user, ClientHandler clientHandler) {
+				activeUsers.put(user, clientHandler);
+				TextWindow.println(user.getUsername() + " aktiv");
+				updateActiveUsers();
+			}
+
+			//register new user to registeredUsers-LinkedList
+			public synchronized void registerNewUser(User user) {
+				//			registeredUsers.add(user);
+				TextWindow.println(user.getUsername() + " registrerad");
+				updateActiveUsers();
+			}
+
+			////Return whether or not user already is registered
+			public synchronized boolean userIsRegistered(User user) {
+				return registeredUsers.contains(user);
+			}
+
+			//returns whether or not a user is online
+			public synchronized boolean userIsOnline(User user) {
+				return activeUsers.containsKey(user);
+			}
+
+			//		public synchronized LinkedList<User> getActiveUsers(){
+			//			LinkedList<User> currentActiveUsers = new LinkedList<>(activeUsers.keySet());
+			//			return currentActiveUsers;
+			//		}
+
+			public void updateActiveUsers() {
+				LinkedList<User> currentActiveUsers = new LinkedList<>();
+				for(int i = 0; i < currentActiveUsers.size(); i++) {
+					this.activeUsers.get(currentActiveUsers.get(i)).updateActiveUsers(currentActiveUsers);
+				}
+			}
+
 		}
 
 	}
-
-	/*
-	 * @author RasmusOberg
-	 */
-	private class UserHandler {
-		private HashMap<User, ClientHandler> activeUsers = new HashMap<>();
-
-		//connects a new client
-		public synchronized void newClientConnect(User user, ClientHandler clientHandler) {
-			if(userIsRegistered(user) == false) {
-				registerNewUser(user);
-			}
-			addNewActiveUser(user, clientHandler);
-		}
-
-		//adds new user to activeUsers-HashMap
-		public synchronized void addNewActiveUser(User user, ClientHandler clientHandler) {
-			activeUsers.put(user, clientHandler);
-			TextWindow.println(user.getUsername() + " aktiv");
-			updateActiveUsers();
-		}
-
-		//register new user to registeredUsers-LinkedList
-		public synchronized void registerNewUser(User user) {
-			//			registeredUsers.add(user);
-			TextWindow.println(user.getUsername() + " registrerad");
-			updateActiveUsers();
-		}
-
-		////Return whether or not user already is registered
-		public synchronized boolean userIsRegistered(User user) {
-			return registeredUsers.contains(user);
-		}
-
-		//returns whether or not a user is online
-		public synchronized boolean userIsOnline(User user) {
-			return activeUsers.containsKey(user);
-		}
-
-		//		public synchronized LinkedList<User> getActiveUsers(){
-		//			LinkedList<User> currentActiveUsers = new LinkedList<>(activeUsers.keySet());
-		//			return currentActiveUsers;
-		//		}
-
-		public void updateActiveUsers() {
-			LinkedList<User> currentActiveUsers = new LinkedList<>();
-			for(int i = 0; i < currentActiveUsers.size(); i++) {
-				this.activeUsers.get(currentActiveUsers.get(i)).updateActiveUsers(currentActiveUsers);
-			}
-		}
-
-	}
-
-}
 
 
