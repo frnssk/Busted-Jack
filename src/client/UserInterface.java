@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.swing.*;
-import resources.Table;
 
 
 /**
@@ -142,7 +141,7 @@ public class UserInterface extends JPanel {
 
 	public JPanel createUserScreen() {
 		JLabel lblUsername = new JLabel("Username");
-		JLabel lblPassword = new JLabel("Password");
+		JLabel lblPassword = new JLabel("Password (between 6-12 characters)");
 		JLabel lblRepeatPassword = new JLabel("Repeat password");
 		JLabel lblEmail = new JLabel("Email");
 
@@ -168,12 +167,12 @@ public class UserInterface extends JPanel {
 		cont.gridx = 1;
 		pane.add(tfUsernameCreate);
 
-		cont.gridx = 0;
-		cont.gridy = 1;
-		pane.add(lblEmail, cont);
-
-		cont.gridx = 1;
-		pane.add(tfEmailCreate, cont);
+//		cont.gridx = 0;
+//		cont.gridy = 1;
+//		pane.add(lblEmail, cont);
+//
+//		cont.gridx = 1;
+//		pane.add(tfEmailCreate, cont);
 
 		cont.gridx = 0;
 		cont.gridy = 2;
@@ -182,12 +181,12 @@ public class UserInterface extends JPanel {
 		cont.gridx = 1;
 		pane.add(pfPasswordCreate, cont);
 
-		cont.gridx = 0;
-		cont.gridy = 3;
-		pane.add(lblRepeatPassword, cont);
-
-		cont.gridx = 1; 
-		pane.add(pfRepeatPasswordCreate, cont);
+//		cont.gridx = 0;
+//		cont.gridy = 3;
+//		pane.add(lblRepeatPassword, cont);
+//
+//		cont.gridx = 1; 
+//		pane.add(pfRepeatPasswordCreate, cont);
 
 		cont.gridx = 1;
 		cont.gridy = 4;
@@ -622,11 +621,6 @@ public class UserInterface extends JPanel {
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnConfirmTable) {
-				int time = Integer.parseInt(tfTime.getText());
-				int rounds = Integer.parseInt(tfRounds.getText());
-				int balance = Integer.parseInt(tfBalance.getText());
-				int minBet =  Integer.parseInt(tfMinBet.getText());
-//				controller.sendNewTable(time, rounds, balance, minBet);
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnMenu) {
