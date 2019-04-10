@@ -10,6 +10,7 @@ import javax.swing.JFrame;
  * Contains main method for the client side of the application
  * Is used to start the program
  */
+
 public class StartClient {
 	public static void main(String[] args) throws IOException {
 		UserClient client = new UserClient("localhost", 1200); //IP and port are hard coded for testing
