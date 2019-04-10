@@ -74,19 +74,9 @@ public class UserController {
 		}else if(available.equals("USER_TRUE")) {
 			System.out.println("Usernamne och lösenord OK");
 			ui.updateUI(ui.mainMenuScreen());
-		}
-	}
-	
-	/**
-	 * Checks if the password fulfills requirements.
-	 * If it does the user is sent to the main menu. If not they get an error message 
-	 * @param passwordOk - an int that is checked and changes are made based on its outcome 
-	 */
-	public void setPassword(int passwordOk) {
-		if(passwordOk == 3) {
+		}else if(available.equals("LOGIN_SUCCES")) {
+			System.out.println("Inloggad!!!");
 			ui.updateUI(ui.mainMenuScreen());
-		}else if(passwordOk == 4) {
-			ui.errorMessagePassword();
 		}
 	}
 	
