@@ -1,10 +1,15 @@
 package client;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.LinkedList;
+import java.net.SocketException;
 
-import resources.*;
+import resources.LogOutRequest;
+import resources.LoginRequest;
+import resources.RegisterRequest;
+import resources.User;
 
 /**
  *  Class responsible for all connection to the server, from the user side.  
@@ -19,10 +24,10 @@ public class UserClient {
 	private String ip;
 	private int port;
 	private User user;
-	private boolean receiving = true;
+	private boolean receiving = false;
 	private Connection connection;
 
-	
+
 	/**
 	 * Constructs the UserCLient object and connects to server on give IP and port
 	 * @param ip - What IP address to connect to
@@ -32,17 +37,17 @@ public class UserClient {
 	public UserClient(String ip, int port) throws IOException{
 		this.ip = ip;
 		this.port = port;
-//		try {
-//			socket = new Socket(ip, port);
-//			output = new ObjectOutputStream(socket.getOutputStream());
-//			input = new ObjectInputStream(socket.getInputStream());
-//		}catch(IOException ioException) {
-//			ioException.printStackTrace();
-//		}
-//		if(connection == null) {
-//			connection = new Connection();
-//			connection.start();
-//		}
+		//		try {
+		//			socket = new Socket(ip, port);
+		//			output = new ObjectOutputStream(socket.getOutputStream());
+		//			input = new ObjectInputStream(socket.getInputStream());
+		//		}catch(IOException ioException) {
+		//			ioException.printStackTrace();
+		//		}
+		//		if(connection == null) {
+		//			connection = new Connection();
+		//			connection.start();
+		//		}
 
 	}
 
@@ -59,30 +64,45 @@ public class UserClient {
 	 * @param user - Tells the server what user is connecting 
 	 * @throws IOException
 	 */
-	public void connect() throws IOException {
+	public void connect() {
+		if(connection == null) {
 			try {
 				socket = new Socket(ip, port);
-				output = new ObjectOutputStream(socket.getOutputStream());
-				input = new ObjectInputStream(socket.getInputStream());
-				receiving = true;
-			}catch(IOException ioException) {
-				ioException.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			if(connection == null) {
-				connection = new Connection();
-				connection.start();
+			try {
+				connection = new Connection(socket);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+			connection.start();
+			receiving = true;
+		}
+//		try {
+//			socket = new Socket(ip, port);
+//			output = new ObjectOutputStream(socket.getOutputStream());
+//			input = new ObjectInputStream(socket.getInputStream());
+//			receiving = true;
+//		}catch(IOException ioException) {
+//			ioException.printStackTrace();
+//		}
+//		if(connection == null) {
+//			connection = new Connection(socket);
+//			connection.start();
+//		}
 	}
-	
+
 	public void disconnect() {
 		try {
 			receiving = false;
+			connection = null;
 			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendLoginRequest(LoginRequest request) {
 		try {
 			connect();
@@ -92,7 +112,7 @@ public class UserClient {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendRegisterRequest(RegisterRequest request) {
 		try {
 			connect();
@@ -119,6 +139,12 @@ public class UserClient {
 	 *
 	 */
 	private class Connection extends Thread {
+	
+		public Connection(Socket socket) throws IOException {
+			output = new ObjectOutputStream(socket.getOutputStream());
+			input = new ObjectInputStream(socket.getInputStream());
+		}
+
 		public void run() {
 			while(receiving) {
 				try {
