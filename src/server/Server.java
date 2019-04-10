@@ -83,6 +83,7 @@ public class Server {
 		private ObjectInputStream input;
 		private User user;
 		private Object obj;
+		private boolean isOnline = true;
 //		private UserHandler userHandler;
 
 		public ClientHandler(Socket socket) throws IOException {
@@ -142,7 +143,7 @@ public class Server {
 				//				output = new ObjectOutputStream(socket.getOutputStream());
 				//				input = new ObjectInputStream(socket.getInputStream());
 				//				Object obj = null;
-				while(!Thread.interrupted()) {
+				while(isOnline) {
 					try {
 						obj = input.readObject();
 						String choice = "";
@@ -192,11 +193,14 @@ public class Server {
 									TextWindow.println(loginRequest.getUsername() + " kan inte sitt lösenord HAHAHA");
 								}
 							}
+						}else if(obj instanceof LogOutRequest) {
+							isOnline = false;
+							TextWindow.println("Client disconnected.");
+							
 						}
 
 					} catch (ClassNotFoundException | IOException e) {
 						e.printStackTrace();
-						TextWindow.println("Client disconnected.");
 						break;
 					}
 				}
