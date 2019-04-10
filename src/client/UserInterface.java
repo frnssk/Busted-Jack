@@ -1,4 +1,4 @@
-package client;
+package bustedJack;
 
 import java.awt.*;
 import resources.*;
@@ -34,7 +34,10 @@ public class UserInterface extends JPanel {
 	private JButton btnGameDouble = new JButton("Double");
 	private JButton btnGameStop = new JButton("Stay");
 	private JButton btnGameHit = new JButton("Hit");
+	private JButton btnSplit = new JButton("Split");
 	private JButton btnGameCheat = new JButton("Cheat!");
+	private JButton btnStartGame = new JButton("Start Game");// lets the table owner to start the game.
+	
 	//	private JButton btnGameExit = new JButton("Exit game");
 
 	private JRadioButton radioBtnTime;
@@ -60,10 +63,16 @@ public class UserInterface extends JPanel {
 	private JTextArea taExitScreenPlayerRanks;
 	private JTextArea taExitScreenAchievements;
 	private JTextArea taExitScreenNewRank;
+	private JTextArea taActiveLobbyPlayers;
 
 	private int currentRank = 0;
 	private String currentTitle = "";
 	private String nextTitle = "";
+	private int lobbyPlayers = 0;
+	private int rounds;
+	private int time;
+	private int balance;
+	private int minBet;
 
 	private String strUsername; //During development to show user name in menu
 	private Color green = new Color(65,136,14);
@@ -134,7 +143,7 @@ public class UserInterface extends JPanel {
 		cont.gridx = 2;
 		cont.gridy = 1;
 		pane.add(btnCreateUser, cont);
-
+		
 		pane.setBackground(green);
 
 		return pane;
@@ -429,7 +438,6 @@ public class UserInterface extends JPanel {
 		return pane;
 	}
 	public JPanel lobbyScreen(int rounds, int time, int minBet, int balance) {
-		JLabel lblLobby = new JLabel(new ImageIcon(new ImageIcon("images/bustedjack.jpg").getImage().getScaledInstance(800, 500, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
 		JLabel lblRoomSize = new JLabel(lobbyPlayers + "/5");
 		JLabel lblGameSettings = new JLabel("Game Settings");
 		JLabel lblRounds = new JLabel ("Rounds: " + rounds);
@@ -477,39 +485,104 @@ public class UserInterface extends JPanel {
 		cont.gridheight = 5;
 		pane.add(taActiveLobbyPlayers, cont);
 				
-		cont.gridy = 0;
-		cont.gridheight = 4;
-		pane.add(lblLobby, cont);
 		return pane;
 	}
 
 	public JPanel gameScreen() {
 		JLabel lblGameScreen = new JLabel(new ImageIcon(new ImageIcon("images/bustedjack.jpg").getImage().getScaledInstance(800, 500, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
-
+		JLabel lblDealer = new JLabel("Dealer");
+		JLabel lblP1 = new JLabel("user1");
+		JLabel lblP2 = new JLabel("user2");
+		JLabel lblP3 = new JLabel("user3");
+		JLabel lblP4 = new JLabel("user4");
+		JLabel lblP5 = new JLabel("user5");
+		
+		JLabel lblP1CardSum = new JLabel("0");
+		JLabel lblP2CardSum = new JLabel("0");
+		JLabel lblP3CardSum = new JLabel("0");
+		JLabel lblP4CardSum = new JLabel("0");
+		JLabel lblP5CardSum = new JLabel("0");
+		
 		GridBagConstraints cont = new GridBagConstraints();
-		JPanel pane = new JPanel(new GridBagLayout());
-
+		JPanel mainPane = new JPanel(new BorderLayout());
+		JPanel westPane = new JPanel(new GridBagLayout());
+		JPanel eastPane = new JPanel(new GridBagLayout());
+		JPanel southPane = new JPanel (new GridBagLayout());
+		JPanel northPane = new JPanel (new GridBagLayout());
+		JPanel paneTable = new JPanel(new GridBagLayout());
+		paneTable.setSize(new Dimension(800, 500));
+		
+		mainPane.add(westPane, BorderLayout.WEST);
+		mainPane.add(eastPane, BorderLayout.EAST);
+		mainPane.add(southPane, BorderLayout.SOUTH);
+		mainPane.add(northPane, BorderLayout.NORTH);
+		mainPane.add(paneTable, BorderLayout.CENTER);
+		
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
 
+	
+		//adds the player labels to the gameScreen
 		cont.gridx = 0;
 		cont.gridy = 0;
-		pane.add(btnGameDouble, cont);
-
-		cont.gridy = 1;
-		pane.add(btnGameStop, cont);
-
-		cont.gridy = 2;
-		pane.add(btnGameHit, cont);
-
-		cont.gridy = 3;
-		pane.add(btnGameCheat, cont);
-
+		northPane.add(lblDealer, cont);
+		
+		cont.gridx = 0;
 		cont.gridy = 0;
-		cont.gridheight = 4;
-		pane.add(lblGameScreen, cont);
+		westPane.add(lblP2, cont);
+		
+		cont.gridy = 1;
+		westPane.add(lblP4, cont);
+		
+		cont.gridx = 0;
+		cont.gridy = 0;
+		eastPane.add(lblP3, cont);
+		
+		cont.gridy = 4;
+		eastPane.add(lblP5, cont);
+		
+		cont.gridy = 0;
+		cont.gridx = 2;
+		southPane.add(lblP1, cont);
+		
+		// adds the buttons to the gameScreen
+		cont.gridx = 0;
+		cont.gridy = 1;
+		southPane.add(btnGameDouble, cont);
 
-		return pane;
+		cont.gridx = 1;
+		southPane.add(btnSplit, cont);
+
+		cont.gridx = 2;
+		southPane.add(btnGameHit, cont);
+		
+		cont.gridx = 3;
+		southPane.add(btnGameStop, cont);
+		
+		cont.gridx = 4;
+		southPane.add(btnGameCheat, cont);
+
+		//adds the paneTable into the game screen
+		
+		cont.gridx = 0;
+		cont.gridy = 0;
+		paneTable.add(lblP2CardSum, cont);
+		
+		cont.gridx = 6;
+		paneTable.add(lblP4CardSum, cont);
+		
+		cont.gridx = 0;
+		cont.gridy = 1;
+		paneTable.add(lblP3CardSum, cont);
+		
+		cont.gridx = 6;
+		paneTable.add(lblP5CardSum, cont);
+		
+		
+		
+		
+
+		return mainPane;
 	}
 
 	public JPanel exitScreen() {
@@ -633,6 +706,7 @@ public class UserInterface extends JPanel {
 		btnGameStop.addActionListener(listener);
 		btnGameHit.addActionListener(listener);
 		btnGameCheat.addActionListener(listener);
+		btnStartGame.addActionListener(listener);
 	}
 
 	private class ActionL implements ActionListener{
@@ -668,10 +742,10 @@ public class UserInterface extends JPanel {
 				updateUI(rankScreen());
 			}
 			if(e.getSource() == btnEnterTable) {
-				updateUI(gameScreen());
+				updateUI(lobbyScreen(rounds, time, balance, minBet));
 			}
 			if(e.getSource() == btnRandomTable) {
-				updateUI(gameScreen());
+				updateUI(lobbyScreen(rounds, time, balance, minBet));
 			}
 			if(e.getSource() == btnConfirmTable) {
 				int time = Integer.parseInt(tfTime.getText());
@@ -679,10 +753,13 @@ public class UserInterface extends JPanel {
 				int balance = Integer.parseInt(tfBalance.getText());
 				int minBet =  Integer.parseInt(tfMinBet.getText());
 				controller.sendNewTable(time, rounds, balance, minBet);
-				updateUI(gameScreen());
+				updateUI(lobbyScreen(rounds, time, balance, minBet));
 			}
 			if(e.getSource() == btnMenu) {
 				updateUI(mainMenuScreen());
+			}
+			if(e.getSource() == btnStartGame) {
+				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnGameDouble) {
 				//code to come
@@ -693,12 +770,14 @@ public class UserInterface extends JPanel {
 			if(e.getSource() == btnGameHit) {
 				//code to come
 			}
+			if(e.getSource() == btnSplit) {
+				//code to come
+			}
 			if(e.getSource() == btnGameCheat) {
 				//code to come
 			}
 
 		}
 	}
-
 
 }
