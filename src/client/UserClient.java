@@ -19,7 +19,7 @@ public class UserClient {
 	private String ip;
 	private int port;
 	private User user;
-	private boolean receiving = false;
+	private boolean receiving = true;
 	private Connection connection;
 
 	
@@ -32,17 +32,17 @@ public class UserClient {
 	public UserClient(String ip, int port) throws IOException{
 		this.ip = ip;
 		this.port = port;
-		try {
-			socket = new Socket(ip, port);
-			output = new ObjectOutputStream(socket.getOutputStream());
-			input = new ObjectInputStream(socket.getInputStream());
-		}catch(IOException ioException) {
-			ioException.printStackTrace();
-		}
-		if(connection == null) {
-			connection = new Connection();
-			connection.start();
-		}
+//		try {
+//			socket = new Socket(ip, port);
+//			output = new ObjectOutputStream(socket.getOutputStream());
+//			input = new ObjectInputStream(socket.getInputStream());
+//		}catch(IOException ioException) {
+//			ioException.printStackTrace();
+//		}
+//		if(connection == null) {
+//			connection = new Connection();
+//			connection.start();
+//		}
 
 	}
 
@@ -59,14 +59,12 @@ public class UserClient {
 	 * @param user - Tells the server what user is connecting 
 	 * @throws IOException
 	 */
-	public void connect(User user) throws IOException {
-		if(!receiving) {
-			this.user = user;
-
+	public void connect() throws IOException {
 			try {
 				socket = new Socket(ip, port);
 				output = new ObjectOutputStream(socket.getOutputStream());
 				input = new ObjectInputStream(socket.getInputStream());
+				receiving = true;
 			}catch(IOException ioException) {
 				ioException.printStackTrace();
 			}
@@ -74,14 +72,20 @@ public class UserClient {
 				connection = new Connection();
 				connection.start();
 			}
-		}else{
-			setUser(user);
+	}
+	
+	public void disconnect() {
+		try {
+			receiving = false;
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
 	}
 	
 	public void sendLoginRequest(LoginRequest request) {
 		try {
+			connect();
 			output.writeObject(request);
 			output.flush();
 		} catch (IOException e) {
@@ -91,6 +95,7 @@ public class UserClient {
 	
 	public void sendRegisterRequest(RegisterRequest request) {
 		try {
+			connect();
 			output.writeObject(request);
 			output.flush();
 		} catch (IOException e) {
@@ -102,6 +107,7 @@ public class UserClient {
 		try {
 			output.writeObject(logOutRequest);
 			output.flush();
+			disconnect();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -114,7 +120,7 @@ public class UserClient {
 	 */
 	private class Connection extends Thread {
 		public void run() {
-			while(true) {
+			while(receiving) {
 				try {
 					Object obj = input.readObject();
 

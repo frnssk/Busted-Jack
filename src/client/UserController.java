@@ -87,13 +87,13 @@ public class UserController {
 		}
 	}
 	
-	public void connect(User user) {
-		try {
-			client.connect(user);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public void connect(User user) {
+//		try {
+//			client.connect(user);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 
 }
