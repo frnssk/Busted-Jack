@@ -24,7 +24,7 @@ public class UserInterface extends JPanel {
 	private JButton btnConfirmLogIn = new JButton("Login"); //Check user name and password and logs in  
 	private JButton btnGoToTable = new JButton("Go to table");//From main menu
 	private JButton btnCreateTable = new JButton("Create table");//From main menu
-	private JButton btnQuit = new JButton("Quit");//Sends form main menu back to log in screen 
+	private JButton btnLogOut = new JButton("Log out");//Sends form main menu back to log in screen 
 	private JButton btnAchievements = new JButton("Achievements");;//From main menu
 	private JButton btnRank = new JButton("Rank");//From main menu, shows current rank
 	private JButton btnEnterTable = new JButton("Go to table"); //Confirm after entering table code 
@@ -270,7 +270,7 @@ public class UserInterface extends JPanel {
 
 		cont.gridx = 0;
 		cont.gridy = 4;
-		pane.add(btnQuit,cont);
+		pane.add(btnLogOut,cont);
 
 		return pane;
 	}
@@ -540,7 +540,7 @@ public class UserInterface extends JPanel {
 	}
 
 	public void errorMessagePassword() {
-		JLabel errorMessage = new JLabel("Invalid password. Have to be between 6-12 characters");
+		JLabel errorMessage = new JLabel("Invalid password");
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
@@ -568,7 +568,7 @@ public class UserInterface extends JPanel {
 		btnConfirmLogIn.addActionListener(listener);
 		btnGoToTable.addActionListener(listener);
 		btnCreateTable.addActionListener(listener);
-		btnQuit.addActionListener(listener);
+		btnLogOut.addActionListener(listener);
 		btnAchievements.addActionListener(listener);
 		btnRank.addActionListener(listener);
 		btnEnterTable.addActionListener(listener);
@@ -606,7 +606,7 @@ public class UserInterface extends JPanel {
 			if(e.getSource() == btnCreateTable) {
 				updateUI(createTableScreen());
 			}
-			if(e.getSource() == btnQuit) {
+			if(e.getSource() == btnLogOut) {
 				updateUI(startScreen());
 			}
 			if(e.getSource() == btnAchievements) {
