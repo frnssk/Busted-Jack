@@ -77,6 +77,9 @@ public class UserController {
 		}else if(available.equals("LOGIN_SUCCES")) {
 			System.out.println("Inloggad!!!");
 			ui.updateUI(ui.mainMenuScreen());
+		}else if(available.equals("LOGIN_FAIL")) {
+			System.out.println("Felaktigt lösenord");
+			ui.errorMessagePassword();
 		}
 	}
 	
