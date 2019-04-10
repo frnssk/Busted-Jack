@@ -1,6 +1,12 @@
 package resources;
 
-public class GameInfo {
+import java.io.Serializable;
+
+public class GameInfo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int time;
 	private int rounds;
 	private int balance;
