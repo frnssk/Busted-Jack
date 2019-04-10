@@ -626,7 +626,7 @@ public class UserInterface extends JPanel {
 				int rounds = Integer.parseInt(tfRounds.getText());
 				int balance = Integer.parseInt(tfBalance.getText());
 				int minBet =  Integer.parseInt(tfMinBet.getText());
-				controller.sendNewTable(time, rounds, balance, minBet);
+//				controller.sendNewTable(time, rounds, balance, minBet);
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnMenu) {
