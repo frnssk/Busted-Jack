@@ -117,12 +117,7 @@ public class Server {
 //				Object obj = null;
 				while(true) {
 					try {
-//						try {
 						Object obj = input.readObject();
-						if((Integer)obj == -1) {
-							break;
-						}
-//						}catch(EOFException e) {}
 						if(obj instanceof Table) {
 							Table table = (Table)obj;
 							int roomID = table.getRoomID();
@@ -168,10 +163,10 @@ public class Server {
 							}
 						}
 
-					} catch (ClassNotFoundException | EOFException e) {
-						e.printStackTrace();
+					} catch (ClassNotFoundException | IOException e) {
+//						e.printStackTrace();
 						TextWindow.println("Client disconnected.");
-						break;
+//						break;
 					}
 				}
 
