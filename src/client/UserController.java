@@ -65,7 +65,7 @@ public class UserController {
 	
 	public void createGameInfo(int time, int rounds, int balance, int minimumBet) {
 		GameInfo gameInfo = new GameInfo(time, rounds, balance, minimumBet);
-		client.sendGameInfo();
+		client.sendGameInfo(gameInfo);
 	}
 	
 	/**

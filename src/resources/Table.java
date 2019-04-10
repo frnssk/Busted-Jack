@@ -14,7 +14,7 @@ public class Table implements Serializable {
 	private Shoe regularShoe = new Shoe(6);
 	private CheatShoe cheatShoe = new CheatShoe(6);
 	private DealerHand dealer;
-	private int roomID;
+	private TableID tableID;
 	
 	private ArrayList<Player> playerList = new ArrayList<>(); //Holds all the players for the game
 	
@@ -24,7 +24,7 @@ public class Table implements Serializable {
 		this.numberOfRounds = numberOfRounds;
 		this.startingMoney = startingMoney;
 		this.minimumBet = minimumBet;
-		this.roomID = 
+		this.tableID = new TableID();
 	}
 	
 	public void addPlayer(Player player) {
@@ -35,9 +35,7 @@ public class Table implements Serializable {
 		
 	}
 	
-	public int getRoomID() {
-		return roomID;
-	}
+	
 	
 	
 	

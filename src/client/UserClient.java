@@ -131,8 +131,13 @@ public class UserClient {
 	}
 
 	public void sendGameInfo(GameInfo gameInfo) {
-		output.writeObject(gameInfo);
-		output.flush();
+		try {
+			output.writeObject(gameInfo);
+			output.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	/**
 	 * Inner class that let the client listen for incoming data from the server
