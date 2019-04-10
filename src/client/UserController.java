@@ -49,10 +49,14 @@ public class UserController {
 			ui.setNextTitle(titles[5]);
 		}
 	}
+	public void createRegisterRequest(String username, char[] password) {
+		RegisterRequest request = new RegisterRequest(username, password);
+		client.sendRegisterRequest(request);
+	}
 	
-	public void sendNewTable(int time, int rounds, int balance, int minBet) {
-		Table table = new Table(time, rounds, balance, minBet);
-		client.sendTable(table);
+	public void createLoginRequest(String username, char[] password) {
+		LoginRequest request = new LoginRequest(username, password);
+		client.sendLoginRequest(request);
 	}
 	
 	/**
@@ -60,29 +64,29 @@ public class UserController {
 	 * Sleeps for 0.5 seconds while waiting for response from the server 
 	 * @param username -  a String with the entered user name
 	 */
-	public void checkNameAvailability(String username) {
-		client.checkNameAvailability(username);
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-	}
+//	public void checkNameAvailability(String username) {
+//		client.checkNameAvailability(username);
+//		try {
+//			Thread.sleep(500);
+//		} catch (InterruptedException e1) {
+//			e1.printStackTrace();
+//		}
+//	}
 	
 	/**
 	 * If user name comes back ok, checks if the user name fulfills the requirements.
 	 * Shows error message if name is taken 
 	 * @param available - an int that is checked and changes are made based on its outcome 
 	 */
-	public void setUsernameAvailability(int available) {
-		if(available == 2) {
-			nameOk = true;
-			client.checkPassword(ui.getPassword());
-
-		} else if(available == 1) {
-			ui.errorMessageUsername();
-		}
-	}
+//	public void setUsernameAvailability(int available) {
+//		if(available == 2) {
+//			nameOk = true;
+//			client.checkPassword(ui.getPassword());
+//
+//		} else if(available == 1) {
+//			ui.errorMessageUsername();
+//		}
+//	}
 	
 	/**
 	 * Checks if the password fulfills requirements.
