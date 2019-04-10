@@ -3,6 +3,7 @@ package server;
 import java.io.BufferedWriter;
 import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+
 import resources.*;
 
 /*
@@ -21,7 +23,7 @@ public class Server {
 
 	private LinkedList<User> registeredUsers = new LinkedList<>(); //LinkedList to hold all registered users
 	private HashMap<String, char[]> userPasswords = new HashMap<>();
-//	private UserHandler clients;
+	//	private UserHandler clients;
 	private ArrayList<Table> activeTables = new ArrayList<>();
 	private int roomIdCounter;
 	//	private LinkedList<Callback> listeners = new LinkedList<>();
@@ -30,8 +32,37 @@ public class Server {
 	 * Constructor to instantiate the server
 	 */
 	public Server(int port) {
-//		clients = new UserHandler();
+		//		clients = new UserHandler();
 		new ClientReceiver(port).start();
+	}
+
+	public void readUsersFromDatabase() {
+		User user;
+		boolean read = true;
+
+		try (FileInputStream fis = new FileInputStream("files/userlist.txt");
+				ObjectInputStream ois = new ObjectInputStream(fis)) {
+			while(read) {
+				user = (User) ois.readObject();
+				if(user != null) {
+					registeredUsers.add(user);
+					user = null;
+				} else {
+					read = false;
+				}
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void addUserToDatabase(User user) {
+		try(FileOutputStream fos = new FileOutputStream("files/userlist.txt");
+				ObjectOutputStream oos = new ObjectOutputStream(fos)){
+			oos.writeObject(user);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 
@@ -84,7 +115,7 @@ public class Server {
 		private User user;
 		private Object obj;
 		private boolean isOnline = true;
-//		private UserHandler userHandler;
+		//		private UserHandler userHandler;
 
 		public ClientHandler(Socket socket) throws IOException {
 			this.socket = socket;
@@ -100,7 +131,7 @@ public class Server {
 				ioException.printStackTrace();
 			}
 		}
-		
+
 		public boolean isUserRegistered(String name) {
 			for(int i = 0; i < registeredUsers.size(); i++) {
 				User compare = registeredUsers.get(i);
@@ -111,7 +142,7 @@ public class Server {
 			}
 			return false;
 		}
-		
+
 		public boolean passwordMatchUser(String username, char[] password) {
 			char[] array = userPasswords.get(username);
 			return Arrays.equals(array, password);
@@ -124,7 +155,7 @@ public class Server {
 				if(compareName.equals(name)) {
 					return false;
 				}
-				
+
 			}
 			return true;
 		}
@@ -160,6 +191,7 @@ public class Server {
 									temporary.setPassword(registerRequest.getPassword());
 									registeredUsers.add(temporary);
 									userPasswords.put(registerRequest.getUsername(), registerRequest.getPassword());
+									addUserToDatabase(temporary);
 									TextWindow.println("User-objekt skapat för " + registerRequest.getUsername());
 									choice = "USER_TRUE";
 								}else { 
@@ -200,11 +232,11 @@ public class Server {
 						else if(obj instanceof LogOutRequest) {
 							isOnline = false;
 							TextWindow.println("Client disconnected.");
-							
+
 						}else if(obj instanceof GameInfo) {
 							GameInfo gameInfo = (GameInfo)obj;
 							Table table = new Table(gameInfo.getTime(), gameInfo.getRounds(), gameInfo.getBalance(), gameInfo.getMinBet());
-							
+
 						}
 
 					} catch (ClassNotFoundException | IOException e) {
@@ -227,37 +259,37 @@ public class Server {
 	/*
 	 * @author RasmusOberg
 	 */
-//	private class UserHandler {
-//		private HashSet<User> activeUsers = new HashSet<>();
-//
-//		//connects a new client
-////		public synchronized void newUserConnect(User user) {
-////			if(userIsRegistered(user) == false) {
-////				registerNewUser(user);
-////			}
-////			addNewActiveUser(user);
-////		}
-//
-//		//adds new user to activeUsers-HashMap
-//		public synchronized void addNewActiveUser(User user) {
-//			activeUsers.add(user);
-//			TextWindow.println(user.getUsername() + " aktiv");
-//			updateActiveUsers();
-//		}
-//
-//		//returns whether or not a user is online
-//		public synchronized boolean userIsOnline(User user) {
-//			return activeUsers.contains(user);
-//		}
-//
-//		public void updateActiveUsers() {
-//			LinkedList<User> currentActiveUsers = new LinkedList<>();
-//			for(int i = 0; i < currentActiveUsers.size(); i++) {
-//				this.activeUsers.get(currentActiveUsers.get(i)).updateActiveUsers(currentActiveUsers);
-//			}
-//		}
-//
-//	}
+	//	private class UserHandler {
+	//		private HashSet<User> activeUsers = new HashSet<>();
+	//
+	//		//connects a new client
+	////		public synchronized void newUserConnect(User user) {
+	////			if(userIsRegistered(user) == false) {
+	////				registerNewUser(user);
+	////			}
+	////			addNewActiveUser(user);
+	////		}
+	//
+	//		//adds new user to activeUsers-HashMap
+	//		public synchronized void addNewActiveUser(User user) {
+	//			activeUsers.add(user);
+	//			TextWindow.println(user.getUsername() + " aktiv");
+	//			updateActiveUsers();
+	//		}
+	//
+	//		//returns whether or not a user is online
+	//		public synchronized boolean userIsOnline(User user) {
+	//			return activeUsers.contains(user);
+	//		}
+	//
+	//		public void updateActiveUsers() {
+	//			LinkedList<User> currentActiveUsers = new LinkedList<>();
+	//			for(int i = 0; i < currentActiveUsers.size(); i++) {
+	//				this.activeUsers.get(currentActiveUsers.get(i)).updateActiveUsers(currentActiveUsers);
+	//			}
+	//		}
+	//
+	//	}
 
 }
 
