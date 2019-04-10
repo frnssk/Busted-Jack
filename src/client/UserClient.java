@@ -21,7 +21,6 @@ public class UserClient {
 	private User user;
 	private boolean receiving = false;
 	private Connection connection;
-	private LinkedList<User> allRegisteredUsers;
 
 	
 	/**
@@ -79,31 +78,6 @@ public class UserClient {
 			setUser(user);
 		}
 
-	}
-
-	/**
-	 * Sends a user name to the server and make sure that user name is available 
-	 * @param username - String with the entered user name
-	 */
-	public void checkNameAvailability(String username) {
-		System.out.println("Sending name to server"); //For testing
-		try {
-			output.writeObject(username);
-			output.flush();
-			username = null;
-		} catch(IOException  e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void sendTable(Table table) {
-		try {
-			output.writeObject(table);
-			output.flush();
-			table = null;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void sendLoginRequest(LoginRequest request) {
