@@ -2,11 +2,8 @@ package resources;
 
 import java.io.Serializable;
 
-public class RegisterRequest implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2001217030614121593L;
+public class RegisterRequest{
+
 	private String username;
 	private char[] password;
 	
