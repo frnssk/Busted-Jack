@@ -98,6 +98,14 @@ public class UserClient {
 		}
 	}
 
+	public void sendLogOutRequest(LogOutRequest logOutRequest) {
+		try {
+			output.writeObject(logOutRequest);
+			output.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * Inner class that let the client listen for incoming data from the server
 	 * Runs on a separate thread 

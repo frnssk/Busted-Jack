@@ -606,6 +606,7 @@ public class UserInterface extends JPanel {
 				updateUI(createTableScreen());
 			}
 			if(e.getSource() == btnLogOut) {
+				controller.createLogOutRequest();
 				updateUI(startScreen());
 			}
 			if(e.getSource() == btnAchievements) {

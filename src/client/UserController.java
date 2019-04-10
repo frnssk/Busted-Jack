@@ -59,6 +59,10 @@ public class UserController {
 		client.sendLoginRequest(request);
 	}
 	
+	public void createLogOutRequest() {
+		client.sendLogOutRequest(new LogOutRequest());
+	}
+	
 	/**
 	 * If user name comes back ok, checks if the user name fulfills the requirements.
 	 * Shows error message if name is taken 
