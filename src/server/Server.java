@@ -21,7 +21,7 @@ public class Server {
 
 	private LinkedList<User> registeredUsers = new LinkedList<>(); //LinkedList to hold all registered users
 	private HashMap<String, char[]> userPasswords = new HashMap<>();
-	private UserHandler clients;
+//	private UserHandler clients;
 	private ArrayList<Table> activeTables = new ArrayList<>();
 	private int roomIdCounter;
 	//	private LinkedList<Callback> listeners = new LinkedList<>();
@@ -30,7 +30,7 @@ public class Server {
 	 * Constructor to instantiate the server
 	 */
 	public Server(int port) {
-		clients = new UserHandler();
+//		clients = new UserHandler();
 		new ClientReceiver(port).start();
 	}
 
@@ -83,7 +83,7 @@ public class Server {
 		private ObjectInputStream input;
 		private User user;
 		private Object obj;
-		private UserHandler userHandler;
+//		private UserHandler userHandler;
 
 		public ClientHandler(Socket socket) throws IOException {
 			this.socket = socket;
@@ -113,8 +113,7 @@ public class Server {
 		
 		public boolean passwordMatchUser(String username, char[] password) {
 			char[] array = userPasswords.get(username);
-			boolean pass = Arrays.equals(array, password);
-			return pass;
+			return Arrays.equals(array, password);
 		}
 
 		public boolean checkUsernameAvailability(String name) {
@@ -143,10 +142,13 @@ public class Server {
 				//				output = new ObjectOutputStream(socket.getOutputStream());
 				//				input = new ObjectInputStream(socket.getInputStream());
 				//				Object obj = null;
-				while(true) {
+				while(!Thread.interrupted()) {
 					try {
 						obj = input.readObject();
 						String choice = "";
+						/*
+						 * Registers new users
+						 */
 						if(obj instanceof RegisterRequest) {
 							RegisterRequest registerRequest = (RegisterRequest)obj;
 							if(checkUsernameAvailability(registerRequest.getUsername())) {
@@ -169,7 +171,11 @@ public class Server {
 							}
 							output.writeObject(choice);
 							output.flush();
-						}else if(obj instanceof LoginRequest) {
+						}
+						/*
+						 * Logins user
+						 */
+						else if(obj instanceof LoginRequest) {
 							choice = "";
 							LoginRequest loginRequest = (LoginRequest)obj;
 							if(isUserRegistered(loginRequest.getUsername())) {
@@ -188,55 +194,16 @@ public class Server {
 							}
 						}
 
-
-
-						//							if(obj instanceof String) {
-						//								name = (String)obj;
-						//								int a = 0;
-						//								if(registeredUsers.contains(name)) {
-						//									a = 1;
-						//									output.writeObject(a);
-						//									output.flush();
-						//									TextWindow.println(name + " finns redan.");
-						//								}else {
-						//									a = 2;
-						//									output.writeObject(a);
-						//									output.flush();
-						//									//								registeredUsers.add(name);
-						//									TextWindow.println(name + " är ledigt.");
-						//								}
-						//							}
-						//							if(obj instanceof char[]) {
-						//								char[] password = (char[])obj;
-						//								if(isPasswordOkay(password)) {
-						//									TextWindow.println(name + " har angett ett godkänt lösenord.");
-						//									User temporary = new User(name);
-						//									TextWindow.println("User-objekt skapat för " + name);
-						//									temporary.setPassword(password);
-						//									registeredUsers.add(temporary.getUsername());
-						//									TextWindow.println(name + " tilllagd i RegisteredUsers.");
-						//									int a = 3;
-						//									output.writeObject(a);
-						//									output.flush();
-						//									TextWindow.println("Hit kommer vi");
-						//								}else{
-						//									TextWindow.println(name + " har angett ett icke godkänt lösenord.");
-						//									int a = 4;
-						//									output.writeObject(a);
-						//									output.flush();
-						//								}
-						//							}
-
 					} catch (ClassNotFoundException | IOException e) {
 						e.printStackTrace();
 						TextWindow.println("Client disconnected.");
 						break;
 					}
 				}
+				TextWindow.println("DEAD");
 
 				//				userHandler.newClientConnect(user, this); 
 				//Adds this ClientHandler to the UserHandlerList of online users
-
 
 			}catch(Exception ioException) {
 				ioException.printStackTrace();
@@ -248,54 +215,37 @@ public class Server {
 	/*
 	 * @author RasmusOberg
 	 */
-	private class UserHandler {
-		private HashMap<User, ClientHandler> activeUsers = new HashMap<>();
-
-		//connects a new client
-		public synchronized void newClientConnect(User user, ClientHandler clientHandler) {
-			if(userIsRegistered(user) == false) {
-				registerNewUser(user);
-			}
-			addNewActiveUser(user, clientHandler);
-		}
-
-		//adds new user to activeUsers-HashMap
-		public synchronized void addNewActiveUser(User user, ClientHandler clientHandler) {
-			activeUsers.put(user, clientHandler);
-			TextWindow.println(user.getUsername() + " aktiv");
-			updateActiveUsers();
-		}
-
-		//register new user to registeredUsers-LinkedList
-		public synchronized void registerNewUser(User user) {
-			//			registeredUsers.add(user);
-			TextWindow.println(user.getUsername() + " registrerad");
-			updateActiveUsers();
-		}
-
-		////Return whether or not user already is registered
-		public synchronized boolean userIsRegistered(User user) {
-			return registeredUsers.contains(user);
-		}
-
-		//returns whether or not a user is online
-		public synchronized boolean userIsOnline(User user) {
-			return activeUsers.containsKey(user);
-		}
-
-		//		public synchronized LinkedList<User> getActiveUsers(){
-		//			LinkedList<User> currentActiveUsers = new LinkedList<>(activeUsers.keySet());
-		//			return currentActiveUsers;
-		//		}
-
-		public void updateActiveUsers() {
-			LinkedList<User> currentActiveUsers = new LinkedList<>();
-			for(int i = 0; i < currentActiveUsers.size(); i++) {
-				this.activeUsers.get(currentActiveUsers.get(i)).updateActiveUsers(currentActiveUsers);
-			}
-		}
-
-	}
+//	private class UserHandler {
+//		private HashSet<User> activeUsers = new HashSet<>();
+//
+//		//connects a new client
+////		public synchronized void newUserConnect(User user) {
+////			if(userIsRegistered(user) == false) {
+////				registerNewUser(user);
+////			}
+////			addNewActiveUser(user);
+////		}
+//
+//		//adds new user to activeUsers-HashMap
+//		public synchronized void addNewActiveUser(User user) {
+//			activeUsers.add(user);
+//			TextWindow.println(user.getUsername() + " aktiv");
+//			updateActiveUsers();
+//		}
+//
+//		//returns whether or not a user is online
+//		public synchronized boolean userIsOnline(User user) {
+//			return activeUsers.contains(user);
+//		}
+//
+//		public void updateActiveUsers() {
+//			LinkedList<User> currentActiveUsers = new LinkedList<>();
+//			for(int i = 0; i < currentActiveUsers.size(); i++) {
+//				this.activeUsers.get(currentActiveUsers.get(i)).updateActiveUsers(currentActiveUsers);
+//			}
+//		}
+//
+//	}
 
 }
 
