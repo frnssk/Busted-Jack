@@ -19,12 +19,12 @@ public class Table implements Serializable {
 	private ArrayList<Player> playerList = new ArrayList<>(); //Holds all the players for the game
 	
 	public Table(int numberOfMinutes, int numberOfRounds, int startingMoney, int minimumBet) {
-//		playerList.add(creator);
 //		this.numberOfPlayers = numberOfPlayers;
 		this.numberOfMinutes = numberOfMinutes;
 		this.numberOfRounds = numberOfRounds;
 		this.startingMoney = startingMoney;
 		this.minimumBet = minimumBet;
+		this.roomID = 
 	}
 	
 	public void addPlayer(Player player) {

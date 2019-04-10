@@ -193,9 +193,17 @@ public class Server {
 									TextWindow.println(loginRequest.getUsername() + " kan inte sitt lösenord HAHAHA");
 								}
 							}
-						}else if(obj instanceof LogOutRequest) {
+						}
+						/*
+						 * Disconnects the client
+						 */
+						else if(obj instanceof LogOutRequest) {
 							isOnline = false;
 							TextWindow.println("Client disconnected.");
+							
+						}else if(obj instanceof GameInfo) {
+							GameInfo gameInfo = (GameInfo)obj;
+							Table table = new Table(gameInfo.getTime(), gameInfo.getRounds(), gameInfo.getBalance(), gameInfo.getMinBet());
 							
 						}
 

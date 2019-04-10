@@ -614,6 +614,7 @@ public class UserInterface extends JPanel {
 				updateUI(joinScreen());
 			}
 			if(e.getSource() == btnCreateTable) {
+				controller.createGameInfo(tfTime.getText(), tfRounds.getText(), tfBalance.getText(), tfMinBet.getText());
 				updateUI(createTableScreen());
 			}
 			if(e.getSource() == btnLogOut) {

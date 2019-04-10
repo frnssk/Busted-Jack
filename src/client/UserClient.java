@@ -6,10 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
-import resources.LogOutRequest;
-import resources.LoginRequest;
-import resources.RegisterRequest;
-import resources.User;
+import resources.*;
 
 /**
  *  Class responsible for all connection to the server, from the user side.  
@@ -131,6 +128,11 @@ public class UserClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void sendGameInfo(GameInfo gameInfo) {
+		output.writeObject(gameInfo);
+		output.flush();
 	}
 	/**
 	 * Inner class that let the client listen for incoming data from the server

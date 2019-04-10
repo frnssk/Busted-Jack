@@ -63,6 +63,11 @@ public class UserController {
 		client.sendLogOutRequest(new LogOutRequest());
 	}
 	
+	public void createGameInfo(int time, int rounds, int balance, int minimumBet) {
+		GameInfo gameInfo = new GameInfo(time, rounds, balance, minimumBet);
+		client.sendGameInfo();
+	}
+	
 	/**
 	 * If user name comes back ok, checks if the user name fulfills the requirements.
 	 * Shows error message if name is taken 
