@@ -60,33 +60,22 @@ public class UserController {
 	}
 	
 	/**
-	 * Send the entered user name form the UI to the client to check availability 
-	 * Sleeps for 0.5 seconds while waiting for response from the server 
-	 * @param username -  a String with the entered user name
-	 */
-//	public void checkNameAvailability(String username) {
-//		client.checkNameAvailability(username);
-//		try {
-//			Thread.sleep(500);
-//		} catch (InterruptedException e1) {
-//			e1.printStackTrace();
-//		}
-//	}
-	
-	/**
 	 * If user name comes back ok, checks if the user name fulfills the requirements.
 	 * Shows error message if name is taken 
 	 * @param available - an int that is checked and changes are made based on its outcome 
 	 */
-//	public void setUsernameAvailability(int available) {
-//		if(available == 2) {
-//			nameOk = true;
-//			client.checkPassword(ui.getPassword());
-//
-//		} else if(available == 1) {
-//			ui.errorMessageUsername();
-//		}
-//	}
+	public void checkCreatedUser(String available) {
+		if(available.equals("USERNAME_FALSE")) {
+			System.out.println("Username: ej ledigt");
+			ui.errorMessageUsername();
+		}else if(available.equals("PASSWORD_FALSE")) {
+			System.out.println("Felaktigt lösenord");
+			ui.errorMessagePassword();
+		}else if(available.equals("USER_TRUE")) {
+			System.out.println("Usernamne och lösenord OK");
+			ui.updateUI(ui.mainMenuScreen());
+		}
+	}
 	
 	/**
 	 * Checks if the password fulfills requirements.
@@ -108,6 +97,6 @@ public class UserController {
 			e.printStackTrace();
 		}
 	}
-	
+
 
 }

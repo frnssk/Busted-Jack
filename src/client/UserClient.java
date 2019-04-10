@@ -13,7 +13,7 @@ import resources.*;
  */
 public class UserClient {
 	private Socket socket;
-	private UserController userController;
+	private UserController controller;
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	private String ip;
@@ -52,7 +52,7 @@ public class UserClient {
 	}
 
 	public void setUserController(UserController userController) {
-		this.userController = userController;
+		this.controller = userController;
 	}
 
 	/**
@@ -95,22 +95,6 @@ public class UserClient {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * Sends the given password to the server to make sure it fulfills the requirement for a password
-	 * @param password - a char array with the entered password
-	 */
-	public void checkPassword(char[] password) {
-		System.out.println("Sending password to server"); //For testing
-		try {
-			output.writeObject(password);
-			output.flush();
-			password = null;
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 
 	public void sendTable(Table table) {
 		try {
@@ -155,15 +139,7 @@ public class UserClient {
 					//For checking user name availability
 					if(obj instanceof String) {
 						String available = (String) obj;
-						if(available.equals("USERNAME_FALSE")) {
-							System.out.println("Username: ej ledigt");
-						}else if(available.equals("PASSWORD_FALSE")) {
-							System.out.println("Felaktigt lösenord");
-//							userController.setUsernameAvailability(available);
-						}else if(available.equals("USER_TRUE")) {
-							System.out.println("Usernamne och lösenord OK");
-//							userController.setPassword(available);
-						}
+						controller.checkCreatedUser(available);
 					}
 
 				}catch(IOException | ClassNotFoundException exception) {
