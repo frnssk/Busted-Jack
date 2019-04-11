@@ -33,15 +33,17 @@ public class Table implements Serializable {
 	public void setTableId(int id) {
 		this.tableID = id;
 	}
+	
+	public int getTableId() {
+		return tableID;
+	}
+	
+	public int getNumberOfPlayers() {
+		return this.playerList.size();
+	}
+	
 	public void run() {
 		
 	}
-	
-	
-	
-	
-	
-	
-	
 
 }

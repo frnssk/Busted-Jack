@@ -26,7 +26,9 @@ public class Server {
 	private HashMap<String, char[]> userPasswords = new HashMap<>(); //HashMap that holds all usernames and passwords
 	private UserHandler userHandler;
 	private ArrayList<Table> activeTables = new ArrayList<>();
+	private HashMap<Integer, Table> activeTables2 = new HashMap<>();
 	private int tableIdCounter;
+
 	//	private LinkedList<Callback> listeners = new LinkedList<>();
 
 	/*
@@ -37,10 +39,14 @@ public class Server {
 		new ClientReceiver(port).start();
 	}
 
-
+	/*
+	 * Sets a unique ID to specific table
+	 */
 	public synchronized void setTableId(Table table) {
 		table.setTableId(tableIdCounter);
+		activeTables2.put(tableIdCounter, table);
 		tableIdCounter++;
+		activeTables.add(table);
 	}
 
 	public void readUsersFromDatabase() {
@@ -67,9 +73,14 @@ public class Server {
 		try(FileOutputStream fos = new FileOutputStream("files/userlist.txt");
 				ObjectOutputStream oos = new ObjectOutputStream(fos)){
 			oos.writeObject(user);
+			oos.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public boolean doesTableExist(int tableId) {
+		return activeTables2.containsKey(tableId);
 	}
 
 	/*
@@ -128,7 +139,7 @@ public class Server {
 			start();
 			TextWindow.println("ClientHandler started");
 		}
-		
+
 		public void updateActiveUsers(LinkedList<User> activeUsers) {
 			try {
 				output.writeObject(activeUsers);
@@ -138,7 +149,7 @@ public class Server {
 			}
 		}
 
-		
+
 		/*
 		 * Checks whether or not a username is registered
 		 */
@@ -153,7 +164,7 @@ public class Server {
 			return false;
 		}
 
-		
+
 		/*
 		 * Checks if the given password matches the password that is stored
 		 */
@@ -176,7 +187,7 @@ public class Server {
 			}
 			return true;
 		}
-		
+
 		public User getUser(String name) {
 			for(int i = 0; i < registeredUsers.size(); i++) {
 				User compare = registeredUsers.get(i);
@@ -198,7 +209,7 @@ public class Server {
 				return true;
 			}
 		}
-		
+
 
 		/*
 		 * Keeps on running as long as the client is still connected
@@ -211,7 +222,7 @@ public class Server {
 					try {
 						obj = input.readObject();
 						String choice = "";
-						
+
 						/**
 						 * This if-statement is used to register new users, so they
 						 * are able to login and play the game
@@ -229,7 +240,11 @@ public class Server {
 
 									addUserToDatabase(temporary);
 									TextWindow.println("User-objekt skapat för " + registerRequest.getUsername());//Assistance
-                  
+
+									//Adds the user and client to the UserHandler-HashMap
+									UserHandler.newUserConnect(temporary, this); 
+									TextWindow.println(temporary.getUsername() + " tillagd i UserHandler.");
+
 									choice = "USER_TRUE";
 								}else { 
 									TextWindow.println(registerRequest.getUsername() + " har angett ett icke godkänt lösenord."); //Assistance
@@ -242,7 +257,7 @@ public class Server {
 							output.writeObject(choice);
 							output.flush();
 						}
-						
+
 						/*
 						 * Logins user
 						 */
@@ -256,8 +271,10 @@ public class Server {
 									TextWindow.println(loginRequest.getUsername() + " är inloggad."); //Assistance
 									output.writeObject(choice);
 									output.flush();
-									
-									//get User-object for the name and add in userHandler.addNewActiveUser
+
+									//Adds the user and client to the UserHandler-HashMap
+									User user = getUser(loginRequest.getUsername());
+									userHandler.addNewActiveUser(user, this);
 								}else {
 									choice = "LOGIN_FAIL";
 									output.writeObject(choice);
@@ -270,10 +287,12 @@ public class Server {
 						 * Disconnects the client, and stops the current clienthandler-loop
 						 */
 						else if(obj instanceof LogOutRequest) {
+							LogOutRequest logout = (LogOutRequest)obj;
 							isOnline = false;
 							TextWindow.println("Client disconnected.");
-
-							
+							String name = logout.getUserName();
+							User user = getUser(name);
+							userHandler.removeActiveUser(user);
 						}
 						/*
 						 * Take the information stored in the GameInfo-object, extracts it and creates a new Table-object
@@ -283,6 +302,28 @@ public class Server {
 							Table table = new Table(gameInfo.getTime(), gameInfo.getRounds(), gameInfo.getBalance(), gameInfo.getMinBet());
 							setTableId(table);
 						}
+						/*
+						 * Adds players to a table, if it exists
+						 */
+						else if(obj instanceof Integer) {
+							int tableId = (Integer)obj;
+							if(doesTableExist(tableId)) {
+								TextWindow.println("Bord med id: " + tableId + " finns.");
+								//write join to client
+								output.writeObject("");
+								Table table = activeTables2.get(tableId);
+								if(table.getNumberOfPlayers() < 5) {
+									User user = UserHandler.getUser(this);
+									Player player = new Player(user.getUsername());
+									table.addPlayer(player);
+									TextWindow.println(player.getUsername() + " tillagd på Table " + table.getTableId());
+								}
+							}else {
+								TextWindow.println("Bord med id: " + tableId + " finns ej.");
+							}
+							
+							TextWindow.println("GREAT SUCCES, TWO THUMBS UP - BORAT STYLE");
+						}
 
 					} catch (ClassNotFoundException | IOException e) {
 						e.printStackTrace();
@@ -290,9 +331,6 @@ public class Server {
 					}
 				}
 				TextWindow.println("DEAD");
-
-				userHandler.newUserConnect(user, this); 
-//				Adds this ClientHandler to the UserHandlerList of online users
 
 			}catch(Exception ioException) {
 				ioException.printStackTrace();
@@ -305,28 +343,44 @@ public class Server {
 	 * @author RasmusOberg
 	 */
 
-	private class UserHandler {
-		private HashMap<User, ClientHandler> activeUsers = new HashMap<>();
+	private static class UserHandler {
+		private static HashMap<ClientHandler, User> activeUsers = new HashMap<>();
 
 		//connects a new client
-		public synchronized void newUserConnect(User user, ClientHandler clientHandler) {
-			activeUsers.put(user, clientHandler);
+		public synchronized static void newUserConnect(User user, ClientHandler clientHandler) {
+			activeUsers.put(clientHandler, user);
 		}
 
 		//adds new user to activeUsers-HashMap
-		public synchronized void addNewActiveUser(User user) {
-//			activeUsers.add(user);
-			TextWindow.println(user.getUsername() + " aktiv");
-			updateActiveUsers();
+		public synchronized static void addNewActiveUser(User user, ClientHandler clientHandler) {
+			activeUsers.put(clientHandler, user);
+			TextWindow.println("NEW LOGIN = " + user.getUsername() + " aktiv");
+			//			updateActiveUsers();
+		}
+		
+		public synchronized static User getUser(ClientHandler clientHandler) {
+			return activeUsers.get(clientHandler);
 		}
 
-		//returns whether or not a user is online
-//		public synchronized boolean userIsOnline(User user) {
-//			return activeUsers.contains(user);
+		public synchronized static void removeActiveUser(User user) {
+			activeUsers.remove(user);
+			//updateActiveUsers();
+		}
+
+		//	returns whether or not a user is online
+		public synchronized static boolean isUserOnline(User user) {
+			return activeUsers.containsKey(user);
+		}
+
+		/*
+		 * returns the clienthandler connected to a specific user
+		 */
+//		public synchronized static ClientHandler getClientHandler(User user) {
+//			return activeUsers.get(user);
 //		}
 
 		public void updateActiveUsers() {
-			
+
 		}
 
 	}

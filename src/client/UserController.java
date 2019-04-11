@@ -59,13 +59,17 @@ public class UserController {
 		client.sendLoginRequest(request);
 	}
 	
-	public void createLogOutRequest() {
-		client.sendLogOutRequest(new LogOutRequest());
+	public void createLogOutRequest(String name) {
+		client.sendLogOutRequest(new LogOutRequest(name));
 	}
 	
 	public void createGameInfo(int time, int rounds, int balance, int minimumBet) {
 		GameInfo gameInfo = new GameInfo(time, rounds, balance, minimumBet);
 		client.sendGameInfo(gameInfo);
+	}
+	
+	public void checkTableId(int tableId) {
+		client.checkTableId(tableId);
 	}
 	
 	/**

@@ -1,12 +1,16 @@
 package client;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 
-import resources.*;
+import resources.GameInfo;
+import resources.LogOutRequest;
+import resources.LoginRequest;
+import resources.RegisterRequest;
+import resources.User;
 
 /**
  *  Class responsible for all connection to the server, from the user side.  
@@ -21,8 +25,9 @@ public class UserClient {
 	private String ip;
 	private int port;
 	private User user;
-	private boolean receiving = false;
+	private boolean receiving = true;
 	private Connection connection;
+	private Object obj;
 
 
 	/**
@@ -70,24 +75,24 @@ public class UserClient {
 			}
 			try {
 				connection = new Connection(socket);
+				connection.start();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			connection.start();
 			receiving = true;
 		}
-//		try {
-//			socket = new Socket(ip, port);
-//			output = new ObjectOutputStream(socket.getOutputStream());
-//			input = new ObjectInputStream(socket.getInputStream());
-//			receiving = true;
-//		}catch(IOException ioException) {
-//			ioException.printStackTrace();
-//		}
-//		if(connection == null) {
-//			connection = new Connection(socket);
-//			connection.start();
-//		}
+		//		try {
+		//			socket = new Socket(ip, port);
+		//			output = new ObjectOutputStream(socket.getOutputStream());
+		//			input = new ObjectInputStream(socket.getInputStream());
+		//			receiving = true;
+		//		}catch(IOException ioException) {
+		//			ioException.printStackTrace();
+		//		}
+		//		if(connection == null) {
+		//			connection = new Connection(socket);
+		//			connection.start();
+		//		}
 	}
 
 	public void disconnect() {
@@ -137,8 +142,19 @@ public class UserClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
+
+	public void checkTableId(int tableId) {
+		try {
+			output.writeObject(tableId);
+			output.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	/**
 	 * Inner class that let the client listen for incoming data from the server
 	 * Runs on a separate thread 
@@ -146,7 +162,7 @@ public class UserClient {
 	 *
 	 */
 	private class Connection extends Thread {
-	
+
 		public Connection(Socket socket) throws IOException {
 			output = new ObjectOutputStream(socket.getOutputStream());
 			input = new ObjectInputStream(socket.getInputStream());
@@ -155,7 +171,7 @@ public class UserClient {
 		public void run() {
 			while(receiving) {
 				try {
-					Object obj = input.readObject();
+					obj = input.readObject();
 
 					//For checking user name availability
 					if(obj instanceof String) {

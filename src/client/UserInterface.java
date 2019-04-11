@@ -602,15 +602,14 @@ public class UserInterface extends JPanel {
 			}
 			if(e.getSource() == btnConfirmUser) {
 				controller.createRegisterRequest(tfUsernameCreate.getText(), pfPasswordCreate.getPassword());
-				System.out.println("test");
 				strUsername = tfUsernameCreate.getText();
 			}
 			if(e.getSource() == btnConfirmLogIn) {
 				controller.createLoginRequest(tfUsernameLogIn.getText(), pfPasswordLogIn.getPassword());
 				strUsername = tfUsernameLogIn.getText(); //During development to show user name in menu
-//				updateUI(mainMenuScreen());
 			}
 			if(e.getSource() == btnGoToTable) {
+				
 				updateUI(joinScreen());
 			}
 			if(e.getSource() == btnCreateTable) {
@@ -618,7 +617,7 @@ public class UserInterface extends JPanel {
 				updateUI(createTableScreen());
 			}
 			if(e.getSource() == btnLogOut) {
-				controller.createLogOutRequest();
+				controller.createLogOutRequest(strUsername);
 				updateUI(startScreen());
 			}
 			if(e.getSource() == btnAchievements) {
@@ -628,6 +627,7 @@ public class UserInterface extends JPanel {
 				updateUI(rankScreen());
 			}
 			if(e.getSource() == btnEnterTable) {
+				controller.checkTableId(Integer.parseInt(tfRoomCode.getText()));
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnRandomTable) {
