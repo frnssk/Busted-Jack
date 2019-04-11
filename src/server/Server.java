@@ -242,7 +242,7 @@ public class Server {
 						else if(obj instanceof GameInfo) {
 							GameInfo gameInfo = (GameInfo)obj;
 							Table table = new Table(gameInfo.getTime(), gameInfo.getRounds(), gameInfo.getBalance(), gameInfo.getMinBet());
-							table.setTableId(tableIdCounter);
+							setTableId(table);
 						}
 
 					} catch (ClassNotFoundException | IOException e) {
@@ -275,15 +275,15 @@ public class Server {
 
 		//adds new user to activeUsers-HashMap
 		public synchronized void addNewActiveUser(User user) {
-			activeUsers.add(user);
+//			activeUsers.add(user);
 			TextWindow.println(user.getUsername() + " aktiv");
 			updateActiveUsers();
 		}
 
 		//returns whether or not a user is online
-		public synchronized boolean userIsOnline(User user) {
-			return activeUsers.contains(user);
-		}
+//		public synchronized boolean userIsOnline(User user) {
+//			return activeUsers.contains(user);
+//		}
 
 		public void updateActiveUsers() {
 			
