@@ -22,6 +22,10 @@ public class User implements Serializable {
 		this.password = password;
 	}
 	
+	public char[] getPassword() {
+		return password;
+	}
+	
 	public void setRating(int rating) {
 		this.rating = rating;
 	}

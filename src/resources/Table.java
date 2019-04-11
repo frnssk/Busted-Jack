@@ -11,10 +11,11 @@ public class Table implements Serializable {
 	private int numberOfRounds;
 	private int startingMoney;
 	private int minimumBet;
-	private Shoe regularShoe = new Shoe(6);
-	private CheatShoe cheatShoe = new CheatShoe(6);
+	private Shoe regularShoe;
+	private CheatShoe cheatShoe;
 	private DealerHand dealer;
 	private int tableID;
+	private boolean tableRunning;
 	
 	private ArrayList<Player> playerList = new ArrayList<>(); //Holds all the players for the game
 	
@@ -24,10 +25,17 @@ public class Table implements Serializable {
 		this.numberOfRounds = numberOfRounds;
 		this.startingMoney = startingMoney;
 		this.minimumBet = minimumBet;
+		cheatShoe = new CheatShoe(6);
+		regularShoe = new Shoe(6);
+		tableRunning = false;
 	}
 	
 	public void addPlayer(Player player) {
 		playerList.add(player);
+	}
+	
+	public boolean checkTableStarted() {
+		return tableRunning;
 	}
 	
 	public void setTableId(int id) {
@@ -43,7 +51,13 @@ public class Table implements Serializable {
 	}
 	
 	public void run() {
-		
+		startGame();
+	}
+	
+	public void startGame() {
+		for(int i = 0; i < playerList.size(); i++) {
+			playerList.get(i).setStartingBalance(startingMoney);
+		}
 	}
 
 }

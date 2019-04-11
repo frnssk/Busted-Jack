@@ -1,20 +1,26 @@
 package server;
 
-import java.io.BufferedWriter;
-import java.io.EOFException;
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 
-import resources.*;
+import resources.GameInfo;
+import resources.LogOutRequest;
+import resources.LoginRequest;
+import resources.Player;
+import resources.RegisterRequest;
+import resources.Table;
+import resources.User;
 
 /*
  * @author RasmusOberg
@@ -37,6 +43,7 @@ public class Server {
 	public Server(int port) {
 		//		clients = new UserHandler();
 		new ClientReceiver(port).start();
+		readObjectFromFile();
 	}
 
 	/*
@@ -48,26 +55,48 @@ public class Server {
 		tableIdCounter++;
 		activeTables.add(table);
 	}
-
+	
 	public void readUsersFromDatabase() {
 		User user;
 		boolean read = true;
-
-		try (FileInputStream fis = new FileInputStream("files/userlist.txt");
-				ObjectInputStream ois = new ObjectInputStream(fis)) {
-			while(read) {
-				user = (User) ois.readObject();
-				if(user != null) {
-					registeredUsers.add(user);
-					user = null;
-				} else {
-					read = false;
-				}
-			}
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		String filename = "files/userlist.txt";
+		String line = null;	
+		//		try (FileInputStream fis = new FileInputStream("files/userlist.txt");
+		//				InputStreamReader inputReader = new InputStreamReader(fis)) {
+		//			while(read) {
+		//				user = (User) inputReader.read
+		////				TextWindow.println(user.getUsername());
+		//				if(user != null) {
+		//					registeredUsers.add(user);
+		//					user = null;
+		//				} else {
+		//					read = false;
+		//				}
+		//			}
+		//		} catch (IOException | ClassNotFoundException e) {
+		//			e.printStackTrace();
+		//		}
 	}
+	public User readObjectFromFile() {
+		 
+        try {
+            FileInputStream fileIn = new FileInputStream("files/userlist.txt");
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+ 
+            User user = (User)objectIn.readObject();
+//            User user = (User)obj;
+            registeredUsers.add(user);
+            userPasswords.put(user.getUsername(), user.getPassword());
+            
+            System.out.println(registeredUsers.getFirst().getUsername());
+            System.out.println("The Object has been read from the file");
+            objectIn.close();
+            return user;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 
 	public void addUserToDatabase(User user) {
 		try(FileOutputStream fos = new FileOutputStream("files/userlist.txt");
@@ -237,7 +266,6 @@ public class Server {
 									temporary.setPassword(registerRequest.getPassword());
 									registeredUsers.add(temporary);
 									userPasswords.put(registerRequest.getUsername(), registerRequest.getPassword());
-
 									addUserToDatabase(temporary);
 									TextWindow.println("User-objekt skapat för " + registerRequest.getUsername());//Assistance
 
@@ -294,6 +322,7 @@ public class Server {
 							User user = getUser(name);
 							userHandler.removeActiveUser(user);
 						}
+
 						/*
 						 * Take the information stored in the GameInfo-object, extracts it and creates a new Table-object
 						 */
@@ -309,19 +338,20 @@ public class Server {
 							int tableId = (Integer)obj;
 							if(doesTableExist(tableId)) {
 								TextWindow.println("Bord med id: " + tableId + " finns.");
-								//write join to client
-								output.writeObject("");
+								choice = "TABLE_TRUE";
 								Table table = activeTables2.get(tableId);
-								if(table.getNumberOfPlayers() < 5) {
+								if(table.getNumberOfPlayers() < 5 && !table.checkTableStarted()) {
 									User user = UserHandler.getUser(this);
 									Player player = new Player(user.getUsername());
 									table.addPlayer(player);
 									TextWindow.println(player.getUsername() + " tillagd på Table " + table.getTableId());
 								}
 							}else {
+								choice = "TABLE_FALSE";
 								TextWindow.println("Bord med id: " + tableId + " finns ej.");
 							}
-							
+							output.writeObject(choice);
+							output.flush();
 							TextWindow.println("GREAT SUCCES, TWO THUMBS UP - BORAT STYLE");
 						}
 
@@ -357,7 +387,7 @@ public class Server {
 			TextWindow.println("NEW LOGIN = " + user.getUsername() + " aktiv");
 			//			updateActiveUsers();
 		}
-		
+
 		public synchronized static User getUser(ClientHandler clientHandler) {
 			return activeUsers.get(clientHandler);
 		}
@@ -375,9 +405,9 @@ public class Server {
 		/*
 		 * returns the clienthandler connected to a specific user
 		 */
-//		public synchronized static ClientHandler getClientHandler(User user) {
-//			return activeUsers.get(user);
-//		}
+		//		public synchronized static ClientHandler getClientHandler(User user) {
+		//			return activeUsers.get(user);
+		//		}
 
 		public void updateActiveUsers() {
 

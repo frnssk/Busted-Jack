@@ -175,7 +175,7 @@ public class UserClient {
 
 					//For checking user name availability
 					if(obj instanceof String) {
-						String available = (String) obj;
+						String available = (String) obj; //byta namn? används till mer än att kolla namn
 						controller.checkCreatedUser(available);
 					}
 

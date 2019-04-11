@@ -93,6 +93,12 @@ public class UserController {
 		}else if(available.equals("LOGIN_FAIL")) {
 			System.out.println("Felaktigt lösenord");
 			ui.errorMessagePassword();
+		}else if(available.equals("TABLE_TRUE")){
+			System.out.println("RoomId ok");
+			//Update ui
+		}else if(available.equals("TABLE_FALSE")) {
+			System.out.println("RoomId inte ok");
+			//update ui
 		}
 	}
 	

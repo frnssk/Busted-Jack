@@ -609,11 +609,9 @@ public class UserInterface extends JPanel {
 				strUsername = tfUsernameLogIn.getText(); //During development to show user name in menu
 			}
 			if(e.getSource() == btnGoToTable) {
-				
 				updateUI(joinScreen());
 			}
 			if(e.getSource() == btnCreateTable) {
-				controller.createGameInfo(Integer.parseInt(tfTime.getText()), Integer.parseInt(tfRounds.getText()), Integer.parseInt(tfBalance.getText()), Integer.parseInt(tfMinBet.getText()));
 				updateUI(createTableScreen());
 			}
 			if(e.getSource() == btnLogOut) {
@@ -634,6 +632,7 @@ public class UserInterface extends JPanel {
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnConfirmTable) {
+				controller.createGameInfo(Integer.parseInt(tfTime.getText()), Integer.parseInt(tfRounds.getText()), Integer.parseInt(tfBalance.getText()), Integer.parseInt(tfMinBet.getText()));
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnMenu) {
