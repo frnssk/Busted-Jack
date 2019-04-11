@@ -1,6 +1,7 @@
 package server;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
-
 import resources.GameInfo;
 import resources.LogOutRequest;
 import resources.LoginRequest;
@@ -28,7 +28,6 @@ import resources.User;
 public class Server {
 
 	private LinkedList<User> registeredUsers = new LinkedList<>(); //LinkedList to hold all registered users
-
 	private HashMap<String, char[]> userPasswords = new HashMap<>(); //HashMap that holds all usernames and passwords
 	private UserHandler userHandler;
 	private ArrayList<Table> activeTables = new ArrayList<>();
@@ -43,7 +42,7 @@ public class Server {
 	public Server(int port) {
 		//		clients = new UserHandler();
 		new ClientReceiver(port).start();
-		readObjectFromFile();
+		readUsersFromFile();
 	}
 
 	/*
@@ -55,59 +54,54 @@ public class Server {
 		tableIdCounter++;
 		activeTables.add(table);
 	}
-	
-	public void readUsersFromDatabase() {
-		User user;
-		boolean read = true;
-		String filename = "files/userlist.txt";
-		String line = null;	
-		//		try (FileInputStream fis = new FileInputStream("files/userlist.txt");
-		//				InputStreamReader inputReader = new InputStreamReader(fis)) {
-		//			while(read) {
-		//				user = (User) inputReader.read
-		////				TextWindow.println(user.getUsername());
-		//				if(user != null) {
-		//					registeredUsers.add(user);
-		//					user = null;
-		//				} else {
-		//					read = false;
-		//				}
-		//			}
-		//		} catch (IOException | ClassNotFoundException e) {
-		//			e.printStackTrace();
-		//		}
-	}
-	public User readObjectFromFile() {
-		 
-        try {
-            FileInputStream fileIn = new FileInputStream("files/userlist.txt");
-            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
- 
-            User user = (User)objectIn.readObject();
-//            User user = (User)obj;
-            registeredUsers.add(user);
-            userPasswords.put(user.getUsername(), user.getPassword());
-            
-            System.out.println(registeredUsers.getFirst().getUsername());
-            System.out.println("The Object has been read from the file");
-            objectIn.close();
-            return user;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
 
-	public void addUserToDatabase(User user) {
-		try(FileOutputStream fos = new FileOutputStream("files/userlist.txt");
+	/*
+	 * Used every time the server starts to read in all the registered users
+	 */
+	public void readUsersFromFile() {
+		try {
+			FileInputStream fileIn = new FileInputStream("files/userlist.dat");
+			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+			int counter = 0;
+			try {
+				while(counter < 100) {
+					User user = (User)objectIn.readObject();
+					registeredUsers.add(user);
+					userPasswords.put(user.getUsername(), user.getPassword());
+					System.out.println(user.getUsername());
+					objectIn = new ObjectInputStream(fileIn);
+					counter++;
+				}
+			}catch(EOFException e) {
+
+			}
+		}catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
+	}
+
+	/*
+	 * Called every time a new user i registered, to keep the offline-list of users up to date
+	 */
+	public void updateUserDatabase(User user) {
+		try(FileOutputStream fos = new FileOutputStream("files/userlist.dat", true);
 				ObjectOutputStream oos = new ObjectOutputStream(fos)){
+			registeredUsers.add(user);
 			oos.writeObject(user);
 			oos.flush();
+			for(int i = 0; i < registeredUsers.size(); i++) {
+				System.out.println(registeredUsers.get(i).getUsername());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	/*
+	 * Used when a user tries to join a table
+	 * makes sure a user can't join a table that doesn't exist
+	 */
 	public boolean doesTableExist(int tableId) {
 		return activeTables2.containsKey(tableId);
 	}
@@ -169,6 +163,9 @@ public class Server {
 			TextWindow.println("ClientHandler started");
 		}
 
+		/*
+		 * Never used
+		 */
 		public void updateActiveUsers(LinkedList<User> activeUsers) {
 			try {
 				output.writeObject(activeUsers);
@@ -180,7 +177,7 @@ public class Server {
 
 
 		/*
-		 * Checks whether or not a username is registered
+		 * Checks whether or not a user is registered
 		 */
 		public boolean isUserRegistered(String name) {
 			for(int i = 0; i < registeredUsers.size(); i++) {
@@ -196,6 +193,7 @@ public class Server {
 
 		/*
 		 * Checks if the given password matches the password that is stored
+		 * Used to log in users
 		 */
 		public boolean passwordMatchUser(String username, char[] password) {
 			char[] array = userPasswords.get(username);
@@ -204,6 +202,7 @@ public class Server {
 
 		/*
 		 * Checks whether or not a username is already in use
+		 * Used to make sure a new user doesn't take an existing users name
 		 */
 		public boolean checkUsernameAvailability(String name) {
 			for(int i = 0; i < registeredUsers.size(); i++) {
@@ -217,6 +216,9 @@ public class Server {
 			return true;
 		}
 
+		/*
+		 * 
+		 */
 		public User getUser(String name) {
 			for(int i = 0; i < registeredUsers.size(); i++) {
 				User compare = registeredUsers.get(i);
@@ -242,7 +244,7 @@ public class Server {
 
 		/*
 		 * Keeps on running as long as the client is still connected
-		 * Reads objects from the client and depending on the type of object - the server acts accordingly
+		 * Reads objects from the client and depending on the type of object the server acts accordingly
 		 */
 		public void run() {
 			try(ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
@@ -264,14 +266,14 @@ public class Server {
 									TextWindow.println((registerRequest.getUsername()) + " har angett ett godkänt lösenord."); //Assistance
 									User temporary = new User(registerRequest.getUsername());
 									temporary.setPassword(registerRequest.getPassword());
-									registeredUsers.add(temporary);
+									//registeredUsers.add(temporary); //currently used elsewhere (in the uspdateUserDatabase())
 									userPasswords.put(registerRequest.getUsername(), registerRequest.getPassword());
-									addUserToDatabase(temporary);
-									TextWindow.println("User-objekt skapat för " + registerRequest.getUsername());//Assistance
+									updateUserDatabase(temporary);
+//									TextWindow.println("User-objekt skapat för " + registerRequest.getUsername());//Assistance
 
 									//Adds the user and client to the UserHandler-HashMap
 									UserHandler.newUserConnect(temporary, this); 
-									TextWindow.println(temporary.getUsername() + " tillagd i UserHandler.");
+//									TextWindow.println(temporary.getUsername() + " tillagd i UserHandler.");
 
 									choice = "USER_TRUE";
 								}else { 
@@ -296,7 +298,7 @@ public class Server {
 								TextWindow.println(loginRequest.getUsername() + " finns."); //Assistance
 								if(passwordMatchUser(loginRequest.getUsername(), loginRequest.getPassword())){
 									choice = "LOGIN_SUCCES";
-									TextWindow.println(loginRequest.getUsername() + " är inloggad."); //Assistance
+//									TextWindow.println(loginRequest.getUsername() + " är inloggad."); //Assistance
 									output.writeObject(choice);
 									output.flush();
 
@@ -379,12 +381,13 @@ public class Server {
 		//connects a new client
 		public synchronized static void newUserConnect(User user, ClientHandler clientHandler) {
 			activeUsers.put(clientHandler, user);
+			TextWindow.println("NEW USER = " + user.getUsername() + " är nu registrerad.");
 		}
 
 		//adds new user to activeUsers-HashMap
 		public synchronized static void addNewActiveUser(User user, ClientHandler clientHandler) {
 			activeUsers.put(clientHandler, user);
-			TextWindow.println("NEW LOGIN = " + user.getUsername() + " aktiv");
+			TextWindow.println("NEW LOGIN = " + user.getUsername() + " är aktiv.");
 			//			updateActiveUsers();
 		}
 
