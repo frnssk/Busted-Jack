@@ -4,6 +4,7 @@ import java.awt.*;
 import resources.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
 
@@ -67,8 +68,9 @@ public class UserInterface extends JPanel {
 
 	private String strUsername; //During development to show user name in menu
 	private Color green = new Color(65,136,14);
+	private Color gold = new Color(245, 230, 93);
 
-
+	private ImageIcon menuBackground = new ImageIcon(new ImageIcon("images/BJ_menu.png").getImage().getScaledInstance(1000, 600, Image.SCALE_DEFAULT));
 
 	/**
 	 * Constructor for the user interface.
@@ -102,40 +104,36 @@ public class UserInterface extends JPanel {
 	public void setRank(int rank) {
 		this.currentRank = rank;
 	}
-	
+
 	public void setTitle(String title) {
 		this.currentTitle = title;
 	}
-	
+
 	public void setNextTitle(String nextTitle) {
 		this.nextTitle = nextTitle;
 	}
-	
+
 	public JPanel startScreen() {
-		JLabel logo = new JLabel(new ImageIcon(new ImageIcon("images/bustedjack.jpg").getImage().getScaledInstance(240, 180, Image.SCALE_DEFAULT)));
-		logo.setPreferredSize(new Dimension(240, 180));
+		ImageIcon image = new ImageIcon(new ImageIcon("images/BJ_Logo_AD.png").getImage().getScaledInstance(1000, 600, Image.SCALE_DEFAULT));
+		JLabel logo = new JLabel();
+		logo.setIcon(image);
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
+		logo.setLayout(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
-		cont.insets = new Insets(10,10,10,10);
+		cont.insets = new Insets(70,70,70,70);
 
-		cont.gridx = 1;
-		cont.gridy = 0;
-		cont.gridwidth = 2;
-		pane.add(logo, cont);
-
-		cont.anchor = GridBagConstraints.EAST;
 		cont.gridx = 0;
 		cont.gridy = 1;
-		pane.add(btnLogIn, cont);
+		logo.add(btnLogIn, cont);
 
-		cont.gridx = 2;
-		cont.gridy = 1;
-		pane.add(btnCreateUser, cont);
+		cont.gridx = 0;
+		cont.gridy = 2;
+		logo.add(btnCreateUser, cont);
 
-		pane.setBackground(green);
+		pane.add(logo);
 
 		return pane;
 	}
@@ -143,8 +141,10 @@ public class UserInterface extends JPanel {
 	public JPanel createUserScreen() {
 		JLabel lblUsername = new JLabel("Username");
 		JLabel lblPassword = new JLabel("Password (between 6-12 characters)");
-		JLabel lblRepeatPassword = new JLabel("Repeat password");
-		JLabel lblEmail = new JLabel("Email");
+		lblUsername.setForeground(gold);
+		lblPassword.setForeground(gold);
+		JLabel lblBackground = new JLabel(menuBackground);
+		lblBackground.setLayout(new GridBagLayout());
 
 		tfUsernameCreate = new JTextField();
 		pfPasswordCreate = new JPasswordField();
@@ -158,43 +158,32 @@ public class UserInterface extends JPanel {
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
 
-		cont.anchor = GridBagConstraints.CENTER;
-		cont.insets = new Insets(10,10,10,10);
+		cont.anchor = GridBagConstraints.EAST;
+		cont.insets = new Insets(20,20,20,20);
 
 		cont.gridx = 0;
 		cont.gridy = 0;
-		pane.add(lblUsername, cont);
+		lblBackground.add(lblUsername, cont);
 
 		cont.gridx = 1;
-		pane.add(tfUsernameCreate);
-
-//		cont.gridx = 0;
-//		cont.gridy = 1;
-//		pane.add(lblEmail, cont);
-//
-//		cont.gridx = 1;
-//		pane.add(tfEmailCreate, cont);
+		lblBackground.add(tfUsernameCreate);
 
 		cont.gridx = 0;
+		cont.gridy = 1;
+		lblBackground.add(lblPassword, cont);
+
+		cont.gridx = 1;
+		lblBackground.add(pfPasswordCreate, cont);
+
+		cont.anchor = GridBagConstraints.CENTER;
+		cont.gridx = 1;
 		cont.gridy = 2;
-		pane.add(lblPassword, cont);
+		lblBackground.add(btnConfirmUser, cont);
 
-		cont.gridx = 1;
-		pane.add(pfPasswordCreate, cont);
+		cont.gridy = 3;
+		lblBackground.add(btnBackToStart, cont);
 
-//		cont.gridx = 0;
-//		cont.gridy = 3;
-//		pane.add(lblRepeatPassword, cont);
-//
-//		cont.gridx = 1; 
-//		pane.add(pfRepeatPasswordCreate, cont);
-
-		cont.gridx = 1;
-		cont.gridy = 4;
-		pane.add(btnConfirmUser, cont);
-		
-		cont.gridy = 5;
-		pane.add(btnBackToStart, cont);
+		pane.add(lblBackground);
 
 		return pane;
 	}
@@ -202,6 +191,10 @@ public class UserInterface extends JPanel {
 	public JPanel logInScreen() {
 		JLabel lblUsername = new JLabel("Username");
 		JLabel lblPassword = new JLabel("Password");
+		lblUsername.setForeground(gold);
+		lblPassword.setForeground(gold);
+		JLabel lblBackground = new JLabel(menuBackground);
+		lblBackground.setLayout(new GridBagLayout());
 
 		tfUsernameLogIn = new JTextField();
 		pfPasswordLogIn = new JPasswordField();
@@ -212,28 +205,30 @@ public class UserInterface extends JPanel {
 		JPanel pane = new JPanel(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
-		cont.insets = new Insets(10,10,10,10);
+		cont.insets = new Insets(20,20,20,20);
 
 		cont.gridx = 0;
 		cont.gridy = 0;
-		pane.add(lblUsername, cont);
+		lblBackground.add(lblUsername, cont);
 
 		cont.gridx = 1;
-		pane.add(tfUsernameLogIn,cont);
+		lblBackground.add(tfUsernameLogIn,cont);
 
 		cont.gridx = 0;
 		cont.gridy = 1;
-		pane.add(lblPassword,cont);
+		lblBackground.add(lblPassword,cont);
 
 		cont.gridx = 1;
-		pane.add(pfPasswordLogIn,cont);
+		lblBackground.add(pfPasswordLogIn,cont);
 
 		cont.gridx = 1;
 		cont.gridy = 2;
-		pane.add(btnConfirmLogIn,cont);
-		
+		lblBackground.add(btnConfirmLogIn,cont);
+
 		cont.gridy = 3;
-		pane.add(btnBackToStart, cont);
+		lblBackground.add(btnBackToStart, cont);
+
+		pane.add(lblBackground);
 
 		return pane;
 	}
@@ -242,41 +237,49 @@ public class UserInterface extends JPanel {
 		JLabel lblPlay = new JLabel("Play");
 		JLabel lblProfile = new JLabel("Profile");
 		JLabel lblUsername = new JLabel("Welcome " + strUsername + "!"); 
+		lblPlay.setForeground(gold);
+		lblProfile.setForeground(gold);
+		lblUsername.setForeground(gold);
+
+		JLabel lblBackground = new JLabel(menuBackground);
+		lblBackground.setLayout(new GridBagLayout());
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
-		cont.insets = new Insets(10,10,10,10);
+		cont.insets = new Insets(15,15,15,15);
 
 		cont.gridx = 0;
 		cont.gridy = 0;
-		pane.add(lblUsername, cont);
+		lblBackground.add(lblUsername, cont);
 
 		cont.gridx = 0;
 		cont.gridy = 1;
-		pane.add(lblPlay,cont);
+		lblBackground.add(lblPlay,cont);
 
 		cont.gridx = 1;
-		pane.add(lblProfile,cont);
+		lblBackground.add(lblProfile,cont);
 
 		cont.gridx = 0;
 		cont.gridy = 2;
-		pane.add(btnGoToTable,cont);
+		lblBackground.add(btnGoToTable,cont);
 
 		cont.gridx = 1;
-		pane.add(btnAchievements,cont);
+		lblBackground.add(btnAchievements,cont);
 
 		cont.gridx = 0;
 		cont.gridy = 3;
-		pane.add(btnCreateTable,cont);
+		lblBackground.add(btnCreateTable,cont);
 
 		cont.gridx = 1;
-		pane.add(btnRank,cont);
+		lblBackground.add(btnRank,cont);
 
 		cont.gridx = 0;
 		cont.gridy = 4;
-		pane.add(btnLogOut,cont);
+		lblBackground.add(btnLogOut,cont);
+
+		pane.add(lblBackground);
 
 		return pane;
 	}
@@ -285,57 +288,79 @@ public class UserInterface extends JPanel {
 		JLabel lblCurrentRank = new JLabel("Your Rank: " + currentRank);
 		JLabel lblCurrentTitle = new JLabel("Your Title: " + currentTitle);
 		JLabel lblNextTitle = new JLabel("Next Title: " + nextTitle);
+		lblCurrentTitle.setForeground(gold);
+		lblCurrentRank.setForeground(gold);
+		lblNextTitle.setForeground(gold);
+
+		JLabel lblBackground = new JLabel(menuBackground);
+		lblBackground.setLayout(new GridBagLayout());
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
-		cont.insets = new Insets(10,10,10,10);
+		cont.insets = new Insets(20,20,20,20);
 
 		cont.gridx = 0;
 		cont.gridy = 0;
-		pane.add(lblCurrentRank, cont);
+		lblBackground.add(lblCurrentRank, cont);
 
 		cont.gridx = 1;
-		pane.add(lblCurrentTitle, cont);
+		lblBackground.add(lblCurrentTitle, cont);
 
 		cont.gridy = 1;
-		pane.add(lblNextTitle, cont);
+		lblBackground.add(lblNextTitle, cont);
 
 		cont.gridy = 2;
-		pane.add(btnMenu, cont);
+		lblBackground.add(btnMenu, cont);
+
+		pane.add(lblBackground);
 
 		return pane;
 	}
 
 	public JPanel achievementsScreen() {
 		JLabel lblAchievements = new JLabel("Achievements:");
+		lblAchievements.setForeground(gold);
 		JLabel[] lblArray = {new JLabel("Play one game"), new JLabel("Win one game"), new JLabel("Cheat in a game"), 
 				new JLabel("Get Busted"), new JLabel("Bust a friend"), new JLabel("Win 10 games"), 
-				new JLabel("Win 100 games"), new JLabel("Win without cheating"), new JLabel("Win with a CheatHeat above 30%"), 
-				new JLabel("Win with a CheatHeat above 50%"), new JLabel("Win with a CheatHeat above 70%"),
-				new JLabel("Win with a CheatHeat above 90%")};
+				new JLabel("Win without cheating"), new JLabel("Win with a CheatHeat above 50%"), 
+				new JLabel("Win with a CheatHeat above 70%"), new JLabel("Win with a CheatHeat above 90%")};
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
+
+		JLabel lblBackground = new JLabel(menuBackground);
+		lblBackground.setLayout(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
 
 		cont.gridx = 0;
 		cont.gridy = 0;
-		pane.add(lblAchievements, cont);
+		lblBackground.add(lblAchievements, cont);
 
 		for(int i = 1; i < lblArray.length; i++ ){
+			lblArray[i].setForeground(gold);
 			cont.gridy = i;
-			pane.add(lblArray[i], cont);
+			lblBackground.add(lblArray[i], cont);
+			if(i == (lblArray.length - 1)) {
+				cont.gridy = i + 1;
+				pane.add(btnMenu, cont);
+			}
 		}
+
+		pane.add(lblBackground);
 
 		return pane;
 	}
 
 	public JPanel joinScreen() {
 		JLabel lblRoomCode = new JLabel("Room Code");	
+		lblRoomCode.setForeground(gold);
 
+		JLabel lblBackground = new JLabel(menuBackground);
+		lblBackground.setLayout(new GridBagLayout());
+		
 		tfRoomCode = new JTextField();
 		tfRoomCode.setPreferredSize(new Dimension(200,20));
 
@@ -343,21 +368,23 @@ public class UserInterface extends JPanel {
 		JPanel pane = new JPanel(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
-		cont.insets = new Insets(10,10,10,10);
+		cont.insets = new Insets(20,20,20,20);
 
 		cont.gridx = 0;
 		cont.gridy = 0;
-		pane.add(lblRoomCode, cont);
+		lblBackground.add(lblRoomCode, cont);
 
 		cont.gridy = 1;
-		pane.add(tfRoomCode, cont);
+		lblBackground.add(tfRoomCode, cont);
 
 		cont.gridy = 2;
-		pane.add(btnEnterTable, cont);
+		lblBackground.add(btnEnterTable, cont);
 
 		cont.gridy = 3;
-		pane.add(btnRandomTable, cont);
+		lblBackground.add(btnRandomTable, cont);
 
+		pane.add(lblBackground);
+		
 		return pane;
 	}
 
@@ -367,6 +394,14 @@ public class UserInterface extends JPanel {
 		JLabel lblBalance = new JLabel("Balance");
 		JLabel lblMinBet = new JLabel("Minimum Bet");
 		JLabel lblPrivateMatch = new JLabel("Private Match");
+		lblTime.setForeground(gold);
+		lblRounds.setForeground(gold);
+		lblBalance.setForeground(gold);
+		lblMinBet.setForeground(gold);
+		lblPrivateMatch.setForeground(gold);
+		
+		JLabel lblBackground = new JLabel(menuBackground);
+		lblBackground.setLayout(new GridBagLayout());
 
 		tfTime = new JTextField("0");
 		tfRounds = new JTextField("0");
@@ -376,67 +411,57 @@ public class UserInterface extends JPanel {
 		tfRounds.setPreferredSize(new Dimension(80,20));
 		tfBalance.setPreferredSize(new Dimension(80,20));
 		tfMinBet.setPreferredSize(new Dimension(80,20));
-
-		radioBtnTime = new JRadioButton();
-		radioBtnRounds = new JRadioButton();
+		
 		radioBtnPrivate = new JRadioButton();
-
-
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
-		cont.insets = new Insets(10,10,10,10);
-
-		cont.gridx = 0;
-		cont.gridy = 0;
-		pane.add(radioBtnTime, cont);
+		cont.insets = new Insets(15,15,15,15);
 
 		cont.gridx = 1;
-		pane.add(lblTime, cont);
+		lblBackground.add(lblTime, cont);
 
 		cont.gridx = 2;
-		pane.add(tfTime, cont);
+		lblBackground.add(tfTime, cont);
 
 		cont.gridx = 3;
-		pane.add(lblPrivateMatch, cont);
+		lblBackground.add(lblPrivateMatch, cont);
 
 		cont.gridx = 4;
-		pane.add(radioBtnPrivate, cont);
-
-		cont.gridx = 0;
-		cont.gridy = 1;
-		pane.add(radioBtnRounds, cont);
+		lblBackground.add(radioBtnPrivate, cont);
 
 		cont.gridx = 1;
-		pane.add(lblRounds, cont);
+		lblBackground.add(lblRounds, cont);
 
 		cont.gridx = 2;
-		pane.add(tfRounds, cont);
+		lblBackground.add(tfRounds, cont);
 
 		cont.gridx = 1;
 		cont.gridy = 2;
-		pane.add(lblBalance, cont);
+		lblBackground.add(lblBalance, cont);
 
 		cont.gridx = 2;
-		pane.add(tfBalance, cont);
+		lblBackground.add(tfBalance, cont);
 
 		cont.gridx = 1;
 		cont.gridy = 3;
-		pane.add(lblMinBet, cont);
+		lblBackground.add(lblMinBet, cont);
 
 		cont.gridx = 2;
-		pane.add(tfMinBet, cont);
+		lblBackground.add(tfMinBet, cont);
 
 		cont.gridx = 4;
-		pane.add(btnConfirmTable, cont);
+		lblBackground.add(btnConfirmTable, cont);
+		
+		pane.add(lblBackground);
 
 		return pane;
 	}
 
 	public JPanel gameScreen() {
-		JLabel lblGameScreen = new JLabel(new ImageIcon(new ImageIcon("images/bustedjack.jpg").getImage().getScaledInstance(800, 500, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
+		JLabel lblGameScreen = new JLabel(new ImageIcon(new ImageIcon("images/BJ_Logo_AD.png").getImage().getScaledInstance(800, 500, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
@@ -469,15 +494,22 @@ public class UserInterface extends JPanel {
 		JLabel lblPlayerRanks = new JLabel("Rank");
 		JLabel lblAchievements = new JLabel("Achievements");
 		JLabel lblNewRank = new JLabel("Rank");
+		lblPlayers.setForeground(gold);
+		lblPlayerRanks.setForeground(gold);
+		lblAchievements.setForeground(gold);
+		lblNewRank.setForeground(gold);
+		
+		JLabel lblBackground = new JLabel(menuBackground);
+		lblBackground.setLayout(new GridBagLayout());
 
 		taExitScreenPlayers = new JTextArea();
 		taExitScreenPlayerRanks = new JTextArea();
 		taExitScreenAchievements = new JTextArea();
 		taExitScreenNewRank = new JTextArea();
-		taExitScreenPlayers.setPreferredSize(new Dimension(160, 470));
-		taExitScreenPlayerRanks.setPreferredSize(new Dimension(160, 470));
-		taExitScreenAchievements.setPreferredSize(new Dimension(180, 160));
-		taExitScreenNewRank.setPreferredSize(new Dimension(180, 160));
+		taExitScreenPlayers.setPreferredSize(new Dimension(150, 250));
+		taExitScreenPlayerRanks.setPreferredSize(new Dimension(150, 250));
+		taExitScreenAchievements.setPreferredSize(new Dimension(150, 60));
+		taExitScreenNewRank.setPreferredSize(new Dimension(150, 60));
 
 		taExitScreenPlayers.setEditable(false);
 		taExitScreenPlayerRanks.setEditable(false);
@@ -491,45 +523,50 @@ public class UserInterface extends JPanel {
 
 		cont.gridx = 0;
 		cont.gridy = 0;
-		pane.add(lblPlayers, cont);
+		lblBackground.add(lblPlayers, cont);
 
 		cont.gridx = 1;
-		pane.add(lblPlayerRanks, cont);
+		lblBackground.add(lblPlayerRanks, cont);
 
 		cont.gridx = 2;
-		pane.add(lblAchievements, cont);
+		lblBackground.add(lblAchievements, cont);
 
 		cont.gridx = 0;
 		cont.gridy = 1;
-		cont.gridheight = 4;
-		pane.add(taExitScreenPlayers, cont);
+		cont.gridheight = 3;
+		lblBackground.add(taExitScreenPlayers, cont);
 
 		cont.gridx = 1;
-		cont.gridheight = 4;
-		pane.add(taExitScreenPlayerRanks, cont);
+		cont.gridheight = 3;
+		lblBackground.add(taExitScreenPlayerRanks, cont);
 
 		cont.gridx = 2;
 		cont.gridheight = 1;
-		pane.add(taExitScreenAchievements, cont);
+		lblBackground.add(taExitScreenAchievements, cont);
 
 		cont.gridy = 2;
-		pane.add(lblNewRank, cont);
+		lblBackground.add(lblNewRank, cont);
 
 		cont.gridy = 3;
-		pane.add(taExitScreenNewRank, cont);
+		lblBackground.add(taExitScreenNewRank, cont);
 
 		cont.gridy = 4;
-		pane.add(btnMenu, cont);
+		lblBackground.add(btnMenu, cont);
+		
+		pane.add(lblBackground);
 
 		return pane;
 	}
 
 	public void errorMessageUsername() {
 		JLabel errorMessage = new JLabel("Username already taken. Try again.");
+		errorMessage.setForeground(gold);
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
+		pane.setBackground(Color.BLACK);
 
+		
 		cont.anchor = GridBagConstraints.FIRST_LINE_START;
 		cont.insets = new Insets(10,10,10,10);
 
@@ -542,14 +579,15 @@ public class UserInterface extends JPanel {
 		frame.pack();
 		frame.add(pane);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
 	}
 
 	public void errorMessagePassword() {
 		JLabel errorMessage = new JLabel("Invalid password");
+		errorMessage.setForeground(gold);
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
+		pane.setBackground(Color.BLACK);
 
 		cont.anchor = GridBagConstraints.FIRST_LINE_START;
 		cont.insets = new Insets(10,10,10,10);
@@ -563,7 +601,6 @@ public class UserInterface extends JPanel {
 		frame.pack();
 		frame.add(pane);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
 	}
 
 	public void addListeners() {
