@@ -34,8 +34,6 @@ public class Server {
 		new ClientReceiver(port).start();
 	}
 
-	
-	
 	public synchronized void setTableId(Table table) {
 		table.setTableId(tableIdCounter);
 		tableIdCounter++;
@@ -143,6 +141,17 @@ public class Server {
 			}
 			return true;
 		}
+		
+		public User getUser(String name) {
+			for(int i = 0; i < registeredUsers.size(); i++) {
+				User compare = registeredUsers.get(i);
+				String compareName = compare.getUsername();
+				if(compareName.equals(name)) {
+					return compare;
+				}
+			}
+			return null;
+		}
 
 		/*
 		 * Checks whether or not a password is the required length
@@ -209,6 +218,8 @@ public class Server {
 									TextWindow.println(loginRequest.getUsername() + " är inloggad."); //Assistance
 									output.writeObject(choice);
 									output.flush();
+									
+									//get User-object for the name and add in userHandler.addNewActiveUser
 								}else {
 									choice = "LOGIN_FAIL";
 									output.writeObject(choice);
@@ -231,7 +242,7 @@ public class Server {
 						else if(obj instanceof GameInfo) {
 							GameInfo gameInfo = (GameInfo)obj;
 							Table table = new Table(gameInfo.getTime(), gameInfo.getRounds(), gameInfo.getBalance(), gameInfo.getMinBet());
-							
+							table.setTableId(tableIdCounter);
 						}
 
 					} catch (ClassNotFoundException | IOException e) {
@@ -241,7 +252,7 @@ public class Server {
 				}
 				TextWindow.println("DEAD");
 
-				userHandler.newClientConnect(user, this); 
+				userHandler.newUserConnect(user, this); 
 //				Adds this ClientHandler to the UserHandlerList of online users
 
 			}catch(Exception ioException) {
@@ -255,11 +266,11 @@ public class Server {
 	 * @author RasmusOberg
 	 */
 	private class UserHandler {
-		private HashSet<User> activeUsers = new HashSet<>();
+		private HashMap<User, ClientHandler> activeUsers = new HashMap<>();
 
 		//connects a new client
-		public synchronized void newUserConnect(User user) {
-		
+		public synchronized void newUserConnect(User user, ClientHandler clientHandler) {
+			activeUsers.put(user, clientHandler);
 		}
 
 		//adds new user to activeUsers-HashMap
