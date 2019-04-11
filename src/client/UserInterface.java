@@ -389,7 +389,7 @@ public class UserInterface extends JPanel {
 	}
 
 	public JPanel createTableScreen() {		
-		JLabel lblTime = new JLabel("Time");
+		JLabel lblTime = new JLabel("Minutes");
 		JLabel lblRounds = new JLabel("Rounds");
 		JLabel lblBalance = new JLabel("Balance");
 		JLabel lblMinBet = new JLabel("Minimum Bet");
