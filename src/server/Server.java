@@ -3,6 +3,7 @@ package server;
 import java.io.BufferedWriter;
 import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+
 import resources.*;
 
 /*
@@ -20,6 +22,7 @@ import resources.*;
 public class Server {
 
 	private LinkedList<User> registeredUsers = new LinkedList<>(); //LinkedList to hold all registered users
+
 	private HashMap<String, char[]> userPasswords = new HashMap<>(); //HashMap that holds all usernames and passwords
 	private UserHandler userHandler;
 	private ArrayList<Table> activeTables = new ArrayList<>();
@@ -30,13 +33,43 @@ public class Server {
 	 * Constructor to instantiate the server
 	 */
 	public Server(int port) {
-//		clients = new UserHandler();
+		//		clients = new UserHandler();
 		new ClientReceiver(port).start();
 	}
+
 
 	public synchronized void setTableId(Table table) {
 		table.setTableId(tableIdCounter);
 		tableIdCounter++;
+	}
+
+	public void readUsersFromDatabase() {
+		User user;
+		boolean read = true;
+
+		try (FileInputStream fis = new FileInputStream("files/userlist.txt");
+				ObjectInputStream ois = new ObjectInputStream(fis)) {
+			while(read) {
+				user = (User) ois.readObject();
+				if(user != null) {
+					registeredUsers.add(user);
+					user = null;
+				} else {
+					read = false;
+				}
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void addUserToDatabase(User user) {
+		try(FileOutputStream fos = new FileOutputStream("files/userlist.txt");
+				ObjectOutputStream oos = new ObjectOutputStream(fos)){
+			oos.writeObject(user);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -88,7 +121,7 @@ public class Server {
 		private User user;
 		private Object obj;
 		private boolean isOnline = true;
-//		private UserHandler userHandler;
+		//		private UserHandler userHandler;
 
 		public ClientHandler(Socket socket) throws IOException {
 			this.socket = socket;
@@ -104,6 +137,7 @@ public class Server {
 				ioException.printStackTrace();
 			}
 		}
+
 		
 		/*
 		 * Checks whether or not a username is registered
@@ -118,6 +152,7 @@ public class Server {
 			}
 			return false;
 		}
+
 		
 		/*
 		 * Checks if the given password matches the password that is stored
@@ -137,7 +172,7 @@ public class Server {
 				if(compareName.equals(name)) {
 					return false;
 				}
-				
+
 			}
 			return true;
 		}
@@ -191,7 +226,10 @@ public class Server {
 									temporary.setPassword(registerRequest.getPassword());
 									registeredUsers.add(temporary);
 									userPasswords.put(registerRequest.getUsername(), registerRequest.getPassword());
-									TextWindow.println("User-objekt skapat för " + registerRequest.getUsername()); //Assistance
+
+									addUserToDatabase(temporary);
+									TextWindow.println("User-objekt skapat för " + registerRequest.getUsername());//Assistance
+                  
 									choice = "USER_TRUE";
 								}else { 
 									TextWindow.println(registerRequest.getUsername() + " har angett ett icke godkänt lösenord."); //Assistance
@@ -234,6 +272,7 @@ public class Server {
 						else if(obj instanceof LogOutRequest) {
 							isOnline = false;
 							TextWindow.println("Client disconnected.");
+
 							
 						}
 						/*
@@ -265,6 +304,7 @@ public class Server {
 	/*
 	 * @author RasmusOberg
 	 */
+
 	private class UserHandler {
 		private HashMap<User, ClientHandler> activeUsers = new HashMap<>();
 
@@ -290,7 +330,6 @@ public class Server {
 		}
 
 	}
-
 }
 
 
