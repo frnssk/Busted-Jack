@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class TableID {
-	private int id;
+	private int id = 0;
 //	private ArrayList<Integer> listOfID = new ArrayList<>();
 	
 	public TableID() {
@@ -12,8 +12,7 @@ public class TableID {
 	}
 	
 	private int getID() {
-		Random rand = new Random();
-		return rand.nextInt(1000);
+		return id++;
 	}
 
 }

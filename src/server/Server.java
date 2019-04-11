@@ -20,10 +20,10 @@ import resources.*;
 public class Server {
 
 	private LinkedList<User> registeredUsers = new LinkedList<>(); //LinkedList to hold all registered users
-	private HashMap<String, char[]> userPasswords = new HashMap<>();
-//	private UserHandler clients;
+	private HashMap<String, char[]> userPasswords = new HashMap<>(); //HashMap that holds all usernames and passwords
+	private UserHandler userHandler;
 	private ArrayList<Table> activeTables = new ArrayList<>();
-	private int roomIdCounter;
+	private int tableIdCounter;
 	//	private LinkedList<Callback> listeners = new LinkedList<>();
 
 	/*
@@ -34,6 +34,12 @@ public class Server {
 		new ClientReceiver(port).start();
 	}
 
+	
+	
+	public synchronized void setTableId(Table table) {
+		table.setTableId(tableIdCounter);
+		tableIdCounter++;
+	}
 
 	/*
 	 * Inner class which listens after new connections / clients trying to connect
@@ -91,7 +97,7 @@ public class Server {
 			start();
 			TextWindow.println("ClientHandler started");
 		}
-
+		
 		public void updateActiveUsers(LinkedList<User> activeUsers) {
 			try {
 				output.writeObject(activeUsers);
@@ -101,6 +107,9 @@ public class Server {
 			}
 		}
 		
+		/*
+		 * Checks whether or not a username is registered
+		 */
 		public boolean isUserRegistered(String name) {
 			for(int i = 0; i < registeredUsers.size(); i++) {
 				User compare = registeredUsers.get(i);
@@ -112,11 +121,17 @@ public class Server {
 			return false;
 		}
 		
+		/*
+		 * Checks if the given password matches the password that is stored
+		 */
 		public boolean passwordMatchUser(String username, char[] password) {
 			char[] array = userPasswords.get(username);
 			return Arrays.equals(array, password);
 		}
 
+		/*
+		 * Checks whether or not a username is already in use
+		 */
 		public boolean checkUsernameAvailability(String name) {
 			for(int i = 0; i < registeredUsers.size(); i++) {
 				User compare = registeredUsers.get(i);
@@ -129,6 +144,9 @@ public class Server {
 			return true;
 		}
 
+		/*
+		 * Checks whether or not a password is the required length
+		 */
 		public boolean isPasswordOkay(char[] password) {
 			if(password.length < 6 || password.length >= 12) {
 				return false;
@@ -136,34 +154,38 @@ public class Server {
 				return true;
 			}
 		}
+		
 
+		/*
+		 * Keeps on running as long as the client is still connected
+		 * Reads objects from the client and depending on the type of object - the server acts accordingly
+		 */
 		public void run() {
 			try(ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 					ObjectInputStream input = new ObjectInputStream(socket.getInputStream())){
-				//				output = new ObjectOutputStream(socket.getOutputStream());
-				//				input = new ObjectInputStream(socket.getInputStream());
-				//				Object obj = null;
 				while(isOnline) {
 					try {
 						obj = input.readObject();
 						String choice = "";
-						/*
-						 * Registers new users
+						
+						/**
+						 * This if-statement is used to register new users, so they
+						 * are able to login and play the game
 						 */
 						if(obj instanceof RegisterRequest) {
 							RegisterRequest registerRequest = (RegisterRequest)obj;
 							if(checkUsernameAvailability(registerRequest.getUsername())) {
-								TextWindow.println(registerRequest.getUsername() + " är ledigt.");
+								TextWindow.println(registerRequest.getUsername() + " är ledigt."); //Assistance
 								if(isPasswordOkay((registerRequest.getPassword()))) {
-									TextWindow.println((registerRequest.getUsername()) + " har angett ett godkänt lösenord.");
+									TextWindow.println((registerRequest.getUsername()) + " har angett ett godkänt lösenord."); //Assistance
 									User temporary = new User(registerRequest.getUsername());
 									temporary.setPassword(registerRequest.getPassword());
 									registeredUsers.add(temporary);
 									userPasswords.put(registerRequest.getUsername(), registerRequest.getPassword());
-									TextWindow.println("User-objekt skapat för " + registerRequest.getUsername());
+									TextWindow.println("User-objekt skapat för " + registerRequest.getUsername()); //Assistance
 									choice = "USER_TRUE";
 								}else { 
-									TextWindow.println(registerRequest.getUsername() + " har angett ett icke godkänt lösenord.");
+									TextWindow.println(registerRequest.getUsername() + " har angett ett icke godkänt lösenord."); //Assistance
 									choice = "PASSWORD_FALSE";
 								}
 
@@ -173,6 +195,7 @@ public class Server {
 							output.writeObject(choice);
 							output.flush();
 						}
+						
 						/*
 						 * Logins user
 						 */
@@ -180,28 +203,32 @@ public class Server {
 							choice = "";
 							LoginRequest loginRequest = (LoginRequest)obj;
 							if(isUserRegistered(loginRequest.getUsername())) {
-								TextWindow.println(loginRequest.getUsername() + " finns.");
+								TextWindow.println(loginRequest.getUsername() + " finns."); //Assistance
 								if(passwordMatchUser(loginRequest.getUsername(), loginRequest.getPassword())){
 									choice = "LOGIN_SUCCES";
-									TextWindow.println(loginRequest.getUsername() + " är inloggad.");
+									TextWindow.println(loginRequest.getUsername() + " är inloggad."); //Assistance
 									output.writeObject(choice);
 									output.flush();
 								}else {
 									choice = "LOGIN_FAIL";
 									output.writeObject(choice);
 									output.flush();
-									TextWindow.println(loginRequest.getUsername() + " kan inte sitt lösenord HAHAHA");
+									TextWindow.println(loginRequest.getUsername() + " kan inte sitt lösenord HAHAHA"); //Assistance
 								}
 							}
 						}
 						/*
-						 * Disconnects the client
+						 * Disconnects the client, and stops the current clienthandler-loop
 						 */
 						else if(obj instanceof LogOutRequest) {
 							isOnline = false;
 							TextWindow.println("Client disconnected.");
 							
-						}else if(obj instanceof GameInfo) {
+						}
+						/*
+						 * Take the information stored in the GameInfo-object, extracts it and creates a new Table-object
+						 */
+						else if(obj instanceof GameInfo) {
 							GameInfo gameInfo = (GameInfo)obj;
 							Table table = new Table(gameInfo.getTime(), gameInfo.getRounds(), gameInfo.getBalance(), gameInfo.getMinBet());
 							
@@ -214,8 +241,8 @@ public class Server {
 				}
 				TextWindow.println("DEAD");
 
-				//				userHandler.newClientConnect(user, this); 
-				//Adds this ClientHandler to the UserHandlerList of online users
+				userHandler.newClientConnect(user, this); 
+//				Adds this ClientHandler to the UserHandlerList of online users
 
 			}catch(Exception ioException) {
 				ioException.printStackTrace();
@@ -227,37 +254,31 @@ public class Server {
 	/*
 	 * @author RasmusOberg
 	 */
-//	private class UserHandler {
-//		private HashSet<User> activeUsers = new HashSet<>();
-//
-//		//connects a new client
-////		public synchronized void newUserConnect(User user) {
-////			if(userIsRegistered(user) == false) {
-////				registerNewUser(user);
-////			}
-////			addNewActiveUser(user);
-////		}
-//
-//		//adds new user to activeUsers-HashMap
-//		public synchronized void addNewActiveUser(User user) {
-//			activeUsers.add(user);
-//			TextWindow.println(user.getUsername() + " aktiv");
-//			updateActiveUsers();
-//		}
-//
-//		//returns whether or not a user is online
-//		public synchronized boolean userIsOnline(User user) {
-//			return activeUsers.contains(user);
-//		}
-//
-//		public void updateActiveUsers() {
-//			LinkedList<User> currentActiveUsers = new LinkedList<>();
-//			for(int i = 0; i < currentActiveUsers.size(); i++) {
-//				this.activeUsers.get(currentActiveUsers.get(i)).updateActiveUsers(currentActiveUsers);
-//			}
-//		}
-//
-//	}
+	private class UserHandler {
+		private HashSet<User> activeUsers = new HashSet<>();
+
+		//connects a new client
+		public synchronized void newUserConnect(User user) {
+		
+		}
+
+		//adds new user to activeUsers-HashMap
+		public synchronized void addNewActiveUser(User user) {
+			activeUsers.add(user);
+			TextWindow.println(user.getUsername() + " aktiv");
+			updateActiveUsers();
+		}
+
+		//returns whether or not a user is online
+		public synchronized boolean userIsOnline(User user) {
+			return activeUsers.contains(user);
+		}
+
+		public void updateActiveUsers() {
+			
+		}
+
+	}
 
 }
 
