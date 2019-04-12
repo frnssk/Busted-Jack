@@ -42,6 +42,7 @@ public class Server {
 	public Server(int port) {
 		//		clients = new UserHandler();
 		new ClientReceiver(port).start();
+		TextWindow.println("Server started"); //Assistance
 		readUsersFromFile();
 	}
 
@@ -53,17 +54,23 @@ public class Server {
 			FileInputStream fileIn = new FileInputStream("files/userlist.dat");
 			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 			boolean keepReading = true;
+			TextWindow.println("----------------------------");
+			TextWindow.println("ALLA REGISTRERADE ANVÄNDARE");
+			TextWindow.println("----------------------------");
 			try {
 				while(keepReading) {
 					User user = (User)objectIn.readObject();
 					registeredUsers.add(user);
 					userPasswords.put(user.getUsername(), user.getPassword());
-					System.out.println(user.getUsername());
+//					System.out.println(user.getUsername());
 					objectIn = new ObjectInputStream(fileIn);
-					
+					TextWindow.println(user.getUsername());
 				}
 			}catch(EOFException e) {
 				keepReading = false;
+				TextWindow.println("------------------");
+				TextWindow.println("SLUT PÅ ANVÄNDARE.");
+				TextWindow.println("------------------");
 			}
 		}catch (Exception ex) {
 			ex.printStackTrace();
@@ -122,7 +129,6 @@ public class Server {
 			Socket socket = null;
 
 			try(ServerSocket serverSocket = new ServerSocket(port)){
-				TextWindow.println(("Server started, listening for clients on port nr " + serverSocket.getLocalPort())); //Assistance
 				while(true) {
 					try {
 						socket = serverSocket.accept();
