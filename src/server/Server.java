@@ -46,34 +46,24 @@ public class Server {
 	}
 
 	/*
-	 * Sets a unique ID to specific table
-	 */
-	public synchronized void setTableId(Table table) {
-		table.setTableId(tableIdCounter);
-		activeTables2.put(tableIdCounter, table);
-		tableIdCounter++;
-		activeTables.add(table);
-	}
-
-	/*
 	 * Used every time the server starts to read in all the registered users
 	 */
 	public void readUsersFromFile() {
 		try {
 			FileInputStream fileIn = new FileInputStream("files/userlist.dat");
 			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-			int counter = 0;
+			boolean keepReading = true;
 			try {
-				while(counter < 100) {
+				while(keepReading) {
 					User user = (User)objectIn.readObject();
 					registeredUsers.add(user);
 					userPasswords.put(user.getUsername(), user.getPassword());
 					System.out.println(user.getUsername());
 					objectIn = new ObjectInputStream(fileIn);
-					counter++;
+					
 				}
 			}catch(EOFException e) {
-
+				keepReading = false;
 			}
 		}catch (Exception ex) {
 			ex.printStackTrace();
@@ -104,6 +94,16 @@ public class Server {
 	 */
 	public boolean doesTableExist(int tableId) {
 		return activeTables2.containsKey(tableId);
+	}
+	
+	/*
+	 * Sets a unique ID to specific table
+	 */
+	public synchronized void setTableId(Table table) {
+		table.setTableId(tableIdCounter);
+		activeTables2.put(tableIdCounter, table);
+		tableIdCounter++;
+		activeTables.add(table);
 	}
 
 	/*
@@ -304,7 +304,7 @@ public class Server {
 
 									//Adds the user and client to the UserHandler-HashMap
 									User user = getUser(loginRequest.getUsername());
-									userHandler.addNewActiveUser(user, this);
+									UserHandler.addNewActiveUser(user, this);
 								}else {
 									choice = "LOGIN_FAIL";
 									output.writeObject(choice);
@@ -322,7 +322,7 @@ public class Server {
 							TextWindow.println("Client disconnected.");
 							String name = logout.getUserName();
 							User user = getUser(name);
-							userHandler.removeActiveUser(user);
+							UserHandler.removeActiveUser(user);
 						}
 
 						/*
