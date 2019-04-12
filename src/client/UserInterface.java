@@ -389,7 +389,7 @@ public class UserInterface extends JPanel {
 	}
 
 	public JPanel createTableScreen() {		
-		JLabel lblTime = new JLabel("Time");
+		JLabel lblTime = new JLabel("Minutes");
 		JLabel lblRounds = new JLabel("Rounds");
 		JLabel lblBalance = new JLabel("Balance");
 		JLabel lblMinBet = new JLabel("Minimum Bet");
@@ -461,7 +461,7 @@ public class UserInterface extends JPanel {
 	}
 
 	public JPanel gameScreen() {
-		JLabel lblGameScreen = new JLabel(new ImageIcon(new ImageIcon("images/BJ_Logo_AD.png").getImage().getScaledInstance(800, 500, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
+		JLabel lblGameScreen = new JLabel(new ImageIcon(new ImageIcon("images/BJ_Logo_AD.png").getImage().getScaledInstance(1000, 600, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
