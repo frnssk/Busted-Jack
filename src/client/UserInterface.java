@@ -82,7 +82,7 @@ public class UserInterface extends JPanel {
 		this.controller.setUI(this);
 		setLayout(new BorderLayout());
 		addListeners();
-		add(startScreen(), BorderLayout.CENTER);
+		add(gameScreen(), BorderLayout.CENTER);
 	}
 
 	/**
@@ -461,30 +461,29 @@ public class UserInterface extends JPanel {
 	}
 
 	public JPanel gameScreen() {
-		JLabel lblGameScreen = new JLabel(new ImageIcon(new ImageIcon("images/BJ_Logo_AD.png").getImage().getScaledInstance(1000, 600, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
+		JLabel lblGameScreen = new JLabel(new ImageIcon(new ImageIcon("images/BJ_table.png").getImage().getScaledInstance(1000, 580, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
+		lblGameScreen.setLayout(new GridBagLayout());
 
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
-		cont.insets = new Insets(10,10,10,10);
+		cont.insets = new Insets(480,50,10,50);
 
 		cont.gridx = 0;
 		cont.gridy = 0;
-		pane.add(btnGameDouble, cont);
+		lblGameScreen.add(btnGameDouble, cont);
 
-		cont.gridy = 1;
-		pane.add(btnGameStop, cont);
+		cont.gridx = 1;
+		lblGameScreen.add(btnGameStop, cont);
 
-		cont.gridy = 2;
-		pane.add(btnGameHit, cont);
+		cont.gridx = 2;
+		lblGameScreen.add(btnGameHit, cont);
 
-		cont.gridy = 3;
-		pane.add(btnGameCheat, cont);
+		cont.gridx = 3;
+		lblGameScreen.add(btnGameCheat, cont);
 
-		cont.gridy = 0;
-		cont.gridheight = 4;
-		pane.add(lblGameScreen, cont);
+		pane.add(lblGameScreen);
 
 		return pane;
 	}
