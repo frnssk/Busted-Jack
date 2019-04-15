@@ -82,7 +82,7 @@ public class UserInterface extends JPanel {
 		this.controller.setUI(this);
 		setLayout(new BorderLayout());
 		addListeners();
-		add(gameScreen(), BorderLayout.CENTER);
+		add(startScreen(), BorderLayout.CENTER);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class UserInterface extends JPanel {
 	}
 
 	public JPanel startScreen() {
-		ImageIcon image = new ImageIcon(new ImageIcon("images/BJ_Logo_AD.png").getImage().getScaledInstance(1000, 600, Image.SCALE_DEFAULT));
+		ImageIcon image = new ImageIcon(new ImageIcon("images/BJ_logo_2.png").getImage().getScaledInstance(1000, 600, Image.SCALE_DEFAULT));
 		JLabel logo = new JLabel();
 		logo.setIcon(image);
 
@@ -123,7 +123,7 @@ public class UserInterface extends JPanel {
 		logo.setLayout(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
-		cont.insets = new Insets(70,70,70,70);
+		cont.insets = new Insets(100,70,100,70);
 
 		cont.gridx = 0;
 		cont.gridy = 1;
