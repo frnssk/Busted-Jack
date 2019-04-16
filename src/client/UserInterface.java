@@ -90,7 +90,7 @@ public class UserInterface extends JPanel {
 		this.controller.setUI(this);
 		setLayout(new BorderLayout());
 		addListeners();
-		add(lobbyScreen(0,0,0,0), BorderLayout.CENTER);
+		add(startScreen(), BorderLayout.CENTER);
 	}
 
 	/**
