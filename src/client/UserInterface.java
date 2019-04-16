@@ -36,6 +36,7 @@ public class UserInterface extends JPanel {
 	private JButton btnGameStop = new JButton("Stay");
 	private JButton btnGameHit = new JButton("Hit");
 	private JButton btnGameCheat = new JButton("Cheat!");
+	private JButton btnStartGame = new JButton("Start Game");// lets the table owner to start the game.
 	//	private JButton btnGameExit = new JButton("Exit game");
 
 	private JRadioButton radioBtnTime;
@@ -61,10 +62,16 @@ public class UserInterface extends JPanel {
 	private JTextArea taExitScreenPlayerRanks;
 	private JTextArea taExitScreenAchievements;
 	private JTextArea taExitScreenNewRank;
+	private JTextArea taActiveLobbyPlayers;
 
 	private int currentRank = 0;
 	private String currentTitle = "";
 	private String nextTitle = "";
+	private int lobbyPlayers = 0;
+	private int rounds;
+	private int time;
+	private int balance;
+	private int minBet;
 
 	private String strUsername; //During development to show user name in menu
 	private Color green = new Color(65,136,14);
@@ -459,6 +466,56 @@ public class UserInterface extends JPanel {
 
 		return pane;
 	}
+	public JPanel lobbyScreen(int rounds, int time, int minBet, int balance) {
+		JLabel lblRoomSize = new JLabel(lobbyPlayers + "/5");
+		JLabel lblGameSettings = new JLabel("Game Settings");
+		JLabel lblRounds = new JLabel ("Rounds: " + rounds);
+		JLabel lblTime = new JLabel ("Time: " + time);
+		JLabel lblBalance = new JLabel ("Balance: " + balance);
+		JLabel lblMinBet = new JLabel ("Minimum bet: " + minBet);
+		
+		taActiveLobbyPlayers = new JTextArea();
+		taActiveLobbyPlayers.setPreferredSize(new Dimension(200,200));
+		GridBagConstraints cont = new GridBagConstraints();
+		JPanel pane = new JPanel(new GridBagLayout());
+
+		cont.anchor = GridBagConstraints.CENTER;
+		cont.insets = new Insets(10,10,10,10);
+
+		cont.gridx = 0;
+		cont.gridy = 0;
+		pane.add(btnStartGame, cont);
+		
+		cont.gridy = 1;
+		pane.add(btnMenu, cont);
+		
+		cont.gridx = 1;
+		cont.gridy = 0;
+		pane.add(lblRoomSize, cont);
+		
+		cont.gridx = 2;
+		cont.gridy = 0;
+		pane.add(lblGameSettings, cont);
+		
+		cont.gridy = 1;
+		pane.add(lblRounds, cont);
+		
+		cont.gridy = 2;
+		pane.add(lblTime, cont);
+		
+		cont.gridy = 3;
+		pane.add(lblBalance, cont);
+		
+		cont.gridy = 4;
+		pane.add(lblMinBet, cont);
+
+		cont.gridx = 1;
+		cont.gridy = 1;
+		cont.gridheight = 5;
+		pane.add(taActiveLobbyPlayers, cont);
+				
+		return pane;
+	}
 
 	public JPanel gameScreen() {
 		JLabel lblGameScreen = new JLabel(new ImageIcon(new ImageIcon("images/BJ_table.png").getImage().getScaledInstance(1000, 580, Image.SCALE_DEFAULT)));//Not code to be used later. This is just to get an idea of the game size
@@ -662,13 +719,16 @@ public class UserInterface extends JPanel {
 			}
 			if(e.getSource() == btnEnterTable) {
 				controller.checkTableId(Integer.parseInt(tfRoomCode.getText()));
-				updateUI(gameScreen());
+				updateUI(lobbyScreen(balance, minBet, rounds, time));
 			}
 			if(e.getSource() == btnRandomTable) {
-				updateUI(gameScreen());
+				updateUI(lobbyScreen(balance, minBet, rounds, time));
 			}
 			if(e.getSource() == btnConfirmTable) {
 				controller.createGameInfo(Integer.parseInt(tfTime.getText()), Integer.parseInt(tfRounds.getText()), Integer.parseInt(tfBalance.getText()), Integer.parseInt(tfMinBet.getText()));
+				updateUI(gameScreen());
+			}
+			if(e.getSource() == btnStartGame) {
 				updateUI(gameScreen());
 			}
 			if(e.getSource() == btnMenu) {
