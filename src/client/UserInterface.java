@@ -18,7 +18,8 @@ import javax.swing.*;
 public class UserInterface extends JPanel {
 	private UserController controller; 
 
-	private JButton btnLogIn = new JButton("Login"); //Log in display
+	private ImageIcon btnImage = new ImageIcon(new ImageIcon("images/login_btn.png").getImage().getScaledInstance(200, 40, Image.SCALE_DEFAULT));
+	private JButton btnLogIn = new JButton(btnImage); //Log in display
 	private JButton btnCreateUser = new JButton("Create new user"); //Log in display
 	private JButton btnConfirmUser = new JButton("Create user"); //Creates user after entering name and password 
 	private JButton btnConfirmLogIn = new JButton("Login"); //Check user name and password and logs in  
@@ -130,7 +131,10 @@ public class UserInterface extends JPanel {
 		logo.setLayout(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
-		cont.insets = new Insets(100,70,100,70);
+		cont.insets = new Insets(90,70,90,70);
+		
+		btnLogIn.setBorder(BorderFactory.createEmptyBorder());
+		btnLogIn.setContentAreaFilled(false);
 
 		cont.gridx = 0;
 		cont.gridy = 1;
