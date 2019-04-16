@@ -90,7 +90,7 @@ public class UserInterface extends JPanel {
 		this.controller.setUI(this);
 		setLayout(new BorderLayout());
 		addListeners();
-		add(startScreen(), BorderLayout.CENTER);
+		add(lobbyScreen(0,0,0,0), BorderLayout.CENTER);
 	}
 
 	/**
@@ -470,53 +470,65 @@ public class UserInterface extends JPanel {
 
 		return pane;
 	}
-	public JPanel lobbyScreen(int rounds, int time, int minBet, int balance) {
+	
+	public JPanel lobbyScreen(int balance, int minBet, int rounds, int time) {
 		JLabel lblRoomSize = new JLabel(lobbyPlayers + "/5");
 		JLabel lblGameSettings = new JLabel("Game Settings");
 		JLabel lblRounds = new JLabel ("Rounds: " + rounds);
 		JLabel lblTime = new JLabel ("Time: " + time);
 		JLabel lblBalance = new JLabel ("Balance: " + balance);
 		JLabel lblMinBet = new JLabel ("Minimum bet: " + minBet);
+		lblRoomSize.setForeground(gold);
+		lblGameSettings.setForeground(gold);
+		lblRounds.setForeground(gold);
+		lblTime.setForeground(gold);
+		lblBalance.setForeground(gold);
+		lblMinBet.setForeground(gold);
 		
 		taActiveLobbyPlayers = new JTextArea();
 		taActiveLobbyPlayers.setPreferredSize(new Dimension(200,200));
 		GridBagConstraints cont = new GridBagConstraints();
 		JPanel pane = new JPanel(new GridBagLayout());
+		
+		JLabel lblBackground = new JLabel(menuBackground);
+		lblBackground.setLayout(new GridBagLayout());
 
 		cont.anchor = GridBagConstraints.CENTER;
 		cont.insets = new Insets(10,10,10,10);
 
 		cont.gridx = 0;
-		cont.gridy = 0;
-		pane.add(btnStartGame, cont);
-		
 		cont.gridy = 1;
-		pane.add(btnMenu, cont);
+		lblBackground.add(btnStartGame, cont);
+		
+		cont.gridy = 2;
+		lblBackground.add(btnMenu, cont);
 		
 		cont.gridx = 1;
 		cont.gridy = 0;
-		pane.add(lblRoomSize, cont);
+		lblBackground.add(lblRoomSize, cont);
 		
 		cont.gridx = 2;
-		cont.gridy = 0;
-		pane.add(lblGameSettings, cont);
-		
 		cont.gridy = 1;
-		pane.add(lblRounds, cont);
+		lblBackground.add(lblGameSettings, cont);
 		
 		cont.gridy = 2;
-		pane.add(lblTime, cont);
+		lblBackground.add(lblRounds, cont);
 		
 		cont.gridy = 3;
-		pane.add(lblBalance, cont);
+		lblBackground.add(lblTime, cont);
 		
 		cont.gridy = 4;
-		pane.add(lblMinBet, cont);
+		lblBackground.add(lblBalance, cont);
+		
+		cont.gridy = 5;
+		lblBackground.add(lblMinBet, cont);
 
 		cont.gridx = 1;
 		cont.gridy = 1;
 		cont.gridheight = 5;
-		pane.add(taActiveLobbyPlayers, cont);
+		lblBackground.add(taActiveLobbyPlayers, cont);
+		
+		pane.add(lblBackground);
 				
 		return pane;
 	}
@@ -723,10 +735,10 @@ public class UserInterface extends JPanel {
 			}
 			if(e.getSource() == btnEnterTable) {
 				controller.checkTableId(Integer.parseInt(tfRoomCode.getText()));
-				updateUI(lobbyScreen(balance, minBet, rounds, time));
+				updateUI(lobbyScreen(Integer.parseInt(tfBalance.getText()), Integer.parseInt(tfMinBet.getText()), Integer.parseInt(tfRounds.getText()), Integer.parseInt(tfTime.getText())));
 			}
 			if(e.getSource() == btnRandomTable) {
-				updateUI(lobbyScreen(balance, minBet, rounds, time));
+				updateUI(lobbyScreen(Integer.parseInt(tfBalance.getText()), Integer.parseInt(tfMinBet.getText()), Integer.parseInt(tfRounds.getText()), Integer.parseInt(tfTime.getText())));
 			}
 			if(e.getSource() == btnConfirmTable) {
 				controller.createGameInfo(Integer.parseInt(tfTime.getText()), Integer.parseInt(tfRounds.getText()), Integer.parseInt(tfBalance.getText()), Integer.parseInt(tfMinBet.getText()));
