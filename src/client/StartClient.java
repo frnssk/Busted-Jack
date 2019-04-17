@@ -12,6 +12,7 @@ import javax.swing.JFrame;
  */
 
 public class StartClient {
+	//testing github
 	public static void main(String[] args) throws IOException {
 		UserClient client = new UserClient("localhost", 1200); //IP and port are hard coded for testing
 		UserController controller = new UserController(client);
