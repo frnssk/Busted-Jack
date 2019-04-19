@@ -74,7 +74,6 @@ public class Server {
 			}
 		}catch (Exception ex) {
 			ex.printStackTrace();
-
 		}
 	}
 
@@ -325,10 +324,10 @@ public class Server {
 						else if(obj instanceof LogOutRequest) {
 							LogOutRequest logout = (LogOutRequest)obj;
 							isOnline = false;
-							TextWindow.println("Client disconnected.");
+//							TextWindow.println("Client disconnected.");
 							String name = logout.getUserName();
 							User user = getUser(name);
-							UserHandler.removeActiveUser(user);
+							UserHandler.removeActiveUser(this);
 						}
 
 						/*
@@ -338,7 +337,13 @@ public class Server {
 							GameInfo gameInfo = (GameInfo)obj;
 							Table table = new Table(gameInfo.getTime(), gameInfo.getRounds(), gameInfo.getBalance(), gameInfo.getMinBet());
 							setTableId(table);
+//							table.addPlayer(new Player(UserHandler.getUser(this).getUsername()));
+							User user = UserHandler.getUser(this);
+							Player player = new Player(user.getUsername());
+							table.addPlayer(player);
+							TextWindow.println(player.getUsername() + " tillagd på Table " + table.getTableId());
 						}
+						
 						/*
 						 * Adds players to a table, if it exists
 						 */
@@ -397,19 +402,22 @@ public class Server {
 			//			updateActiveUsers();
 		}
 
+		//Used to get which user is connected to a specific client / clienthandler
 		public synchronized static User getUser(ClientHandler clientHandler) {
 			return activeUsers.get(clientHandler);
 		}
 
-		public synchronized static void removeActiveUser(User user) {
-			activeUsers.remove(user);
+		//Used to remove a user when he disconnects
+		public synchronized static void removeActiveUser(ClientHandler clientHandler) {
+			activeUsers.remove(clientHandler, getUser(clientHandler));
+			TextWindow.println("NEW LOGOUT = " + getUser(clientHandler).getUsername() + " är ej längre aktiv.");
 			//updateActiveUsers();
 		}
 
-		//	returns whether or not a user is online
-		public synchronized static boolean isUserOnline(User user) {
-			return activeUsers.containsKey(user);
-		}
+		//returns whether or not a user is online
+//		public synchronized static boolean isUserOnline(User user) {
+//			return activeUsers.containsKey(user);
+//		}
 
 		/*
 		 * returns the clienthandler connected to a specific user
